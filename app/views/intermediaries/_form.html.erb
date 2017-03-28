@@ -1,0 +1,209 @@
+<%= form_for(intermediary) do |f| %>
+  <% if intermediary.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(intermediary.errors.count, "error") %> prohibited this intermediary from being saved:</h2>
+
+      <ul>
+      <% intermediary.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :no, "Intermediary No." %>
+    <%= f.number_field :set_intm_no %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :parnt_intm_no, "Parent Intermediary No." %>
+    <%= f.text_field :parnt_intm_no, :maxlength => 12 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name, :maxlength => 240 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :nickn, "Nickname" %>
+    <%= f.text_field :nickn, :maxlength => 40 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :email, "Email Address" %>
+    <%= f.email_field :email, :maxlength => 50 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :cell_no, "Cellphone No." %>
+    <%= f.number_field :cell_no, :maxlength => 40 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :phon_no, "Phone No." %>
+    <%= f.number_field :phon_no, :maxlength => 40 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :faxno, "Fax No." %>
+    <%= f.number_field :faxno, :maxlength => 40 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :homeadd, "Home Address" %>
+    <%= f.text_field :homeadd, :maxlength => 150 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :bday, "Birthdate" %>
+    <%= f.date_field :bday %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :address, "Address" %>
+    <%= f.text_field :address, :maxlength => 50 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :tin_no, "Tin no." %>
+    <%= f.number_field :tin_no, :maxlength => 20 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :parnt_intm_tin_sw, "Parent Intermediary Tin(Y/N)" %>
+    <%= f.text_field :parnt_intm_tin_sw, :maxlength => 1 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :wtaxrate, "Withholding Tax Rate" %>
+    <%= f.text_field :wtaxrate, :maxlength => 200 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :invat_rate, "Input Vat Rate" %>
+    <%= f.text_field :invat_rate, :maxlength => 200 %>
+  </div>
+<br>
+
+<div class="field">
+    <%= f.label :spec_rate, "Special Rate(Y/N)" %>
+    <%= f.text_field :spec_rate, :maxlength => 1 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :paymnt, "Payment" %>
+    <%= f.text_field :paymnt, :maxlength => 3 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :bill_add, "Billing Address" %>
+    <%= f.text_field :bill_add, :maxlength => 50 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :contact_person, "Contact Person" %>
+    <%= f.text_field :contact_person, :maxlength => 50 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :int_type_desc, "Intermediary Type" %>
+    <%= f.text_field :int_type_desc, :maxlength => 2 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :cointm_type, "Co Intermediary Type" %>
+    <%= f.text_field :cointm_type, :maxlength => 5 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :corp, "Corporate(Y/N)" %>
+    <%= f.text_field :corp, :maxlength => 1 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :issuing_office, "Issuing Office" %>
+    <%= f.text_field :issuing_office, :maxlength => 2 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :iss_source, "Issue Source" %>
+    <%= f.text_field :iss_source, :maxlength => 2 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :effi_date, "Effectivity Date" %>
+    <%= f.date_field :effi_date %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :exp_date, "Expiry Date" %>
+    <%= f.date_field :exp_date %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :license_no, "License (Y/N)"%>
+    <%= f.text_field :license_no, :maxlength => 1 %>
+  </div>
+<br>
+
+  <div class="field">
+    <%= f.label :stat, "Status: (Legend: A - Active, I - Inactive  )"%></br>
+    <%= f.radio_button :stat, "A" %>
+    <%= f.label :stat, "A" %>
+    <%= f.radio_button :stat, "I" %>
+    <%= f.label :stat, "I" %>
+  </div>
+<br>  
+
+  <div class="field">
+    <%= f.label :rem, "Remarks" %>
+    <%= f.text_area :rem, :maxlength => 4000 %>
+  </div>
+<br>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,2 @@
+json.extract! intermediary, :id, :name, :no, :nickn, :email, :cell_no, :phone_no, :fax_no, :homeadd, :bday, :address, :tin_no, :bill_add, :contact_person, :int_type_desc, :issuing_office, :effi_date, :exp_date, :license_no, :stat, :rem, :created_at, :updated_at
+json.url intermediary_url(intermediary, format: :json)

@@ -1,0 +1,47 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ */
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+.pagination {
+    font-size: 15px;
+}
+
+.pagination > * {
+    margin-right: 0.1em;
+    padding: 0.3em 0.4em;
+}
+
+.pagination a:hover {
+    background: #00ddff none repeat scroll 0 0;
+    text-shadow: 1px 1px 1px #171717;
+    color: white;
+}
+
+.pagination a:active {
+    text-shadow: none;
+}
+
+.pagination .current {
+    background: #00ddff none repeat scroll 0 0;
+    color: white;
+    text-shadow: 1px 1px 1px #171717;
+}
+
+.pagination .disabled {
+    color: #C0C0C0;
+}
+div.row {
+  border: 1px solid;
+  border-bottom: 0px;
+}

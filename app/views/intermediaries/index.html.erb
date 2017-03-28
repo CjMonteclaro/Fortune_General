@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<%= form_tag("search3", method: "get") do %>
+<br>
+ <table>
+  <tr>
+    <td><%= label_tag(:search, "Search for:") %></td>
+    <td><%= text_field_tag(:search, params[:search]) %></td>
+    <td><%= submit_tag 'Search Information', no: nil , class: "btn"%></td>
+  </tr>
+  </table>
+  <% end %>
+<br>
+<table class="table" border = 1>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>No</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @intermediaries.each do |intermediary| %>
+      <tr>
+        <td><%= intermediary.name %></td>
+        <td><%= intermediary.no %></td>
+        <td><%= intermediary.stat %></td>
+        <td><%= link_to 'Show', intermediary %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+ <%#= link_to 'New', new_intermediary_path%>
+ <p>
+  <%= link_to "Print(PDF)", intermediaries_path(@intermediaries, format: 'pdf', :search => params[:search]) %>
+
+  <%= link_to "Print(CSV)", intermediaries_path(@intermediaries, format: 'csv', :search => params[:search]) %>
+
+ </p>
+
+<br>
+<%= will_paginate @intermediaries %>

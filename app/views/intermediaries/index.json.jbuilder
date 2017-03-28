@@ -1,0 +1,1 @@
+json.array! @intermediaries, partial: 'intermediaries/intermediary', as: :intermediary

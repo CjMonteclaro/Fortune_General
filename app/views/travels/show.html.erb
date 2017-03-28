@@ -1,0 +1,43 @@
+<%= content_tag :h1, @travel_policy.assured.complete_assd_name %>
+
+<%= content_tag :h4, @travel_policy.full_policy_no %>
+
+<!-- <div class="col-md-1">
+
+</div> -->
+<!-- Projects Row -->
+       <div class="row">
+           <div class="col-md-6 portfolio-item">
+               <h3>
+                   <a href="#">General Info 1</a>
+               </h3>
+               <%= content_tag :p, if @travel_policy.polgenin.present? then @travel_policy.polgenin.polgenin_gen_info1 end || if @travel_policy.polgenin.nil? then "None" end%>
+           </div>
+           <div class="col-md-6 portfolio-item">
+               <h3>
+                   <a href="#">General Info 2</a>
+               </h3>
+               <%= content_tag :p, if @travel_policy.polgenin.present? then @travel_policy.polgenin.polgenin_gen_info end || if @travel_policy.polgenin.nil? then "None" end%>
+           </div>
+       </div>
+       <!-- /.row -->
+
+       <!-- Projects Row -->
+       <div class="row">
+           <div class="col-md-6 portfolio-item">
+             <h3>
+                 <a href="#">Initial Info 1</a>
+             </h3>
+             <%= content_tag :p, if @travel_policy.polgenin.present? then @travel_policy.polgenin.polgenin_initial_info end || if @travel_policy.polgenin.nil? then "None" end %>
+           </div>
+           <div class="col-md-6 portfolio-item">
+               <h3>
+                   <a href="#">Endorsement Text</a>
+               </h3>
+               <%= content_tag :p, if @travel_policy.endttext.present? then @travel_policy.endttext.endt_txt end || if @travel_policy.endttext.nil? then "None" end %>
+           </div>
+       </div>
+       <!-- /.row -->
+       <div class="center">
+          <center>  <%= link_to "Back" , request.referer.present? ? request.referer : default_path, class: 'btn btn-large btn-primary' %> </center>
+        </div>

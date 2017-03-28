@@ -1,0 +1,52 @@
+<p id="notice"><%= notice %></p>
+
+<div class="field">
+  <%= form_tag("search2", method: "get") do %>
+
+    <%= label_tag  "Accounting Entry Date FROM" %>
+    <%= date_field_tag :start_date , params[:start_date] %>
+
+    <%= label_tag  "TO" %>
+    <%= date_field_tag :end_date , params[:end_date]%>
+
+    <%= submit_tag("Search", class: "btn") %>
+
+
+  <% end %>
+  </div>
+<br>
+<table class="table" border = 1>
+  <thead>
+    <tr>
+      <%= content_tag :th, "Policy No" %>
+      <%= content_tag :th, "Assured Name" %>
+      <%= content_tag :th, "Intermediary" %>
+      <%= content_tag :th, "TSI Amount" %>
+      <%= content_tag :th, "Premium Amount" %>
+
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @policies.each do |policy| %>
+      <tr>
+        <%= content_tag :td, policy.full_policy_no %>
+        <%= content_tag :td, truncate(policy.assured.assd_name, length: 40) %>
+        <%= content_tag :td, truncate(policy.intermediary.name, length: 40) unless policy.intermediary.nil? %>
+       <%= content_tag :td, policy.ts_amt.to_s(:delimited), align: "right" %>
+        <%= content_tag :td, policy.pre_amt.to_s(:delimited), align: "right" %>
+      </tr>
+    <% end %>
+
+  </tbody>
+</table>
+
+<p>
+ <%= link_to "Print(PDF)", policies_path(@policies, format: 'pdf', :start_date => params[:start_date], :end_date => params[:end_date]) %>
+
+ <%= link_to "Print(CSV)", policies_path(@policies, format: 'csv', :start_date => params[:start_date], :end_date => params[:end_date]) %>
+
+</p>
+<br>
+<%= content_tag :div, page_entries_info(@policies) %>
+ <%= will_paginate @policies %>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4490164c-1c12-4e44-b920-519c97fecb45">
+	<property name="ireport.zoom" value="0.9090909090909095"/>
+	<property name="ireport.x" value="154"/>
+	<property name="ireport.y" value="13"/>
+	<queryString>
+		<![CDATA[select a.CRED_BRANCH cred_branch,
+           d.INTM_NAME intm_name,
+           get_policy_no(a.policy_id) pol,
+           b.ASSD_NAME assd,
+           trunc(a.ISSUE_DATE) issue_date,
+           trunc(a.EFF_DATE) effectivity,
+           trunc(a.INCEPT_DATE) inception,
+           trunc(a.EXPIRY_DATE) expiry,
+           a.TSI_AMT tsi_amt,
+           a.PREM_AMT prem_amt
+      from gipi_polbasic a,
+           giis_assured b,
+           gipi_comm_invoice c,
+           giis_intermediary d
+     where a.ASSD_NO = b.ASSD_NO
+       and a.POLICY_ID = c.POLICY_ID(+)
+       and c.INTRMDRY_INTM_NO = d.INTM_NO(+)
+       and trunc(a.ACCT_ENT_DATE) between :date1 and :date2
+     union
+     select a.CRED_BRANCH cred_branch,
+           d.INTM_NAME intm_name,
+           get_policy_no(a.policy_id) pol,
+           b.ASSD_NAME assd,
+           trunc(a.ISSUE_DATE) issue_date,
+           trunc(a.EFF_DATE) effectivity,
+           trunc(a.INCEPT_DATE) inception,
+           trunc(a.EXPIRY_DATE) expiry,
+           nvl(a.TSI_AMT,0) * -1 tsi_amt,
+           nvl(a.PREM_AMT,0) * -1 prem_amt
+      from gipi_polbasic a,
+           giis_assured b,
+           gipi_comm_invoice c,
+           giis_intermediary d
+     where a.ASSD_NO = b.ASSD_NO
+       and a.POLICY_ID = c.POLICY_ID(+)
+       and c.INTRMDRY_INTM_NO = d.INTM_NO(+)
+       and trunc(a.SPLD_ACCT_ENT_DATE) between :date1 and :date2]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="718bab9b-5a91-4035-9b5e-085acd63688f" x="0" y="0" width="139" height="44"/>
+				<textElement>
+					<font fontName="Calibri" size="30"/>
+				</textElement>
+				<text><![CDATA[Production]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9466e46c-e249-404e-aade-9a620d136c7d" x="0" y="59" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Crediting Branch]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a02b8c3a-6e1a-4f0b-aeff-c37486e0776b" x="100" y="59" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Policy ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e9862740-be25-4783-b8b5-f5cc2f213120" x="200" y="59" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Issue Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3467de38-5674-469a-8809-d987c4cd3161" x="300" y="59" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Effectivity Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4a1c9b4f-d979-4cc3-ae40-f91ea62b2e6c" x="400" y="59" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Incep Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c22ce75a-75ca-49e1-9a5b-0d1f4ae0a136" x="500" y="59" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Expiry Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ab2f0528-94d2-4645-9ca3-20d22f1d822e" x="600" y="59" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Tsi Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4bc2f739-fb23-4b7c-b48f-44607ffb25a0" x="700" y="59" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Premium Amount]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement uuid="74b45601-acd3-44ba-8579-e33789e87572" x="0" y="15" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cred_branch}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d9954ccf-a823-4dbb-92a2-9ee28c0601de" x="100" y="15" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{policy_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d887baff-9783-4477-9996-17037eb0b58f" x="200" y="15" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{issue_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cfd3bbbf-a7d0-41ef-ac62-e9654786a8d9" x="300" y="15" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{eff_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1f6b2255-8729-458b-93bc-a2e474ff190e" x="400" y="15" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{incpet_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7c66e450-ab23-4dff-942c-5345aa68c06b" x="500" y="15" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{expiry_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="07bbe3fe-b9ed-4ce4-b179-38a7535db2eb" x="600" y="15" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{tsi_amt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="48cb39c5-d074-4e3b-abfa-35bb9de3df2f" x="700" y="15" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{prem_amt}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

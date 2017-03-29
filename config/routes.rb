@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'travels#index'
+  root 'travels#home'
   get 'travels/index'
   resources :motors
   resources :travels

@@ -12,5 +12,5 @@ class AccidentItem < ApplicationRecord
 	has_one :item, foreign_key: :item_no
 	has_one :policy, foreign_key: :policy_id
 
-	
+
 end

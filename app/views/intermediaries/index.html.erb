@@ -34,10 +34,19 @@
 <br>
  <%#= link_to 'New', new_intermediary_path%>
  <p>
-  <%= link_to "Print(PDF)", intermediaries_path(@intermediaries, format: 'pdf', :search => params[:search]) %>
-
-  <%= link_to "Print(CSV)", intermediaries_path(@intermediaries, format: 'csv', :search => params[:search]) %>
-
+   <%#= form_tag("to_csv", method: "get") do %>
+   <!-- <div class="btn-group"> -->
+     <!-- <p> -->
+     <!-- <%#= radio_button_tag :stats, :class=> "btn", :value=> "A" %> Active
+     <%#= radio_button_tag :stats, :class=> "btn", :value=> "I" %> Inactive -->
+     <!-- <%#= radio_button_tag :stats, "A" %> Active
+     <%#= radio_button_tag :stats, "I" %> Inactive -->
+     <%= link_to "Print(CSV)", intermediaries_path(@intermediaries, format: 'csv', :stats => params[:stats]) %>
+    <!-- </p> -->
+   <!-- </div> -->
+     <%# end %>
+   |
+     <%= link_to "Print(PDF)", intermediaries_path(@intermediaries, format: 'pdf', :stats => params[:search]) %>
  </p>
 
 <br>

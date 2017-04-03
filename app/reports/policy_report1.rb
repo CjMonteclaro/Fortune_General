@@ -2,6 +2,7 @@
       def initialize(policies, start_date, end_date)
         super(:page_size => "A4", :page_layout => :landscape, :font => "Times-Roman")
         Prawn::Font::AFM.hide_m17n_warning = true
+        font_size 10
         @policies = policies
         @start_date = start_date
         @end_date = end_date

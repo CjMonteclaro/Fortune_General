@@ -33,6 +33,7 @@
       <%= content_tag :th, "Destination" %>
       <%= content_tag :th, "TSI" %>
       <%= content_tag :th, "Travel Class" %>
+      <%= content_tag :th, "Coverage Limit" %>
       <%= content_tag :th, "Endorsement" %>
     </tr>
   </thead>
@@ -53,6 +54,7 @@
         <%= content_tag :td, if policy.accident_item.present? then policy.accident_item.acc_item_destination end || if policy.accident_item.nil? then "-" end %>
         <%= content_tag :td, policy.ts_amt.to_s(:delimited), :align => "right" %>
         <%= content_tag :td, policy.polgenin&.travel_class %>
+        <%= content_tag :td, policy.polgenin&.coverage %>
         <%= content_tag :td, if policy.endttext.present? then policy.endttext.endt_txt end || if policy.endttext.nil? then "-" end %>
 
 

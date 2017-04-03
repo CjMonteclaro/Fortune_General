@@ -38,16 +38,35 @@ class Intermediary < ApplicationRecord
 		has_many :policies, through: :invoices, foreign_key: :policy_id
 
 
-	def self.to_csv(search)
-      attributes = %w{intm_no p_intm_no intm_name Nname email cell phone fax home_add bday address iss_source tin p_tin wtax_rate input_vat_rate spec_rate payment bill_add contact_person intm_type co_intm_type iss_office corporate eff_date exp_date license status remarks}
+		def self.search(search)
+				if search
+					where('intm_no = ?', "#{search}")
+				else
+					order('intm_no')
+				end
+			end
+
+	def self.to_csv(stats)
+
+		# if stats == "A"
+			attributes = %w{intm_no p_intm_no intm_name Nname email cell phone fax home_add bday address iss_source tin p_tin wtax_rate input_vat_rate spec_rate payment bill_add contact_person intm_type co_intm_type iss_office corporate eff_date exp_date license status remarks}
       CSV.generate(headers: true) do |csv|
         csv << attributes
-        all.each do |intermediary|
+        Intermediary.all.order(:stat).each do |intermediary|
         csv << [intermediary.no, intermediary.parnt_intm_no,intermediary.name,intermediary.nickn,intermediary.email,intermediary.cell_no,intermediary.phon_no,intermediary.faxno,intermediary.homeadd,intermediary.bday,intermediary.address,intermediary.iss_source, intermediary.tin_no, intermediary.parnt_intm_tin_sw, intermediary.wtaxrate,	intermediary.invat_rate, intermediary.spec_rate, intermediary.paymnt, intermediary.bill_add, intermediary.contact_person,	intermediary.int_type_desc,	intermediary.cointm_type, intermediary.issuing_office, intermediary.corp,	intermediary.effi_date,	intermediary.exp_date, intermediary.license_no, intermediary.show_status, intermediary.rem ]
-
 				end
       end
-    end
+		# elsif stats == "I"
+		#
+		# 	attributes = %w{intm_no p_intm_no intm_name Nname email cell phone fax home_add bday address iss_source tin p_tin wtax_rate input_vat_rate spec_rate payment bill_add contact_person intm_type co_intm_type iss_office corporate eff_date exp_date license status remarks}
+    #   CSV.generate(headers: true) do |csv|
+    #     csv << attributes
+    #     Intermediary.where(stat: "I").each do |intermediary|
+    #     csv << [intermediary.no, intermediary.parnt_intm_no,intermediary.name,intermediary.nickn,intermediary.email,intermediary.cell_no,intermediary.phon_no,intermediary.faxno,intermediary.homeadd,intermediary.bday,intermediary.address,intermediary.iss_source, intermediary.tin_no, intermediary.parnt_intm_tin_sw, intermediary.wtaxrate,	intermediary.invat_rate, intermediary.spec_rate, intermediary.paymnt, intermediary.bill_add, intermediary.contact_person,	intermediary.int_type_desc,	intermediary.cointm_type, intermediary.issuing_office, intermediary.corp,	intermediary.effi_date,	intermediary.exp_date, intermediary.license_no, intermediary.show_status, intermediary.rem ]
+		# 		end
+    #   end
+		# end
+	end
 
  	 def set_intm_no
 	  last_intm_no = Intermediary.maximum(:no)
@@ -62,8 +81,4 @@ class Intermediary < ApplicationRecord
 		end
 	end
 
-	def report
-  	respond_to_report('intermediary', 'select * from giis_intermediary', 'intermediary_report.pdf')
-	end
-# <%=link_to 'Download as PDF', report_intermediaries_path %>put in the show view
 end

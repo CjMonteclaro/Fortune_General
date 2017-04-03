@@ -2,6 +2,7 @@
       def initialize(travels, start_date, end_date)
         super(:page_size => "A4", :page_layout => :landscape, :font => "Times-Roman")
         Prawn::Font::AFM.hide_m17n_warning = true
+        font_size 10
         @travels = travels
         @start_date = start_date
         @end_date = end_date

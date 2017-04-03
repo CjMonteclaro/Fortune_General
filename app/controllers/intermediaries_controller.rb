@@ -7,11 +7,12 @@ class IntermediariesController < ApplicationController
   # GET /intermediaries.json
   def index
     search = params[:search]
-    @intermediaries = Intermediary.where(no: search).paginate(:page => params[:page], :per_page => 20)
-    @intermediaries_csv = Intermediary.where(no: search)
+    stats = params[:stats]
+    @intermediaries = Intermediary.search(params[:search]).paginate(:page => params[:page], :per_page => 20)
+    @intermediaries_csv = Intermediary.all
     respond_to do |format|
     format.html
-    format.csv { send_data @intermediaries_csv.to_csv(search), filename: "intermediary.csv" }
+    format.csv { send_data @intermediaries_csv.to_csv(stats), filename: "intermediary.csv" }
     format.xls
     format.pdf do
        pdf = IntermediaryReport.new(@intermediaries, search)
@@ -19,9 +20,9 @@ class IntermediariesController < ApplicationController
                            type: "application/pdf"
                            # ,
                            # disposition: "inline"
-   end
- end
-  end
+             end
+           end
+          end
 
   # GET /intermediaries/1
   # GET /intermediaries/1.json

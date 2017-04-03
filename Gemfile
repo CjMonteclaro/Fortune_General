@@ -16,9 +16,13 @@ gem 'responders'
 gem 'fastercsv'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 gem 'thin'
+gem 'figaro'
 group :development do
-  gem 'capistrano', '~> 3.6'
-  gem 'capistrano-rails', '~> 1.2'
+  gem 'capistrano'
+  gem 'capistrano3-puma'
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rvm'
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

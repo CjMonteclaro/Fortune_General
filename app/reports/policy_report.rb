@@ -23,9 +23,9 @@
        end
 
        def transaction_rows
-           [["Policy No:", "Insured",  "Birthdate", "Age", "Effectivity", "Inception", "Expiry", "Destination", "Travel Class", "TSI"]] +
+           [["Policy No:", "Insured",  "Birthdate", "Age", "Effectivity", "Inception", "Expiry", "Destination", "Travel Class", "Coverage Limit", "TSI"]] +
            @travels = Policy.where(iss_date: @start_date..@end_date).where(line_code: "PA" ).where(subline_code: "TPS" ).where.not(polic_flag: ['4', '5']).includes(:assured, :item, :polgenin, :endttext, :accident_item).map do |l|
-              [l.full_policy_no, l.assured.assd_name,(l.accident_item.acc_bday unless l.accident_item.nil?),(l.accident_item.acc_age unless l.accident_item.nil?), l.ef_date, l.inc_date, l.exp_date, (l.accident_item&.acc_item_destination ), (l.polgenin.travel_class unless l.polgenin.nil?), l.ts_amt]
+              [l.full_policy_no, l.assured.assd_name,(l.accident_item.acc_bday unless l.accident_item.nil?),(l.accident_item.acc_age unless l.accident_item.nil?), l.ef_date, l.inc_date, l.exp_date, (l.accident_item&.acc_item_destination ), (l.polgenin.travel_class unless l.polgenin.nil?), l.polgenin&.coverage, l.ts_amt]
         end
       end
     end

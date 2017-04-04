@@ -38,13 +38,15 @@ class Policy < ApplicationRecord
 	has_one :invoice
 	has_one :intermediary, through: :invoice, foreign_key: :intrmdry_intm_no
 
+	has_one :line, foreign_key: :line_code
+	has_one :subline, foreign_key: :subline_code
+
 	def self.to_csv(start_date,end_date)
-			attributes = %w{pol_no assdname bday age effdate incdate expdate destination trvlclass ts gen_info initial_info endt}
+			attributes = %w{pol_no assdname bday age effdate incdate expdate destination trvlclass coverage ts gen_info initial_info endt}
 			CSV.generate(headers: true) do |csv|
 				csv << attributes
-			# all.each do |policy|
 				all.each do |policy|
-				csv << [policy.full_policy_no, policy.assured.assd_name,(policy.accident_item.acc_bday unless policy.accident_item.nil?),(policy.accident_item.acc_age unless policy.accident_item.nil?), policy.ef_date, policy.inc_date, policy.exp_date, (policy.accident_item&.acc_item_destination ), (policy.polgenin.travel_class unless policy.polgenin.nil?), policy.ts_amt, policy.polgenin&.polgenin_gen_info1, policy.polgenin&.polgenin_initial_info, policy.endttext&.endt_txt]
+				csv << [policy.full_policy_no, policy.assured.assd_name,(policy.accident_item.acc_bday unless policy.accident_item.nil?),(policy.accident_item.acc_age unless policy.accident_item.nil?), policy.ef_date, policy.inc_date, policy.exp_date, (policy.accident_item&.acc_item_destination ), (policy.polgenin.travel_class unless policy.polgenin.nil?), policy.polgenin&.coverage, policy.ts_amt, policy.polgenin&.polgenin_gen_info1, policy.polgenin&.polgenin_initial_info, policy.endttext&.endt_txt]
 
 
 				end

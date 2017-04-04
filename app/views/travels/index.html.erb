@@ -1,3 +1,5 @@
+<div class="container">
+
 <p id="notice"><%= notice %></p>
 
 <div class="field">
@@ -66,7 +68,7 @@
 </div>
 <p>
    <%= link_to "Print(PDF)", travels_path(@travels, format: 'pdf', :start_date => params[:start_date], :end_date => params[:end_date]) %>
-   <%= link_to "Print(CSV)", travels_path(@travels, format: 'csv', :start_date => params[:start_date], :end_date => params[:end_date]) %>
+  | <%= link_to "Print(CSV)", travels_path(@travels, format: 'csv', :start_date => params[:start_date], :end_date => params[:end_date]) %>
 </p>
 <br>
 
@@ -74,3 +76,4 @@
 
   <%= content_tag :div, page_entries_info(@policies) %>
  <%= will_paginate @travels %>
+</div>

@@ -8,4 +8,7 @@ class Item < ApplicationRecord
 
 	belongs_to :policy, foreign_key: :policy_id
 	belongs_to :accident_item, foreign_key: :item_no
+	has_one :item_peril
+
+
 end

@@ -36,7 +36,7 @@
         <%= content_tag :td, policy.full_policy_no %>
         <%= content_tag :td, truncate(policy.assured.assd_name, length: 40) %>
         <%= content_tag :td, truncate(policy.intermediary.name, length: 40) unless policy.intermediary.nil? %>
-       <%= content_tag :td, policy.ts_amt.to_s(:delimited), align: "right" %>
+        <%= content_tag :td, policy.ts_amt.to_s(:delimited), align: "right" %>
         <%= content_tag :td, policy.pre_amt.to_s(:delimited), align: "right" %>
       </tr>
     <% end %>

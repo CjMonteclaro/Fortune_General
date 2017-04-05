@@ -5,6 +5,7 @@ class TravelsController < ApplicationController
   def index
   	start_date = params[:start_date]
     end_date = params[:end_date]
+
   	@travels = Policy.where(iss_date: start_date..end_date).where(line_code: "PA" ).where(subline_code: "TPS" ).where.not(polic_flag: ['4', '5']).includes(:assured, :item, :polgenin, :endttext, :accident_item).paginate(:page => params[:page], :per_page => 15)
   	@travels_csv = Policy.where(iss_date: start_date..end_date).where(line_code: "PA" ).where(subline_code: "TPS" ).where.not(polic_flag: ['4', '5']).includes(:assured, :item, :polgenin, :endttext, :accident_item)
      respond_to do |format|

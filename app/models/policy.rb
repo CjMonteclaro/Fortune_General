@@ -1,5 +1,5 @@
 require 'csv'
-
+include ActionView::Helpers::TextHelper
 class Policy < ApplicationRecord
 
 	self.table_name = "gipi_polbasic"
@@ -42,12 +42,11 @@ class Policy < ApplicationRecord
 	has_one :subline, foreign_key: :subline_code
 
 	def self.to_csv(start_date,end_date)
-			attributes = %w{pol_no assdname bday age effdate incdate expdate destination trvlclass coverage ts gen_info initial_info endt}
+			attributes = %w{Policy/Endorsement Insured Birthday Age Inception ExpiryDate Destination DestinationClass Duration CoverageLimit Remarks}
 			CSV.generate(headers: true) do |csv|
 				csv << attributes
 				all.each do |policy|
-				csv << [policy.full_policy_no, policy.assured.assd_name,(policy.accident_item.acc_bday unless policy.accident_item.nil?),(policy.accident_item.acc_age unless policy.accident_item.nil?), policy.ef_date, policy.inc_date, policy.exp_date, (policy.accident_item&.acc_item_destination ), (policy.polgenin.travel_class unless policy.polgenin.nil?), policy.polgenin&.coverage, policy.ts_amt, policy.polgenin&.polgenin_gen_info1, policy.polgenin&.polgenin_initial_info, policy.endttext&.endt_txt]
-
+				csv << [policy.full_policy_no, policy.assured.assd_name,(policy.accident_item.acc_bday unless policy.accident_item.nil?),(policy.accident_item.acc_age unless policy.accident_item.nil?), policy.inc_date, policy.exp_date, (policy.accident_item&.acc_item_destination ), (policy.polgenin.travel_class unless policy.polgenin.nil?), (pluralize(policy.duration_date, 'day')), policy.polgenin&.coverage, policy.polgenin&.polgenin_gen_info1]
 
 				end
 			end
@@ -68,6 +67,14 @@ class Policy < ApplicationRecord
 			limit(10)
 		end
 	end
+	def self.search4(search4)
+		if search2
+			@policies = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).includes(:assured, :intermediary).order('iss_cd','line_code', 'subline_code', 'issue_year', 'sequence_no','renew_number')
+       	else
+			limit(10)
+		end
+	end
+
 
 	def full_policy_no
 		"#{self.line_code} - #{self.subline_code} - #{self.issue_source} - #{self.issue_year} - #{self.proper_seq_no} - #{self.proper_renew_number} #{"/" if self.en_y?} #{self.en_iss_cd if self.en_y?} #{"-" if self.en_y?} #{self.en_y if self.en_y?} #{"-" if self.en_y?} #{proper_en_seq_no if self.en_y?}"

@@ -49,7 +49,6 @@
         <%= content_tag :td, if policy.accident_item.present? then policy.accident_item.acc_age end || if policy.accident_item.nil? then "-" end %>
         <%= content_tag :td, class: 'col-md-1' do %>
           <%= policy.inc_date %><br/>
-          <%= policy.ef_date %><br/>
             <%= policy.exp_date %><br/>
           <%= pluralize(policy.duration_date, 'day') %>
         <% end %>

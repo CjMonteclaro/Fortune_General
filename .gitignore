@@ -16,7 +16,7 @@
 # Ignore Byebug command history file.
 .byebug_history
 
-db/*
-config/database.yml
-config/secrets.yml
-db/schema.rb
+/db/*
+/config/database.yml
+/config/secrets.yml
+/db/schema.rb

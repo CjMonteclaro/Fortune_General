@@ -12,5 +12,21 @@
 //
 //= require jquery
 //= require bootstrap-sprockets
+//= require moment
+//= require bootstrap-datetimepicker
 
-document.onmousedown=disableclick;function disableclick(event){  if(event.button==2)   {        return false;       }}
+document.onmousedown=disableclick;function disableclick(event){if(event.button==2){return false;}}
+
+$(function () {
+    $('#datetimepicker6').datetimepicker({format: 'DD-MMM-YYYY'});
+    $('#datetimepicker7').datetimepicker({
+        // useCurrent: false //Important! See issue #1075
+        format: 'DD-MMM-YYYY'
+    });
+    $("#datetimepicker6").on("dp.change", function (e) {
+        $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+    });
+    $("#datetimepicker7").on("dp.change", function (e) {
+        $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+    });
+});

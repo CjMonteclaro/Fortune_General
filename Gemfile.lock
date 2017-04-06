@@ -33,7 +33,7 @@ GEM
       activemodel (= 5.0.2)
       activesupport (= 5.0.2)
       arel (~> 7.0)
-    activerecord-oracle_enhanced-adapter (1.7.10)
+    activerecord-oracle_enhanced-adapter (1.7.11)
       activerecord (~> 5.0.0)
       arel (~> 7.1.4)
       ruby-plsql (>= 0.5.0)
@@ -47,9 +47,12 @@ GEM
     arel (7.1.4)
     autoprefixer-rails (6.7.7.1)
       execjs
+    bindex (0.5.0)
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
+    bootstrap3-datetimepicker-rails (4.17.47)
+      momentjs-rails (>= 2.8.1)
     builder (3.2.3)
     capistrano (3.8.0)
       airbrussh (>= 1.0.0)
@@ -78,7 +81,6 @@ GEM
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
     daemons (1.2.4)
-    debug_inspector (0.0.2)
     erubis (2.7.0)
     eventmachine (1.2.3-x86-mingw32)
     execjs (2.7.0)
@@ -105,6 +107,8 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
     minitest (5.10.1)
+    momentjs-rails (2.17.1)
+      railties (>= 3.1)
     multi_json (1.12.1)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -170,7 +174,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sshkit (1.13.0)
+    sshkit (1.13.1)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     thin (1.7.0)
@@ -188,12 +192,12 @@ GEM
       thread_safe (~> 0.1)
     tzinfo-data (1.2017.2)
       tzinfo (>= 1.0.0)
-    uglifier (3.1.10)
+    uglifier (3.1.13)
       execjs (>= 0.3.0, < 3)
-    web-console (3.4.0)
+    web-console (3.5.0)
       actionview (>= 5.0)
       activemodel (>= 5.0)
-      debug_inspector
+      bindex (>= 0.4.0)
       railties (>= 5.0)
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
@@ -206,6 +210,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-oracle_enhanced-adapter (~> 1.7.0)
   bootstrap-sass (~> 3.3.6)
+  bootstrap3-datetimepicker-rails (~> 4.17.47)
   byebug
   capistrano
   capistrano-bundler
@@ -217,6 +222,7 @@ DEPENDENCIES
   figaro
   jbuilder (~> 2.5)
   jquery-rails
+  momentjs-rails (>= 2.9.0)
   prawn
   prawn-format
   prawn-table

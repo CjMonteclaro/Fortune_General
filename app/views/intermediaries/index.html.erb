@@ -33,7 +33,6 @@
     <% end %>
   </tbody>
 </table>
-<br>
  <%#= link_to 'New', new_intermediary_path%>
  <p>
    <%#= form_tag("to_csv", method: "get") do %>
@@ -52,5 +51,6 @@
  </p>
 
 <br>
+<%= content_tag :div, page_entries_info(@intermediaries) %>
 <%= will_paginate @intermediaries %>
 </div>

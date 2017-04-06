@@ -28,16 +28,17 @@ class Policy < ApplicationRecord
 	alias_attribute :polic_flag, :pol_flag
 
 	belongs_to :assured, foreign_key: :assd_no
-
-	has_one :item, foreign_key: :policy_id
+	has_one :mc_car_company, through: :vehicle, foreign_key: :policy_id
+	has_one :type_of_body, through: :vehicle, foreign_key: :policy_id
+		has_one :item, foreign_key: :policy_id
 	has_one :accident_item, foreign_key: :policy_id
-
+	has_one :item_peril, foreign_key: :policy_id
 	has_one :endttext, foreign_key: :policy_id
 	has_one :polgenin, foreign_key: :policy_id
-
+	has_one :peril, foreign_key: :line_code
 	has_one :invoice
 	has_one :intermediary, through: :invoice, foreign_key: :intrmdry_intm_no
-
+	has_one :vehicle
 	has_one :line, foreign_key: :line_code
 	has_one :subline, foreign_key: :subline_code
 
@@ -52,9 +53,14 @@ class Policy < ApplicationRecord
 			end
 		end
 
+	# def vehicles
+	# 	"#{self.vehicle.en_iss_cd if self.en_y?} #{"-" if self.en_y?} #{self.en_y if self.en_y?} #{"-" if self.en_y?} #{proper_en_seq_no if self.en_y?}"
+	# end
+
 	def self.search(search)
+
 		if search
-			@travels = Policy.where(iss_date: start_date..end_date).where(line_code: "PA" ).where(subline_code: "TPS" ).where.not(polic_flag: ['4', '5']).includes(:assured, :item, :polgenin, :endttext, :accident_item).paginate(:page => params[:page], :per_page => 15)
+			@travels = Policy.where(iss_date: start_date.to_date..end_date.to_date + 1.day).where(line_code: "PA" ).where(subline_code: "TPS" ).where.not(polic_flag: ['4', '5']).includes(:assured, :item, :polgenin, :endttext, :accident_item).paginate(:page => params[:page], :per_page => 15)
 
        	else
 			limit(10)
@@ -68,8 +74,8 @@ class Policy < ApplicationRecord
 		end
 	end
 	def self.search4(search4)
-		if search2
-			@policies = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).includes(:assured, :intermediary).order('iss_cd','line_code', 'subline_code', 'issue_year', 'sequence_no','renew_number')
+		if search4
+			@policies = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).where(line_code: "MC").includes(:item, :item_peril, :peril, :vehicle, :mc_car_company, :type_of_body).order('line_code')
        	else
 			limit(10)
 		end
@@ -79,6 +85,15 @@ class Policy < ApplicationRecord
 	def full_policy_no
 		"#{self.line_code} - #{self.subline_code} - #{self.issue_source} - #{self.issue_year} - #{self.proper_seq_no} - #{self.proper_renew_number} #{"/" if self.en_y?} #{self.en_iss_cd if self.en_y?} #{"-" if self.en_y?} #{self.en_y if self.en_y?} #{"-" if self.en_y?} #{proper_en_seq_no if self.en_y?}"
 	end
+
+	def policy_no
+		"#{self.line_code} - #{self.subline_code} - #{self.issue_source} - #{self.issue_year} - #{self.proper_seq_no} - #{self.proper_renew_number}"
+	end
+
+	def endorsemnt
+		"#{self.en_iss_cd if self.en_y?} #{"-" if self.en_y?} #{self.en_y if self.en_y?} #{"-" if self.en_y?} #{proper_en_seq_no if self.en_y?}"
+	end
+
 	def proper_seq_no
 		 case sequence_no.to_s.length
 		when 1

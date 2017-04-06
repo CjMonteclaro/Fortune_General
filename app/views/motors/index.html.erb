@@ -3,41 +3,66 @@
 
 <h1>Motors</h1>
 
-<div class="field">
-  <%= form_tag("search4", method: "get") do %>
-
-    <%= label_tag  "Accounting Entry Date FROM" %>
-    <%= date_field_tag :start_date , params[:start_date] %>
-
-    <%= label_tag  "TO" %>
-    <%= date_field_tag :end_date , params[:end_date]%>
-
-    <%= submit_tag("Search", class: "btn") %>
-
-
-  <% end %>
+<div class="container">
+    <%= form_tag("search4", method: "get") do %>
+  <div class='col-md-5'>
+      <div class="form-group">
+        <%= label_tag  "Accounting Entry Date FROM" %>
+          <div class='input-group date' id='datetimepicker6'>
+              <%= text_field_tag :start_date , params[:start_date], class: 'form-control' %>
+              <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+          </div>
+      </div>
   </div>
+  <div class='col-md-5'>
+      <div class="form-group">
+        <%= label_tag  "TO" %>
+          <div class='input-group date' id='datetimepicker7'>
+            <%= text_field_tag :end_date , params[:end_date], class: 'form-control'%>
+              <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+          </div>
+      </div>
+  </div>
+  <br>
+  <%= submit_tag("Search" , class: "btn") %>
+  <% end %>
+</div>
+
 <br>
 <table class="table" border = 1>
   <thead>
     <tr>
       <%= content_tag :th, "Policy No" %>
-      <%= content_tag :th, "Assured Name" %>
-      <%= content_tag :th, "Intermediary" %>
-      <%= content_tag :th, "TSI Amount" %>
-      <%= content_tag :th, "Premium Amount" %>
+      <%= content_tag :th, "Endorsement" %>
+      <%= content_tag :th, "Issue Date" %>
+      <%= content_tag :th, "Effectivity Date" %>
+      <%= content_tag :th, "Expiry Date" %>
+      <%= content_tag :th, "Peril Name" %>
+      <%= content_tag :th, "Tsi Amount" %>
+      <%= content_tag :th, "Premium" %>
+      <%= content_tag :th, "Premium Rate" %>
+      <%= content_tag :th, "Vehicle" %>
 
     </tr>
   </thead>
 
   <tbody>
-    <% @policies.each do |policy| %>
+    <% @motors.each do |policy| %>
       <tr>
-        <%= content_tag :td, policy.full_policy_no %>
-        <%= content_tag :td, truncate(policy.assured.assd_name, length: 40) %>
-        <%= content_tag :td, truncate(policy.intermediary.name, length: 40) unless policy.intermediary.nil? %>
-        <%= content_tag :td, policy.ts_amt.to_s(:delimited), align: "right" %>
-        <%= content_tag :td, policy.pre_amt.to_s(:delimited), align: "right" %>
+        <%= content_tag :td, policy.policy_no %>
+        <%= content_tag :td, policy&.endorsemnt %>
+        <%= content_tag :td, policy&.iss_date %>
+        <%= content_tag :td, policy&.ef_date %>
+        <%= content_tag :td, policy&.exp_date %>
+        <%= content_tag :td, policy.peril&.peril_snam %>
+        <%= content_tag :td, policy.item_peril&.tsi %>
+        <%= content_tag :td, policy.item_peril&.prem %>
+        <%= content_tag :td, policy.item_peril&.rate %>
+        <%#= content_tag :td, policy.vehicle&.vehicle_name %>
       </tr>
     <% end %>
 
@@ -51,6 +76,6 @@
 
 </p>
 <br>
-<%= content_tag :div, page_entries_info(@policies) %>
- <%= will_paginate @policies %>
+<%= content_tag :div, page_entries_info(@motors) %>
+ <%= will_paginate @motors %>
 </div>

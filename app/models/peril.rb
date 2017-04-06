@@ -4,8 +4,10 @@ class Peril < ApplicationRecord
 
   alias_attribute :peril_code, :peril_cd
   alias_attribute :line_code, :line_cd
-  alias_attribute :peril_nam, :peril_sname
+  alias_attribute :peril_snam, :peril_sname
+  alias_attribute :peril_nam, :peril_name
 
   belongs_to :item_peril
+  belongs_to :policy, foreign_key: :policy_id
 
 end

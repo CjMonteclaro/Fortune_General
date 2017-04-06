@@ -19,7 +19,7 @@ class Polgenin < ApplicationRecord
 		case travel_class
 			when "SCHENGEN","schengen"
 				then "50,000"
-			when "WORLDWIDE","worldwide"
+			when "WORLDWIDE","worldwide","WORLD WIDE"
 				then "50,000"
 			when "ASIAN","asian"
 				then "50,000"

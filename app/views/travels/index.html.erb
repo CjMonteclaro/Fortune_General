@@ -2,23 +2,37 @@
 
 <p id="notice"><%= notice %></p>
 
-<div class="field">
-  <%= form_tag("search", method: "get") do %>
-
-    <%= label_tag  "FROM" %>
-    <%= date_field_tag :start_date , params[:start_date] %>
-
-    <%= label_tag  "TO" %>
-    <%= date_field_tag :end_date , params[:end_date]%>
-
+  <div class="container">
+    <%= form_tag("search", method: "get") do %>
+    <div class='col-md-5'>
+        <div class="form-group">
+          <%= label_tag  "FROM" %>
+            <div class='input-group date' id='datetimepicker6'>
+                <%= text_field_tag :start_date , params[:start_date], class: 'form-control' %>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class='col-md-5'>
+        <div class="form-group">
+          <%= label_tag  "TO" %>
+            <div class='input-group date' id='datetimepicker7'>
+              <%= text_field_tag :end_date , params[:end_date], class: 'form-control'%>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <br>
     <%= submit_tag("Search" , class: "btn") %>
+    <% end %>
+</div>
 
 
-  <% end %>
-  </div>
 <br>
-
-
 
 <div class="panel panel-default">
   <!-- Default panel contents -->
@@ -73,6 +87,6 @@
 
   <%#= render partial: "style/pagination" %>
 
-  <%= content_tag :div, page_entries_info(@policies) %>
+  <%= content_tag :div, page_entries_info(@travels) %>
  <%= will_paginate @travels %>
 </div>

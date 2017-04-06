@@ -4,8 +4,8 @@
         Prawn::Font::AFM.hide_m17n_warning = true
         font_size 10
         @travels = travels
-        @start_date = start_date
-        @end_date = end_date
+        @start_date = start_date.to_date
+        @end_date = end_date.to_date + 1.day
         render_header
         render_body
        end

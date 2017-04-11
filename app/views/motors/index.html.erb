@@ -61,7 +61,8 @@
         <%= content_tag :td, policy.peril&.peril_snam %>
         <%= content_tag :td, policy.item_peril&.tsi %>
         <%= content_tag :td, policy.item_peril&.prem %>
-        <%= content_tag :td, policy.item_peril&.rate %>
+        <%= content_tag :td, if policy.item_peril.rate.nil? then "0.0" end || if policy.item_peril.rate.present? then policy.item_peril.rate end  %>
+        <%= content_tag :td, " " %>
         <%#= content_tag :td, policy.vehicle&.vehicle_name %>
       </tr>
     <% end %>

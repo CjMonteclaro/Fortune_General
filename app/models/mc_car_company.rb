@@ -7,5 +7,5 @@ class McCarCompany < ApplicationRecord
     	alias_attribute :car_comp, :car_company
 
       belongs_to :vehicle
-      belongs_to :policy, through: :vehicle, foreign_key: :policy_id
+      belongs_to :policy
 end

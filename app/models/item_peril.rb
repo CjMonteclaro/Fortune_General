@@ -11,8 +11,8 @@ class ItemPeril < ApplicationRecord
   alias_attribute :peril_code, :peril_cd
   alias_attribute :line_code, :line_cd
 
-  belongs_to :policy
-  belongs_to :item
-  has_one :peril
+  belongs_to :policy, foreign_key: :policy_id
+  belongs_to :item, foreign_key: :item_no
+  has_one :peril, foreign_key: :peril_code
 
 end

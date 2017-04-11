@@ -30,7 +30,7 @@ class Policy < ApplicationRecord
 	belongs_to :assured, foreign_key: :assd_no
 	has_one :mc_car_company, through: :vehicle, foreign_key: :policy_id
 	has_one :type_of_body, through: :vehicle, foreign_key: :policy_id
-		has_one :item, foreign_key: :policy_id
+	has_one :item, foreign_key: :policy_id
 	has_one :accident_item, foreign_key: :policy_id
 	has_one :item_peril, foreign_key: :policy_id
 	has_one :endttext, foreign_key: :policy_id
@@ -38,7 +38,7 @@ class Policy < ApplicationRecord
 	has_one :peril, foreign_key: :line_code
 	has_one :invoice
 	has_one :intermediary, through: :invoice, foreign_key: :intrmdry_intm_no
-	has_one :vehicle
+	has_one :vehicle, foreign_key: :policy_id
 	has_one :line, foreign_key: :line_code
 	has_one :subline, foreign_key: :subline_code
 
@@ -91,7 +91,7 @@ class Policy < ApplicationRecord
 	end
 
 	def endorsemnt
-		"#{self.en_iss_cd if self.en_y?} #{"-" if self.en_y?} #{self.en_y if self.en_y?} #{"-" if self.en_y?} #{proper_en_seq_no if self.en_y?}"
+		"#{self.en_iss_cd} - #{ self.proper_en_y } - #{  proper_en_seq_no  }"
 	end
 
 	def proper_seq_no
@@ -114,32 +114,38 @@ class Policy < ApplicationRecord
 		 case renew_number.to_s.length
 		when 1
 		 proper_renew_number = "0" + renew_number.to_s
+	 	when 2
+	 	proper_renew_number = " " + renew_number.to_s
 		when nil?
 		 proper_renew_number = "00"
 		end
 	end
 	def proper_en_y
-		 case en_y.to_s.length
+		prop_en_y = en_y.to_s.to_s.delete(' ')
+		 case prop_en_y.to_s.length
 		when 1
-		 proper_en_y = "0" + en_y.to_s
+		 proper_en_y = "0" + en_y.to_s.to_s.delete(' ')
+	 when 2
+	 		proper_en_y = " " + en_y.to_s.to_s.delete(' ')
 		when nil?
 		 proper_en_y = "00"
 		end
 	end
 	def proper_en_seq_no
-		 case sequence_no.to_s.length
+		prop_en_seq_no = en_seq_no.to_s.delete(' ')
+		 case prop_en_seq_no.to_s.length
 		when 1
-		 proper_en_seq_no = "000000" + en_seq_no.to_s
+		 proper_en_seq_no = "000000" + en_seq_no.to_s.delete(' ')
 		when 2
-		 proper_en_seq_no = "00000" + en_seq_no.to_s
+		 proper_en_seq_no = "00000" + en_seq_no.to_s.delete(' ')
 		when 3
-		 proper_en_seq_no = "0000" + en_seq_no.to_s
+		 proper_en_seq_no = "0000" + en_seq_no.to_s.delete(' ')
 		when 4
-		 proper_en_seq_no = "000" + en_seq_no.to_s
+		 proper_en_seq_no = "000" + en_seq_no.to_s.delete(' ')
 		when 5
-		 proper_en_seq_no = "00" + en_seq_no.to_s
+		 proper_en_seq_no = "00" + en_seq_no.to_s.delete(' ')
 		when 6
-		 proper_en_seq_no = "0" + en_seq_no.to_s
+		 proper_en_seq_no = "0" + en_seq_no.to_s.delete(' ')
 		when nil?
 		 proper_en_seq_no = "0000000"
 		end

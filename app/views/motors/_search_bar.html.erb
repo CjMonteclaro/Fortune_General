@@ -1,0 +1,28 @@
+<div class="container">
+    <%= form_tag("search4", method: "get") do %>
+  <div class='col-md-5'>
+      <div class="form-group">
+        <%= label_tag  "Accounting Entry Date FROM" %>
+          <div class='input-group date' id='datetimepicker6'>
+              <%= text_field_tag :start_date , params[:start_date], class: 'form-control' %>
+              <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+          </div>
+      </div>
+  </div>
+  <div class='col-md-5'>
+      <div class="form-group">
+        <%= label_tag  "TO" %>
+          <div class='input-group date' id='datetimepicker7'>
+            <%= text_field_tag :end_date , params[:end_date], class: 'form-control'%>
+              <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+          </div>
+      </div>
+  </div>
+  <br>
+  <%= submit_tag("Search" , class: "btn") %>
+  <% end %>
+</div>

@@ -1,7 +1,7 @@
 class Item < ApplicationRecord
 
 	self.table_name = "gipi_item"
-	self.primary_key = "policy_id"
+	self.primary_key = "item_no"
 
 	alias_attribute :item_pol_id, :policy_id
 	alias_attribute :item_number, :item_no

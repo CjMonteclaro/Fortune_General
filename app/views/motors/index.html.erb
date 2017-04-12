@@ -1,82 +1,63 @@
 <div class="container">
-<p id="notice"><%= notice %></p>
+  <p id="notice"><%= notice %></p>
 
-<h1>Motors</h1>
+  <h1>Motor Policies</h1>
 
-<div class="container">
-    <%= form_tag("search4", method: "get") do %>
-  <div class='col-md-5'>
-      <div class="form-group">
-        <%= label_tag  "Accounting Entry Date FROM" %>
-          <div class='input-group date' id='datetimepicker6'>
-              <%= text_field_tag :start_date , params[:start_date], class: 'form-control' %>
-              <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-              </span>
-          </div>
-      </div>
-  </div>
-  <div class='col-md-5'>
-      <div class="form-group">
-        <%= label_tag  "TO" %>
-          <div class='input-group date' id='datetimepicker7'>
-            <%= text_field_tag :end_date , params[:end_date], class: 'form-control'%>
-              <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-              </span>
-          </div>
-      </div>
-  </div>
+  <%= render 'search_bar' %>
   <br>
-  <%= submit_tag("Search" , class: "btn") %>
-  <% end %>
-</div>
 
-<br>
-<table class="table" border = 1>
-  <thead>
-    <tr>
-      <%= content_tag :th, "Policy No" %>
-      <%= content_tag :th, "Endorsement" %>
-      <%= content_tag :th, "Issue Date" %>
-      <%= content_tag :th, "Effectivity Date" %>
-      <%= content_tag :th, "Expiry Date" %>
-      <%= content_tag :th, "Peril Name" %>
-      <%= content_tag :th, "Tsi Amount" %>
-      <%= content_tag :th, "Premium" %>
-      <%= content_tag :th, "Premium Rate" %>
-      <%= content_tag :th, "Vehicle" %>
-
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @motors.each do |policy| %>
+  <table class="table" border = 1>
+    <thead>
       <tr>
-        <%= content_tag :td, policy.policy_no %>
-        <%= content_tag :td, policy&.endorsemnt %>
-        <%= content_tag :td, policy&.iss_date %>
-        <%= content_tag :td, policy&.ef_date %>
-        <%= content_tag :td, policy&.exp_date %>
-        <%= content_tag :td, policy.peril&.peril_snam %>
-        <%= content_tag :td, policy.item_peril&.tsi %>
-        <%= content_tag :td, policy.item_peril&.prem %>
-        <%= content_tag :td, if policy.item_peril.rate.nil? then "0.0" end || if policy.item_peril.rate.present? then policy.item_peril.rate end  %>
-        <%= content_tag :td, " " %>
-        <%#= content_tag :td, policy.vehicle&.vehicle_name %>
+        <%= content_tag :th, "Policy No" %>
+        <%= content_tag :th, "Endorsement" %>
+        <%= content_tag :th, "Issue Date" %>
+        <%= content_tag :th, "Effective Date" %>
+        <%= content_tag :th, "Expiry Date" %>
+        <%= content_tag :th, "Vehicle" %>
+        <%= content_tag :th, "Peril Name" %>
+        <%= content_tag :th, "Sum Insured" %>
+        <%= content_tag :th, "Premium" %>
+        <%= content_tag :th, "Premium Rate" %>
       </tr>
-    <% end %>
+    </thead>
 
-  </tbody>
-</table>
+    <tbody>
+      <% @motor_policies.each do |policy| %>
+        <tr>
+          <%= content_tag :td, rowspan: policy.item_perils.count+1 do %>
+            <%= policy.policy_no %>
+            <%= content_tag :p, "ID: #{policy.policy_id}", class: 'small' %>
+          <% end %>
+          <%= content_tag :td, policy&.endorsemnt, rowspan: policy.item_perils.count+1 %>
+          <%= content_tag :td, policy&.iss_date, rowspan: policy.item_perils.count+1 %>
+          <%= content_tag :td, policy&.ef_date, rowspan: policy.item_perils.count+1 %>
+          <%= content_tag :td, policy&.exp_date, rowspan: policy.item_perils.count+1 %>
+          <%= content_tag :td, policy.vehicle&.vehicle_name, rowspan: policy.item_perils.count+1 %>
 
-<p>
- <%= link_to "Print(PDF)", policies_path(@policies, format: 'pdf', :start_date => params[:start_date], :end_date => params[:end_date]) %>
+            <% policy.item_perils.each do |item| %>
+              <tr>
+                <%= content_tag :td, item.peril.shortname  %>
+                <%= content_tag :td, currency(item&.tsi), class: "text-right" %>
+                <%= content_tag :td, currency(item&.prem), class: "text-right" %>
+                <%= content_tag :td, number_to_percentage(item.rate, precision: 4), class: "text-right" %>
+              </tr>
+            <% end %>
 
- <%= link_to "Print(CSV)", policies_path(@policies, format: 'csv', :start_date => params[:start_date], :end_date => params[:end_date]) %>
+          <%#= content_tag :td, policy.vehicle&.vehicle_name %>
+        </tr>
+      <% end %>
 
-</p>
-<br>
-<%= content_tag :div, page_entries_info(@motors) %>
- <%= will_paginate @motors %>
+    </tbody>
+  </table>
+
+  <p>
+   <%= link_to "Print(PDF)", policies_path(@motor_policies, format: 'pdf', :start_date => params[:start_date], :end_date => params[:end_date]) %>
+
+   <%= link_to "Print(CSV)", policies_path(@motor_policies, format: 'csv', :start_date => params[:start_date], :end_date => params[:end_date]) %>
+
+  </p>
+  <br>
+  <%= content_tag :div, page_entries_info(@motor_policies) %>
+   <%= will_paginate @motor_policies %>
 </div>

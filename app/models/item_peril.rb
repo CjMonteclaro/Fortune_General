@@ -1,7 +1,7 @@
 class ItemPeril < ApplicationRecord
 
   self.table_name = "gipi_itmperil"
-  self.primary_key = "policy_id"
+  self.primary_key = "item_no"
 
   alias_attribute :pol_id, :policy_id
   alias_attribute :itm_no, :item_no
@@ -13,6 +13,13 @@ class ItemPeril < ApplicationRecord
 
   belongs_to :policy, foreign_key: :policy_id
   belongs_to :item, foreign_key: :item_no
-  has_one :peril, foreign_key: :peril_code
+  belongs_to :peril, foreign_key: :peril_cd
+
+  # has_one :peril, foreign_key: :peril_code
+
+  def self.applicable_rate
+    self.rate.present? ? rate : "0.0"
+    # if policy.item_peril.rate.nil? then "0.0" end || if policy.item_peril.rate.present? then policy.item_peril.rate end
+  end
 
 end

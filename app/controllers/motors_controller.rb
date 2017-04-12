@@ -7,7 +7,8 @@ class MotorsController < ApplicationController
   def index
     start_date = params[:start_date]
     end_date = params[:end_date]
-    @motors = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).where(line_code: "MC").includes(:item, :item_peril, :peril, :vehicle, :mc_car_company, :type_of_body).paginate(:page => params[:page], :per_page => 30)
+
+    @motor_policies = Policy.motor_search(start_date, end_date, params[:page])
   end
 
   # GET /motors/1

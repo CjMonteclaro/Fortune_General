@@ -6,6 +6,6 @@ class TypeOfBody < ApplicationRecord
       	alias_attribute :type_body_code, :type_of_body_cd
       	alias_attribute :body_type, :type_of_body
 
-        belongs_to :vehicle
+        belongs_to :vehicle, foreign_key: :type_body_code
         belongs_to :policy
 end

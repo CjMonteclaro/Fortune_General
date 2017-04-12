@@ -22,6 +22,7 @@ module ApplicationHelper
     end
   end
 end
+
 def page_entries_info(collection, options = {})
   entry_name = options[:entry_name] || (collection.empty?? 'item' :
       collection.first.class.name.split('::').last.titleize)
@@ -37,6 +38,10 @@ def page_entries_info(collection, options = {})
       collection.total_entries
     ]
   end
+end
+
+def currency(number)
+  number_to_currency(number, unit: "")
 end
 
 end

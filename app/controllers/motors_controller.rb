@@ -9,6 +9,21 @@ class MotorsController < ApplicationController
     end_date = params[:end_date]
 
     @motor_policies = Policy.motor_search(start_date, end_date, params[:page])
+    @claims = Claim.claim_search(start_date, end_date, params[:page])
+   @motor_policies_csv = Policy.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(Policy.where(spld_acct_ent_date: start_date..end_date)).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body)
+
+    respond_to do |format|
+    format.html
+    format.csv { send_data @motor_policies_csv.to_csv1(start_date,end_date), filename: "motorcar-#{start_date} / #{end_date}.csv" }
+    format.xls
+    format.pdf do
+       pdf = MotorsReport.new(@motor_policies, start_date, end_date)
+       send_data pdf.render,filename: "MotorCar.pdf",
+                           type: "application/pdf"
+                           # ,
+                           # disposition: "inline"
+     end
+   end
   end
 
   # GET /motors/1

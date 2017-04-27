@@ -10,16 +10,16 @@ class Vehicle < ApplicationRecord
     alias_attribute :car_comp_code, :car_company_cd
     alias_attribute :type_body_code, :type_of_body_cd
 
-    belongs_to :item, foreign_key: :item_no
+    has_one :item, foreign_key: :policy_id, primary_key: :policy_id
 
     has_one :policy, foreign_key: :policy_id
-    has_one :type_of_body, foreign_key: :type_body_code
-    has_one :mc_car_company, foreign_key: :car_comp_code
+    belongs_to :type_of_body, foreign_key: :type_of_body_cd
+    belongs_to :mc_car_company, foreign_key: :car_company_cd
 
   def vehicle_name
-      "#{self.modelyear}  #{self.make}"
-      #{self.mc_car_company.car_comp}
-       #{self.type_of_body.body_type}
+      "#{self.modelyear}  #{self.mc_car_company&.car_comp}  #{self.make} #{self.type_of_body&.body_type}"
+
+
   end
 
 end

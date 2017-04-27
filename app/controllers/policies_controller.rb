@@ -14,7 +14,7 @@ class PoliciesController < ApplicationController
 
        respond_to do |format|
        format.html
-       format.csv { send_data @policies_csv.to_csv(start_date,end_date), filename: "production-#{start_date}/#{end_date}.csv" }
+       format.csv { send_data @policies_csv.to_csv1(start_date,end_date), filename: "production-#{start_date} / #{end_date}.csv" }
        format.xls
        format.pdf do
           pdf = PolicyReport1.new(@policies, start_date, end_date)

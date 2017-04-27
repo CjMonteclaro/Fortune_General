@@ -1,4 +1,5 @@
 class Peril < ApplicationRecord
+
   self.table_name = "giis_peril"
   self.primary_key = "peril_cd"
 
@@ -9,5 +10,7 @@ class Peril < ApplicationRecord
 
   has_many :item_perils, foreign_key: :peril_cd
   has_many :policies, through: :item_perils, foreign_key: :policy_id
+  has_one :claim, foreign_key: :peril_cd
+  has_one :gicl_itemperil, primary_key: :peril_cd
 
 end

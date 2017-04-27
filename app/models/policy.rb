@@ -41,7 +41,7 @@ class Policy < ApplicationRecord
 	has_one :item, foreign_key: :policy_id
 	has_many :item_perils, foreign_key: :policy_id
 	has_many :perils, through: :item_perils, foreign_key: :peril_cd
-	has_one :vehicle, foreign_key: :policy_id
+	belongs_to :vehicle, foreign_key: :policy_id
 	has_one :type_of_body, through: :vehicle, foreign_key: :policy_id
 	has_one :mc_car_company, through: :vehicle, foreign_key: :policy_id
 
@@ -52,13 +52,25 @@ class Policy < ApplicationRecord
 				all.each do |policy|
 				csv << [policy.full_policy_no, policy.assured.assd_name,(policy.accident_item.acc_bday unless policy.accident_item.nil?),(policy.accident_item.acc_age unless policy.accident_item.nil?), policy.inc_date, policy.exp_date, (policy.accident_item&.acc_item_destination ), (policy.polgenin.travel_class unless policy.polgenin.nil?), (pluralize(policy.duration_date, 'day')), policy.polgenin&.coverage, policy.polgenin&.polgenin_gen_info1]
 
-				end
 			end
 		end
+	end
 
-	# def vehicles
-	# 	"#{self.vehicle.en_iss_cd if self.en_y?} #{"-" if self.en_y?} #{self.en_y if self.en_y?} #{"-" if self.en_y?} #{proper_en_seq_no if self.en_y?}"
-	# end
+	def self.to_csv1(start_date,end_date)
+      attributes = %w{PolicyNo Endorsement IssueDate EffectiveDate ExpiryDate Vehicle PerilName SumInsured Premium PremiumRate}
+      CSV.generate(headers: true) do |csv|
+        csv << attributes
+      Policy.where(acct_ent_date: start_date..end_date).where(line_code: "MC").where(subline_code: ["PC","CV"]).or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC").where(subline_code: ["PC","CV"])).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd').each do |policy|
+				policy.perils.where(line_code: "MC").each do |peril|
+					peril.item_perils.where(peril_cd: peril).each do |item|
+
+        csv << [policy.policy_no, policy.endorsemnt, policy.iss_date, policy.ef_date, policy.exp_date, policy.vehicle&.vehicle_name, peril.shortname, item&.proper_tsi, item&.proper_prem, item.proper_rate ]
+					end
+				end
+      end
+    end
+  end
+
 
 	def self.search(search)
 		if search
@@ -78,7 +90,7 @@ class Policy < ApplicationRecord
 
 	def self.search4(search4)
 		if search4
-			@policies = Policy.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(Policy.where(spld_acct_ent_date: start_date..end_date)).where(line_code: "MC").includes(:item, :item_peril, :peril, :vehicle, :mc_car_company, :type_of_body).order('line_code')
+			@motor_policies = Policy.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC")).includes(:item, :item_peril, :peril, :vehicle, :mc_car_company, :type_of_body).order('subline_cd')
        	else
 			limit(10)
 		end
@@ -161,7 +173,7 @@ class Policy < ApplicationRecord
 	end
 
 	def self.motor_search(start_date, end_date, page_no)
-		self.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(self.where(spld_acct_ent_date: start_date..end_date)).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).paginate(:page => page_no, :per_page => 5)
+		self.where(acct_ent_date: start_date..end_date).where(line_code: "MC").where(subline_code: ["PC","CV"]).or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC").where(subline_code: ["PC","CV"])).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).paginate(:page => page_no, :per_page => 5)
 	end
 
 	# def self.peril_conditon

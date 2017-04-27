@@ -18,7 +18,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 gem 'thin'
 gem 'figaro'
 gem 'momentjs-rails', '>= 2.9.0'
-gem 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
+gem 'bootstrap3-datetimepicker-rails' , '~> 4.17.47'
 group :development do
   gem 'capistrano'
   gem 'capistrano3-puma'
@@ -28,12 +28,13 @@ group :development do
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.1'
+gem 'rails', '~> 5.1.0.rc2'
 # Use oracle as the database for Active Record
+gem 'activerecord', '~> 5.1.0.rc2'
 gem 'ruby-oci8'
-gem 'activerecord-oracle_enhanced-adapter', '~> 1.7.0'
+gem 'activerecord-oracle_enhanced-adapter', '~> 1.8.0.rc2'
 # Use Puma as the app server
-gem 'puma', '~> 3.0'
+gem 'puma', '~> 3.8', '>= 3.8.2'
 # Use SCSS for stylesheets
 
 # Use Uglifier as compressor for JavaScript assets

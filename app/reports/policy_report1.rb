@@ -25,7 +25,7 @@
        def transaction_rows
            [["Policy No:", "Assured Name",  "Intermediary", "TSI Amount", "Premium Amount"]] +
            @policies =  Policy.where(acct_ent_date: @start_date..@end_date).or(Policy.where(spld_acct_ent_date: @start_date..@end_date)).includes(:intermediary, :assured).order('iss_cd').map do |l|
-              [l.full_policy_no, l.assured.assd_name,(l.intermediary.int_name unless l.intermediary.nil?), l.ts_amt, l.pre_amt]
+              [l.full_policy_no, l.assured.assd_name,(l.intermediary.name unless l.intermediary.nil?), l.ts_amt, l.pre_amt]
         end
       end
     end

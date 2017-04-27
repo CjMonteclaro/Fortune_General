@@ -22,4 +22,16 @@ class ItemPeril < ApplicationRecord
     # if policy.item_peril.rate.nil? then "0.0" end || if policy.item_peril.rate.present? then policy.item_peril.rate end
   end
 
+  def proper_tsi
+    proper_tsi = (tsi.to_i * -1)
+  end
+
+  def proper_prem
+    proper_prem = (prem.to_i * -1)
+  end
+
+  def proper_rate
+    proper_rate = (rate.to_i * -1)
+  end
+
 end

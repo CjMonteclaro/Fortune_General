@@ -25,12 +25,18 @@ class Claim < ApplicationRecord
   has_one :peril, through: :gicl_itemperil, foreign_key: :peril_cd, primary_key: :line_cd
   has_one :claim_status, foreign_key: :clm_stat_cd, primary_key: :clm_stat_cd
 
+  has_many :policies, foreign_key: :line_cd
+
   def self.claim_search(start_date, end_date, page_no)
     self.where(file_date: start_date..end_date).where(line_code: "MC").includes(:gicl_itemperil, :peril, :claim_status).paginate(:page => page_no, :per_page => 5)
   end
 
   def claim_no
     "#{line_code}-#{subline_code}-#{pol_iss_code}-#{claim_year}-#{claim_seq_number}"
+  end
+
+  def line
+    self.line_cd
   end
 
 end

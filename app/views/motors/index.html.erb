@@ -41,7 +41,8 @@
 
     <tbody>
       <% @motor_policies.each do |policy| %>
-      <% @claims.each do |clm| %>
+      <% policy.claims.each do |clm| %>
+      <%# @claims.each do |clm| %>
         <tr>
           <%= content_tag :td, rowspan: row_span_helper(policy) do %>
             <%= policy.policy_no %>
@@ -76,8 +77,8 @@
               <%= content_tag :td, clm&.losspd_amt %>
               <%= content_tag :td, clm&.exppd_amt %>
               <%= content_tag :td, clm.gicl_itemperil&.peril_code %>
-              <%= content_tag :td, clm.peril&.peril_code %>
-              <%= content_tag :td, clm.peril&.shortname %>
+              <%= content_tag :td, clm.peril.peril_code %>
+              <%= content_tag :td, clm.peril.shortname %>
               <% end %>
             </tr>
         </tr>

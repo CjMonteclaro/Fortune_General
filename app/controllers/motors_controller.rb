@@ -6,7 +6,7 @@ class MotorsController < ApplicationController
   # GET /Policy.json
   def index
     start_date = params[:start_date]
-    end_date = params[:end_date]
+    end_date = params[:end_date] 
 
     @motor_policies = Policy.motor_search(start_date, end_date, params[:page])
     @claims = Claim.claim_search(start_date, end_date, params[:page])
@@ -14,7 +14,7 @@ class MotorsController < ApplicationController
 
     respond_to do |format|
     format.html
-    format.csv { send_data @motor_policies_csv.to_csv1(start_date,end_date), filename: "motorcar-#{start_date} / #{end_date}.csv" }
+    format.csv { send_data @motor_policies_csv.to_csv1(start_date,end_date), filename: "motorcar-#{start_date} "/" #{end_date}.csv" }
     format.xls
     format.pdf do
        pdf = MotorsReport.new(@motor_policies, start_date, end_date)

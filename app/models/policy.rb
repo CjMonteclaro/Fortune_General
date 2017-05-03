@@ -45,6 +45,8 @@ class Policy < ApplicationRecord
 	has_one :type_of_body, through: :vehicle, foreign_key: :policy_id
 	has_one :mc_car_company, through: :vehicle, foreign_key: :policy_id
 
+	has_many :claims, foreign_key: :line_cd, primary_key: :line_cd
+
 	def self.to_csv(start_date,end_date)
 			attributes = %w{Policy/Endorsement Insured Birthday Age Inception ExpiryDate Destination DestinationClass Duration CoverageLimit Remarks}
 			CSV.generate(headers: true) do |csv|
@@ -173,7 +175,7 @@ class Policy < ApplicationRecord
 	end
 
 	def self.motor_search(start_date, end_date, page_no)
-		self.where(acct_ent_date: start_date..end_date).where(line_code: "MC").where(subline_code: ["PC","CV"]).or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC").where(subline_code: ["PC","CV"])).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).paginate(:page => page_no, :per_page => 5)
+		self.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).paginate(:page => page_no, :per_page => 5)
 	end
 
 	# def self.peril_conditon

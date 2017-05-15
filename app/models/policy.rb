@@ -62,9 +62,9 @@ class Policy < ApplicationRecord
       attributes = %w{PolicyNo Endorsement IssueDate EffectiveDate ExpiryDate Vehicle PerilName SumInsured Premium PremiumRate}
       CSV.generate(headers: true) do |csv|
         csv << attributes
-      Policy.where(acct_ent_date: start_date..end_date).where(line_code: "MC").where(subline_code: ["PC","CV"]).or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC").where(subline_code: ["PC","CV"])).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd').each do |policy|
-				policy.perils.where(line_code: "MC").each do |peril|
-					peril.item_perils.where(peril_cd: peril).each do |item|
+      Policy.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd').each do |policy|
+				policy.perils.where(line_code: "MC").find_each do |peril|
+					peril.item_perils.where(peril_cd: peril).find_each do |item|
 
         csv << [policy.policy_no, policy.endorsemnt, policy.iss_date, policy.ef_date, policy.exp_date, policy.vehicle&.vehicle_name, peril.shortname, item&.proper_tsi, item&.proper_prem, item.proper_rate ]
 					end

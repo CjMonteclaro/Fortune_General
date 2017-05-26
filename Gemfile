@@ -28,11 +28,11 @@ group :development do
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.0.rc2'
+gem 'rails', '~> 5.0.2'
 # Use oracle as the database for Active Record
-gem 'activerecord', '~> 5.1.0.rc2'
+gem 'activerecord'
 gem 'ruby-oci8'
-gem 'activerecord-oracle_enhanced-adapter', '~> 1.8.0.rc2'
+gem 'activerecord-oracle_enhanced-adapter', '~> 1.7'
 # Use Puma as the app server
 gem 'puma', '~> 3.8', '>= 3.8.2'
 # Use SCSS for stylesheets

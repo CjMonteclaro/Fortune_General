@@ -1,0 +1,157 @@
+<div class="container">
+
+  <div class="panel-group">
+    <div class="panel panel-default text-center">
+      <div class="panel-heading">
+        <h3 class="panel-title">Production of Intermediaries</h3>
+      </div>
+
+      <div class="panel-body">
+        <p id="notice"><%= notice %></p>
+
+        <%= form_tag("intm_prod_search", method: "get") do %>
+
+            <div id="from" class='col-md-5'>
+              <div class="form-group">
+                <%= label_tag  "FROM" %>
+
+                <div class='input-group date' id='datetimepicker6'>
+                  <%= text_field_tag :start_date , params[:start_date], class: 'form-control' %>
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div id="to" class='col-md-5'>
+              <div class="form-group">
+                <%= label_tag  "TO" %>
+
+                <div class='input-group date' id='datetimepicker7'>
+                  <%= text_field_tag :end_date , params[:end_date], class: 'form-control'%>
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <br><br><br><br>
+
+            <div id="other-search-criteria" class="btn-group btn-group-justified" data-toggle="buttons">
+              <label class="btn btn-secondary">
+                <input type="radio" name="options" id="option1" autocomplete="off" checked="checked"> •All Branch
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" name="options" id="option2" autocomplete="off"> •Per Branch
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" name="options" id="option3" autocomplete="off"> •Matrix
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" name="options" id="option4" autocomplete="off"> •Cancellation
+              </label>
+            </div>
+
+            <br><br>
+
+            <div id="extra-search-dropdown" class="row">
+              <div class="col-lg-6">
+                <div class="input-group">
+
+                  <div class="input-group-btn">
+
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+
+                    <ul class="dropdown-menu">
+                      <li><a href="#">Action</a></li>
+                      <li><a href="#">Another action</a></li>
+                      <li><a href="#">Something else here</a></li>
+                      <li role="separator" class="divider"></li>
+                      <li><a href="#">Separated link</a></li>
+                    </ul>
+                  </div><!-- /btn-group -->
+
+                  <input type="text" class="form-control" aria-label="...">
+
+                </div><!-- /input-group -->
+              </div><!-- /.col-lg-6 -->
+            </div>
+
+            <br><br><br>
+
+            <form id="output-buttons" class="form-horizontal">
+              <div class="btn-group">
+                <%= submit_tag("Search" , class: "btn btn-primary") %>
+              </div>
+              <div class="btn-group">
+                <%= link_to "Print(PDF)", intermediary_productions_path(@intermediary_productions, format: 'pdf', :start_date => params[:start_date], :end_date => params[:end_date]), {class: 'btn btn-primary'} %>
+              </div>
+              <div class="btn-group">
+                <%= link_to "Print(CSV)", intermediary_productions_path(@intermediary_productions, format: 'csv', :start_date => params[:start_date], :end_date => params[:end_date]), {class: 'btn btn-primary'} %>
+              </div>
+            </form>
+
+        <% end %>
+      </div>
+    </div>
+  </div>
+<!-- <div class="panel panel-default">
+  <div class="panel-body"> -->
+
+  <table class="table" border = 1>
+    <thead>
+      <tr>
+        <%= content_tag :th, "INTM" %>
+        <%= content_tag :th, "INTM_NO" %>
+        <%= content_tag :th, "INTM_TYPE" %>
+        <%= content_tag :th, "ISS_NAME" %>
+        <%= content_tag :th, "PA" %>
+        <%= content_tag :th, "AH" %>
+        <%= content_tag :th, "CA" %>
+        <%= content_tag :th, "EN" %>
+        <%= content_tag :th, "FI" %>
+        <%= content_tag :th, "MC" %>
+        <%= content_tag :th, "MH" %>
+        <%= content_tag :th, "MN" %>
+        <%= content_tag :th, "SU" %>
+        <%= content_tag :th, "AV" %>
+        <%= content_tag :th, "PREM" %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @intermediary_productions_view.each do |intm_name, intm_no, intm_type, iss_name, pre_amt| %>
+        <tr>
+          <%= content_tag :td, intm_name %>
+          <%= content_tag :td, intm_no %>
+          <%= content_tag :td, intm_type %>
+          <%= content_tag :td, iss_name %>
+          <%= content_tag :td, pre_amt %>
+
+          <%#= content_tag :td, policy.intermediary&.name %>
+          <%#= content_tag :td, policy.intermediary&.no %>
+          <%#= content_tag :td, policy.intermediary&.type %>
+          <%#= content_tag :td, policy.issource.issue_name %>
+          <%#= content_tag :td, policy.sum(linecd_pa), align: "right" %>
+          <%#= content_tag :td, policy.sum(linecd_ah), align: "right" %>
+          <%#= content_tag :td, policy.sum(linecd_ca), align: "right" %>
+          <%#= content_tag :td, policy.sum(linecd_en), align: "right" %>
+          <%#= content_tag :td, policy.sum(linecd_fi), align: "right" %>
+          <%#= content_tag :td, policy.sum(linecd_mc), align: "right" %>
+          <%#= content_tag :td, policy.sum(linecd_mh), align: "right" %>
+          <%#= content_tag :td, policy.sum(linecd_mn), align: "right" %>
+          <%#= content_tag :td, policy.sum(linecd_su), align: "right" %>
+          <%#= content_tag :td, policy.sum(linecd_av), align: "right" %>
+          <%#= content_tag :td, policy.sum(pre_amt).to_s(:delimited), align: "right" %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%#= content_tag :div, page_entries_info(@intermediary_productions_view) %>
+     <%#= will_paginate @intermediary_productions_view %>
+  <!-- </div>
+ -->
+</div>

@@ -6,6 +6,6 @@ class Line < ApplicationRecord
   	alias_attribute :line_code, :line_cd
   	alias_attribute :lin_name, :line_name
 
-    belongs_to :policy
+    belongs_to :policy, foreign_key: :line_code, primary_key: :line_cd
 
 end

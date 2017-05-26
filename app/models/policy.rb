@@ -27,10 +27,11 @@ class Policy < ApplicationRecord
 	alias_attribute :en_seq_no, :endt_seq_no
 	alias_attribute :polic_flag, :pol_flag
 
-	has_one :intermediary, through: :invoice, foreign_key: :intrmdry_intm_no
+	has_one :intermediary, through: :invoice, foreign_key: :intm_no
+	has_one :issource, foreign_key: :iss_cd, primary_key: :iss_cd
 
 	belongs_to :assured, foreign_key: :assd_no
-	has_one :line, foreign_key: :line_code
+	has_many :lines, foreign_key: :line_cd, primary_key: :line_cd
 	has_one :subline, foreign_key: :subline_code
 
 	has_one :polgenin, foreign_key: :policy_id
@@ -47,6 +48,8 @@ class Policy < ApplicationRecord
 
 	has_many :claims, foreign_key: :line_cd, primary_key: :line_cd
 
+	scope :spld, -> { Policy.pre_amt * -1}
+
 	def self.to_csv(start_date,end_date)
 			attributes = %w{Policy/Endorsement Insured Birthday Age Inception ExpiryDate Destination DestinationClass Duration CoverageLimit Remarks}
 			CSV.generate(headers: true) do |csv|
@@ -54,8 +57,8 @@ class Policy < ApplicationRecord
 				all.each do |policy|
 				csv << [policy.full_policy_no, policy.assured.assd_name,(policy.accident_item.acc_bday unless policy.accident_item.nil?),(policy.accident_item.acc_age unless policy.accident_item.nil?), policy.inc_date, policy.exp_date, (policy.accident_item&.acc_item_destination ), (policy.polgenin.travel_class unless policy.polgenin.nil?), (pluralize(policy.duration_date, 'day')), policy.polgenin&.coverage, policy.polgenin&.polgenin_gen_info1]
 
+				end
 			end
-		end
 	end
 
 	def self.to_csv1(start_date,end_date)
@@ -73,6 +76,20 @@ class Policy < ApplicationRecord
     end
   end
 
+	def self.intm_prod_csv(start_date,end_date)
+			attributes = %w{INTM INTM_NO INTM_TYPE ISS_NAME PA AH CA EN FI MC MH MN SU AV PREM}
+			CSV.generate(headers: true) do |csv|
+				csv << attributes
+			# Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).joins(:lines,:issource,:invoice,:intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name').group('giis_intermediary.intm_name','giis_intermediary.intm_no','giis_intermediary.intm_type','giis_issource.iss_name').sum(:pre_amt)
+			pols = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).joins(:lines, :issource, :invoice,:intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name').group('giis_intermediary.intm_name','giis_intermediary.intm_no','giis_intermediary.intm_type','giis_issource.iss_name').sum(:pre_amt)
+			pols.each do | intm_name, intm_no, intm_type, iss_name, pre_amt |
+
+				# csv <<  [ policy.intermediary.intm_name, policy.intermediary.intm_no, policy.intermediary.intm_type, policy.issource.iss_name, policy.linecd_pa, policy.linecd_ah, policy.linecd_ca, policy.linecd_en, policy.linecd_fi, policy.linecd_mc, policy.linecd_mh, policy.linecd_mn, policy.linecd_su, policy.linecd_av, policy.pre_amt]
+				csv <<  [ intm_name, intm_no, intm_type, iss_name, pre_amt ]
+
+			end
+		end
+	end
 
 	def self.search(search)
 		if search
@@ -85,7 +102,7 @@ class Policy < ApplicationRecord
 	def self.search2(search2)
 		if search2
 			@policies = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).includes(:assured, :intermediary).order('iss_cd','line_code', 'subline_code', 'issue_year', 'sequence_no','renew_number')
-       	else
+    else
 			limit(10)
 		end
 	end
@@ -93,8 +110,15 @@ class Policy < ApplicationRecord
 	def self.search4(search4)
 		if search4
 			@motor_policies = Policy.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC")).includes(:item, :item_peril, :peril, :vehicle, :mc_car_company, :type_of_body).order('subline_cd')
-       	else
+    else
 			limit(10)
+		end
+	end
+
+	def self.intm_prod_search(intm_prod_search)
+		if intm_prod_search
+			@intermediary_productions = self.where(acct_ent_date: start_date..end_date).or(self.where(spld_acct_ent_date: start_date..end_date)).joins(:lines, :issource, :invoice, :intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name').group('giis_intermediary.intm_name','giis_intermediary.intm_no','giis_intermediary.intm_type','giis_issource.iss_name').sum(:pre_amt)
+
 		end
 	end
 
@@ -128,7 +152,7 @@ class Policy < ApplicationRecord
 	end
 
 	def proper_renew_number
-		 case renew_number.to_s.length
+		case renew_number.to_s.length
 		when 1
 		 proper_renew_number = "0" + renew_number.to_s
 	 	when 2
@@ -178,9 +202,103 @@ class Policy < ApplicationRecord
 		self.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).paginate(:page => page_no, :per_page => 5)
 	end
 
-	# def self.peril_conditon
-	# 	Peril.line_code == Item_Peril.line_code
-	# 	Item_Peril.peril_code == Peril.peril_code
-	# end
+	def int_prem_amt
+	  (self.pre_amt.to_i)
+		# @intermediary_productions.sum(:pre_amt)
+		# Policy.sum("prem_amt")
+	end
+
+	def linecd_pa
+		# @pols = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).joins(:lines, :issource, :invoice,:intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name'
+		if self.line_code == "PA"
+			self.int_prem_amt
+			# Policy.sum(:prem_amt).group('giis_intermediary.intm_name')
+			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'PA', :prem_amt, 0])]))
+		else
+			"0"
+		end
+
+	end
+
+	def linecd_ah
+		if self.line_code == "AH"
+			self.int_prem_amt
+			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'PA', :prem_amt, 0])]))
+		else
+			"0"
+		end
+	end
+
+	def linecd_ca
+		if self.line_code == "CA"
+			self.int_prem_amt
+			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'CA', :prem_amt, 0])]))
+		else
+			"0"
+		end
+	end
+
+	def linecd_en
+		if self.line_code == "EN"
+			self.int_prem_amt
+			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'EN', :prem_amt, 0])]))
+		else
+			"0"
+		end
+	end
+
+	def linecd_fi
+		if self.line_code == "FI"
+			self.int_prem_amt
+			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'FI', :prem_amt, 0])]))
+		else
+			"0"
+		end
+	end
+
+	def linecd_mc
+		if self.line_code == "MC"
+			self.int_prem_amt
+			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'MC', :prem_amt, 0])]))
+ 	 else
+ 		 "0"
+ 	 end
+	end
+
+	def linecd_mh
+		if self.line_code == "MH"
+			self.int_prem_amt
+			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'MH', :prem_amt, 0])]))
+		else
+			"0"
+		end
+	end
+
+	def linecd_mn
+		if self.line_code == "MN"
+			self.int_prem_amt
+			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'MN', :prem_amt, 0])]))
+		else
+			"0"
+		end
+	end
+
+	def linecd_su
+		if self.line_code == "SU"
+			self.int_prem_amt
+			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'SU', :prem_amt, 0])]))
+		else
+			"0"
+		end
+	end
+
+	def linecd_av
+		if self.line_code == "AV"
+			self.int_prem_amt
+			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'AV', :prem_amt, 0])]))
+		else
+			"0"
+		end
+	end
 
 end

@@ -15,7 +15,6 @@
 //= require moment
 //= require bootstrap-datetimepicker
 
-document.onmousedown=disableclick;function disableclick(event){if(event.button==2){return false;}}
 
 $(function () {
     $('#datetimepicker6').datetimepicker({format: 'DD-MMM-YYYY'});

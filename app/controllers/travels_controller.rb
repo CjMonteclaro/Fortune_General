@@ -1,5 +1,3 @@
-require 'will_paginate'
-require 'csv'
 class TravelsController < ApplicationController
 
   def index

@@ -1,10 +1,10 @@
 class Intermediary < ApplicationRecord
 	self.table_name = "giis_intermediary"
 	self.primary_key = "intm_no"
-	self.sequence_name = 'INTERMEDIARY_INTM_NO_S'
 
 	alias_attribute :name, :intm_name
 	alias_attribute :no, :intm_no
+	alias_attribute :type, :intm_type
 	alias_attribute :nickn, :nickname
 	alias_attribute :email, :email_add
 	alias_attribute :cell_no, :cp_no
@@ -34,21 +34,19 @@ class Intermediary < ApplicationRecord
 	alias_attribute :parnt_intm_tin_sw, :prnt_intm_tin_sw
 	alias_attribute :spec_rate, :special_rate
 
-		has_many :invoices, foreign_key: :intrmdry_intm_no
-		has_many :policies, through: :invoices, foreign_key: :policy_id
+	has_many :invoices, foreign_key: :intrmdry_intm_no
+	has_many :policies, foreign_key: :policy_id
 
-
-		def self.search(search)
+	def self.search(search)
 				if search
 					where('intm_no = ?', "#{search}")
 				else
 					order('intm_no')
-				end
-			end
+		end
+	end
 
 	def self.to_csv(stats)
 
-		# if stats == "A"
 			attributes = %w{intm_no p_intm_no intm_name Nname email cell phone fax home_add bday address iss_source tin p_tin wtax_rate input_vat_rate spec_rate payment bill_add contact_person intm_type co_intm_type iss_office corporate eff_date exp_date license status remarks}
       CSV.generate(headers: true) do |csv|
         csv << attributes
@@ -56,7 +54,6 @@ class Intermediary < ApplicationRecord
         csv << [intermediary.no, intermediary.parnt_intm_no,intermediary.name,intermediary.nickn,intermediary.email,intermediary.cell_no,intermediary.phon_no,intermediary.faxno,intermediary.homeadd,intermediary.bday,intermediary.address,intermediary.iss_source, intermediary.tin_no, intermediary.parnt_intm_tin_sw, intermediary.wtaxrate,	intermediary.invat_rate, intermediary.spec_rate, intermediary.paymnt, intermediary.bill_add, intermediary.contact_person,	intermediary.int_type_desc,	intermediary.cointm_type, intermediary.issuing_office, intermediary.corp,	intermediary.effi_date,	intermediary.exp_date, intermediary.license_no, intermediary.show_status, intermediary.rem ]
 				end
       end
-		
 	end
 
  	 def set_intm_no

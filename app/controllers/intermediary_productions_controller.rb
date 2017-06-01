@@ -4,21 +4,24 @@ class IntermediaryProductionsController < ApplicationController
     start_date = params[:start_date]
     end_date = params[:end_date]
 
-     @intermediary_productions = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).includes(:lines, :issource, :invoice, :intermediary).joins(:lines,:issource,:invoice,:intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name')
+     @intermediary_productions = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).includes(:lines, :issource, :invoice, :intermediary).joins(:lines,:issource,:invoice,:intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name').group('giis_intermediary.intm_name','giis_intermediary.intm_no','giis_intermediary.intm_type','giis_issource.iss_name').sum(:pre_amt)
+    #  .paginate(:page => params[:page], :per_page => 30)
+    #  .group('giis_intermediary.intm_name','giis_intermediary.intm_no','giis_intermediary.intm_type','giis_issource.iss_name').sum(:pre_amt)
 
-    @intermediary_productions_view = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).includes(:lines,:issource,:invoice,:intermediary).joins(:lines,:issource,:invoice,:intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name').group('giis_intermediary.intm_name','giis_intermediary.intm_no','giis_intermediary.intm_type','giis_issource.iss_name').sum(:pre_amt)
-    # .paginate(:page => params[:page], :per_page => 30)
+      @intermediary_productions_view = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).includes(:lines,:issource,:invoice,:intermediary).joins(:lines,:issource,:invoice,:intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name')
 
-    respond_to do |format|
-     format.html
-     format.csv { send_data @intermediary_productions.intm_prod_csv(start_date,end_date), filename: "intermediary_productions #{start_date}/#{end_date}.csv" }
-     format.xls
-     format.pdf do
-        pdf = IntermediaryProductionsReport.new(@intermediary_productions, start_date, end_date)
-        send_data pdf.render,filename: "IntermediaryProduction.pdf",
-                            type: "application/pdf"
-                          # ,
-                          # disposition: "inline"
+    #  @intermediary_productions_pa = @intermediary_productions.to_a + @intermediary_productions_view.to_a
+
+        respond_to do |format|
+         format.html
+         format.csv { send_data @intermediary_productions.intm_prod_csv(start_date,end_date), filename: "intermediary_productions #{start_date} / #{end_date}.csv" }
+         format.xls
+         format.pdf do
+            pdf = IntermediaryProductionsReport.new(@intermediary_productions, start_date, end_date)
+            send_data pdf.render,filename: "IntermediaryProduction.pdf",
+                                type: "application/pdf"
+                              # ,
+                              # disposition: "inline"
       end
     end
   end

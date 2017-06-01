@@ -48,8 +48,6 @@ class Policy < ApplicationRecord
 
 	has_many :claims, foreign_key: :line_cd, primary_key: :line_cd
 
-	scope :spld, -> { Policy.pre_amt * -1}
-
 	def self.to_csv(start_date,end_date)
 			attributes = %w{Policy/Endorsement Insured Birthday Age Inception ExpiryDate Destination DestinationClass Duration CoverageLimit Remarks}
 			CSV.generate(headers: true) do |csv|
@@ -118,7 +116,7 @@ class Policy < ApplicationRecord
 	def self.intm_prod_search(intm_prod_search)
 		if intm_prod_search
 			@intermediary_productions = self.where(acct_ent_date: start_date..end_date).or(self.where(spld_acct_ent_date: start_date..end_date)).joins(:lines, :issource, :invoice, :intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name').group('giis_intermediary.intm_name','giis_intermediary.intm_no','giis_intermediary.intm_type','giis_issource.iss_name').sum(:pre_amt)
-
+			@intermediary_productions_view = self.where(acct_ent_date: start_date..end_date).or(self.where(spld_acct_ent_date: start_date..end_date)).joins(:lines, :issource, :invoice, :intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name')
 		end
 	end
 
@@ -203,8 +201,8 @@ class Policy < ApplicationRecord
 	end
 
 	def int_prem_amt
-	  (self.pre_amt.to_i)
-		# @intermediary_productions.sum(:pre_amt)
+
+	 @intermediary_productions_view&.sum(:prem_amt)
 		# Policy.sum("prem_amt")
 	end
 

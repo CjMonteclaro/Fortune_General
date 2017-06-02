@@ -23,7 +23,8 @@
     </thead>
 
     <tbody>
-      <% @intermediary_productions.each do | prod | %>
+      <% @intermediary_productions_values.each do | prod | %>
+      <%# @intermediary_productions_values1.each do | prods | %>
       <%# @intermediary_productions_view.each do |premium| %>
 
         <tr>
@@ -31,16 +32,17 @@
           <%= content_tag :td, prod[0][1] %>
           <%= content_tag :td, prod[0][2] %>
           <%= content_tag :td, prod[0][3] %>
-          <%#= content_tag :td, premium.pre_amt %>
-          <%#= content_tag :td, premium.pre_amt %>
-          <%#= content_tag :td, premium.pre_amt %>
-          <%#= content_tag :td, premium.pre_amt %>
-          <%#= content_tag :td, premium.pre_amt %>
-          <%#= content_tag :td, premium.pre_amt %>
-          <%#= content_tag :td, premium.pre_amt %>
-          <%#= content_tag :td, premium.pre_amt %>
-          <%#= content_tag :td, premium.pre_amt %>
-          <%#= content_tag :td, premium.prem_amt %>
+          <%#= content_tag :td, premium.linecd_pa %>
+          <%#= content_tag :td, premium.linecd_ah %>
+          <%#= content_tag :td, premium.linecd_ca %>
+          <%#= content_tag :td, premium.linecd_en %>
+          <%#= content_tag :td, premium.linecd_fi %>
+          <%#= content_tag :td, premium.linecd_mc %>
+          <%#= content_tag :td, premium.linecd_mh %>
+          <%#= content_tag :td, premium.linecd_mn %>
+          <%#= content_tag :td, premium.linecd_su %>
+          <%#= content_tag :td, premium.linecd_av %>
+          <%= content_tag :td, prod[1] %>
 
           <%#= content_tag :td, policy.intermediary&.name %>
           <%#= content_tag :td, policy.intermediary&.no %>
@@ -59,11 +61,12 @@
           <%#= content_tag :td, policy.sum(pre_amt).to_s(:delimited), align: "right" %>
         </tr>
       <%# end %>
-      <%end %>
+      <% end %>
     </tbody>
   </table>
 
-  <%#= content_tag :div, page_entries_info(@intermediary_productions) %>
-     <%#= will_paginate @intermediary_productions %>
+  <%#= content_tag :div, page_entries_info(@intermediary_productions_values) %>
+     <%#= will_paginate @intermediary_productions_values, :param_name => 'group_page' %>
+     <%#= will_paginate @intermediary_productions_values1, :param_name => 'value_page' %>
   <!-- </div>
  -->

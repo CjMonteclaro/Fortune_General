@@ -19,6 +19,7 @@ gem 'thin'
 gem 'figaro'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails' , '~> 4.17.47'
+gem 'kaminari'
 group :development do
   gem 'capistrano'
   gem 'capistrano3-puma'

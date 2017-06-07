@@ -1,0 +1,52 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Productions</h1>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+
+      <th>Intermediary</th>
+      <th>Intm no</th>
+      <th>Intm Type</th>
+      <th>Branch</th>
+      <% ["FI" , "MC" , "PA", "CA", "EN", "MN", "OTHERS"].each do |subline| %>
+        <%= content_tag :th, subline %>
+      <% end %>
+      <%= content_tag :th, "TOTAL PREM" %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @intermediaries.each do |intermediary| %>
+      <tr>
+        <td><%= truncate(intermediary.name, length: 40) %></td>
+        <td><%= intermediary.no %></td>
+        <td><%= intermediary.type %></td>
+        <td><%= intermediary.issue_source %></td>
+        <% ["FI" , "MC" , "PA", "CA", "EN", "MN", "OTHERS"].each do |subline| %>
+        <td>
+          <% intermediary.policies.limit(20).group_by(&:policy_id).each do |line_code, policies| %>
+            <% if subline.include? line_code %>
+                <%= line_code %> -
+                <%= currency(policies.collect(&:pre_amt).sum) %><br>
+                <%= content_tag :small, pluralize(policies.count, 'policy') %><br>
+                <%#= currency((policies.collect(&:pre_amt).sum).sum) %>
+                 <!-- <br> -->
+            <% end %>
+          <% end %>
+        </td>
+        <% end %>
+
+        <%= content_tag :td, ' ' %>
+
+
+        <!-- <td><%#= link_to 'Show', intermediary %></td> -->
+        <!-- <td><%#= link_to 'Edit', edit_intermediary_path(intermediary) %></td> -->
+        <!-- <td><%#= link_to 'Destroy', intermediary, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

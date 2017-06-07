@@ -7,5 +7,6 @@ class Issource < ApplicationRecord
   alias_attribute :issue_name, :iss_name
 
   belongs_to :policy, foreign_key: :iss_cd, primary_key: :iss_cd
+  belongs_to :production, foreign_key: :iss_cd, primary_key: :iss_cd
 
 end

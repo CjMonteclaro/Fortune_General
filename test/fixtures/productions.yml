@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  intermediary: MyString
+  intm_no: 1
+  branch: MyString
+
+two:
+  intermediary: MyString
+  intm_no: 1
+  branch: MyString

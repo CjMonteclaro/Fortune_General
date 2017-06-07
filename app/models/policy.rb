@@ -36,7 +36,7 @@ class Policy < ApplicationRecord
 
 	has_one :polgenin, foreign_key: :policy_id
 	has_one :endttext, foreign_key: :policy_id
-	has_one :invoice
+	has_one :invoice, foreign_key: :policy_id
 	has_one :accident_item, foreign_key: :policy_id
 
 	has_one :item, foreign_key: :policy_id
@@ -47,6 +47,8 @@ class Policy < ApplicationRecord
 	has_one :mc_car_company, through: :vehicle, foreign_key: :policy_id
 
 	has_many :claims, foreign_key: :line_cd, primary_key: :line_cd
+
+	has_one :production, through: :invoice, foreign_key: :intm_no
 
 	def self.to_csv(start_date,end_date)
 			attributes = %w{Policy/Endorsement Insured Birthday Age Inception ExpiryDate Destination DestinationClass Duration CoverageLimit Remarks}
@@ -201,9 +203,58 @@ class Policy < ApplicationRecord
 	end
 
 	def int_prem_amt
+	#  @intermediary_productions_view&.sum(:prem_amt)
+	 if self.line_code == "PA"
+		 int_prem_amt = @intermediary_productions&.prem_amt
+	 else
+	 	 0
+	 end
+	 if self.line_code == "AH"
+		 int_prem_amt = @intermediary_productions&.prem_amt
+	 else
+		 0
+	 end
+	 if self.line_code == "CA"
+		 int_prem_amt = @intermediary_productions&.prem_amt
+	 else
+		 0
+	 end
+	 if self.line_code == "EN"
+		 int_prem_amt = @intermediary_productions&.prem_amt
+   else
+		   0
+   end
+	 if self.line_code == "FI"
+	   int_prem_amt = @intermediary_productions&.prem_amt
+   else
+	   0
+   end
+   if self.line_code == "MC"
+	   int_prem_amt = @intermediary_productions&.prem_amt
+   else
+		 0
+	 end
+	 if self.line_code == "MH"
+		 int_prem_amt = @intermediary_productions&.prem_amt
+	 else
+		 0
+	 end
+	 if self.line_code == "MN"
+		 int_prem_amt = @intermediary_productions&.prem_amt
+	 else
+		 0
+	 end
+	 if self.line_code == "SU"
+		 int_prem_amt = @intermediary_productions&.prem_amt
+	 else
+		 0
+	 end
+	 if self.line_code == "AV"
+		 int_prem_amt = @intermediary_productions&.prem_amt
+	 else
+		 0
+	 end
 
-	 @intermediary_productions_view&.sum(:prem_amt)
-		# Policy.sum("prem_amt")
 	end
 
 	def linecd_pa

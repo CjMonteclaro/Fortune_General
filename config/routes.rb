@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   match 'search', to: 'travels#index', via: :get
   match 'search3', to: 'intermediaries#index', via: :get
   match 'search4', to: 'motors#index', via: :get
-  match 'intm_prod_search', to: 'intermediary_productions#index', via: :get
+  match 'intm_prod_search', to: 'productions#index', via: :get
 
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

@@ -20,8 +20,8 @@ default: &default
   adapter: oracle_enhanced
   username: CPI
   password: CPI12345!
-  host: 172.16.110.8
-  port: 1521
+  # host: 172.16.110.8
+  # port: 1521
   database: DEMO
 
 development:
@@ -29,8 +29,8 @@ development:
   adapter: oracle_enhanced
   username: CPI
   password: CPI12345!
-  database: 172.16.110.8
-  port: 1521
+  # host: 172.16.110.8
+  # port: 1521
   database: DEMO
 
 # Warning: The database defined as "test" will be erased and
@@ -38,7 +38,8 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: //172.16.110.8:1521/DEMO
+  database: DEMO
+    # //172.16.110.8:1521/DEMO
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is

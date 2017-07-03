@@ -36,7 +36,7 @@ class Policy < ApplicationRecord
 
 	has_one :polgenin, foreign_key: :policy_id
 	has_one :endttext, foreign_key: :policy_id
-	has_one :invoice, foreign_key: :policy_id
+	has_one :invoice, foreign_key: :policy_id, primary_key: :policy_id
 	has_one :accident_item, foreign_key: :policy_id
 
 	has_one :item, foreign_key: :policy_id
@@ -50,7 +50,9 @@ class Policy < ApplicationRecord
 
 	has_one :production, through: :invoice, foreign_key: :intm_no
 
-	def self.to_csv(start_date,end_date)
+	scope :filter_date, -> (start_date, end_date){ where(acct_ent: start_date..end_date).or(where(spld_ent_date: start_date..end_date ))   }
+
+		def self.to_csv(start_date,end_date)
 			attributes = %w{Policy/Endorsement Insured Birthday Age Inception ExpiryDate Destination DestinationClass Duration CoverageLimit Remarks}
 			CSV.generate(headers: true) do |csv|
 				csv << attributes
@@ -117,9 +119,14 @@ class Policy < ApplicationRecord
 
 	def self.intm_prod_search(intm_prod_search)
 		if intm_prod_search
-			@intermediary_productions = self.where(acct_ent_date: start_date..end_date).or(self.where(spld_acct_ent_date: start_date..end_date)).joins(:lines, :issource, :invoice, :intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name').group('giis_intermediary.intm_name','giis_intermediary.intm_no','giis_intermediary.intm_type','giis_issource.iss_name').sum(:pre_amt)
-			@intermediary_productions_view = self.where(acct_ent_date: start_date..end_date).or(self.where(spld_acct_ent_date: start_date..end_date)).joins(:lines, :issource, :invoice, :intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name')
+			@intermediary_productions = self.where(acct_ent_date: start_date..end_date).or(self.where(spld_acct_ent_date: start_date..end_date)).joins(:lines, :issource, :invoice, :intermediary)
+			#.order('giis_intermediary.intm_name','giis_issource.iss_name').group('giis_intermediary.intm_name','giis_intermediary.intm_no','giis_intermediary.intm_type','giis_issource.iss_name').sum(:pre_amt)
+			# @intermediary_productions_view = self.where(acct_ent_date: start_date..end_date).or(self.where(spld_acct_ent_date: start_date..end_date)).joins(:lines, :issource, :invoice, :intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name')
 		end
+	end
+
+	def self.search_date(start_date,end_date)
+	  self.where(acct_ent_date: start_date..end_date).or(self.where(spld_acct_ent_date: start_date..end_date)).joins(:lines, :issource, :invoice, :intermediary)
 	end
 
 	def full_policy_no

@@ -1,8 +1,22 @@
 class ProductionsController < ApplicationController
   before_action :set_production, only: [:show, :edit, :update, :destroy]
 
+  # def index
+  #   @start_date = params[:start_date]
+  #   @end_date = params[:end_date]
+  #   # Production.limit(20).includes(:issource, :invoices).order(:iss_source).each do |intermediary|
+  #   #   @production = intermediary.policies.search_date(@start_date,@end_date).page(params[:page])
+  #   # end
+  #   @productions = Production.includes(:issource, :invoices).order(:iss_source).page(params[:page])
+  # end
+
   def index
-    @intermediaries = Production.limit(10).includes(:issource, :invoices).order('iss_cd')
+    @start_date = params[:start_date]
+    @end_date = params[:end_date]
+    # @productions = Production.includes(:policies).where('gipi_polbasic' => {acct_ent_date: @start_date..@end_date}).page(params[:page])
+    #  @productions = Production.limit(30).includes(:issource, :invoices).order(:iss_source).page(params[:page])
+    @productions = Production.distinct.order_by_issue_cd.filter_by_date(@start_date,@end_date).page(params[:page])
+    render "index2"
   end
 
   # GET /productions/1

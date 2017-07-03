@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
-  "https://github.com/#{repo_name}.git"
+  "http://github.com/#{repo_name}.git"
 end
 
 gem 'will_paginate'
@@ -20,6 +20,7 @@ gem 'figaro'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails' , '~> 4.17.47'
 gem 'kaminari'
+gem 'bootstrap4-kaminari-views'
 group :development do
   gem 'capistrano'
   gem 'capistrano3-puma'

@@ -1,47 +1,42 @@
 
   <%= render 'intermediary_prod_search' %>
 
-  <table class="table" border = 1>
+  <table class="table table-bordered">
     <thead>
       <tr>
-        <%= content_tag :th, "INTM" %>
-        <%= content_tag :th, "INTM_NO" %>
-        <%= content_tag :th, "INTM_TYPE" %>
-        <%= content_tag :th, "ISS_NAME" %>
-        <%= content_tag :th, "PA" %>
-        <%= content_tag :th, "AH" %>
-        <%= content_tag :th, "CA" %>
-        <%= content_tag :th, "EN" %>
-        <%= content_tag :th, "FI" %>
-        <%= content_tag :th, "MC" %>
-        <%= content_tag :th, "MH" %>
-        <%= content_tag :th, "MN" %>
-        <%= content_tag :th, "SU" %>
-        <%= content_tag :th, "AV" %>
-        <%= content_tag :th, "PREM" %>
+        <th>Intermediary</th>
+        <th>No.</th>
+        <th>Type</th>
+        <th>Branch</th>
+        <% ["FI" , "MC" , "PA", "CA", "EN", "MN", "AH", "MH", "SU", "AV"].each do |line| %>
+          <%= content_tag :th, line %>
+        <% end %>
+        <%= content_tag :th, "TOTAL PREM" %>
       </tr>
     </thead>
 
     <tbody>
-      <% @intermediary_productions_values.each do | prod | %>
-      <%# @intermediary_productions_values1.each do | prods | %>
-      <% @intermediary_productions.each do |premium| %>
-
+      <% @intermediary_productions.each do |policy| %>
+      <% Intermediary.distinct.limit(50).each do | intermediary | %>
+      <% @policies = intermediary.policies.search_date(@start_date, @end_date) %>
         <tr>
-          <%= content_tag :td, prod[0][0] %>
-          <%= content_tag :td, prod[0][1] %>
-          <%= content_tag :td, prod[0][2] %>
-          <%= content_tag :td, prod[0][3] %>
-          <%= content_tag :td, premium.int_prem_amt %>
-          <%= content_tag :td, premium.int_prem_amt %>
-          <%= content_tag :td, premium.int_prem_amt %>
-          <%= content_tag :td, premium.int_prem_amt %>
-          <%= content_tag :td, premium.int_prem_amt %>
-          <%= content_tag :td, premium.int_prem_amt %>
-          <%= content_tag :td, premium.int_prem_amt %>
-          <%= content_tag :td, premium.int_prem_amt %>
-          <%= content_tag :td, premium.int_prem_amt %>
-          <%= content_tag :td, premium.int_prem_amt %>
+          <%= content_tag :td, intermediary.name %>
+          <%= content_tag :td, intermediary.no %>
+          <%= content_tag :td, intermediary.type %>
+          <%= content_tag :td, intermediary.issue_source %>
+          <% ["FI" , "MC" , "PA", "CA", "EN", "MN", "AH", "MH", "SU", "AV"].each do |line| %>
+            <td>
+              <% @policies.group_by(&:line_cd).each do | line_code, policies |  %>
+                <% if line.include? line_code  %>
+                    <%= line_code %><br>
+                    <%= currency(policies.collect(&:pre_amt).sum) %><br>
+                    <%= content_tag :small, pluralize(policies.count, 'policy') %><br>
+                <% end %>
+              <% end %>
+            </td>
+          <% end %>
+
+        <%= content_tag :td, currency(@policies.collect(&:pre_amt).sum) %>
           <%#= content_tag :td, prod[1] %>
 
           <%#= content_tag :td, policy.intermediary&.name %>
@@ -65,8 +60,8 @@
     </tbody>
   </table>
 
-  <%= content_tag :div, page_entries_info(@intermediary_productions_values) %>
-     <%= paginate @intermediary_productions_values, :param_name => 'group_page' %>
+  <%= content_tag :div, page_entries_info(@intermediary_productions) %>
+  <%= paginate @intermediary_productions, theme: 'twitter-bootstrap-4' %>
      <%#= will_paginate @intermediary_productions, :param_name => 'value_page' %>
   <!-- </div>
  -->

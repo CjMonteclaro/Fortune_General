@@ -1,17 +1,16 @@
 class IntermediaryProductionsController < ApplicationController
 
   def index
-    start_date = params[:start_date]
-    end_date = params[:end_date]
+    @start_date = params[:start_date]
+    @end_date = params[:end_date]
+    # @productions = Production.distinct.order_by_issue_cd.filter_by_date(@start_date,@end_date).page(params[:page])
 
-    @intermediary_productions = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).includes(:lines, :issource, :invoice, :intermediary).joins(:lines,:issource,:invoice,:intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name')
+    @intermediary_productions = Policy.distinct.limit(50).filter_date(@start_date,@end_date).page(params[:page])
 
-    @intermediary_productions_group = @intermediary_productions.group('giis_intermediary.intm_name','giis_intermediary.intm_no','giis_intermediary.intm_type','giis_issource.iss_name').sum(:pre_amt)
+    # @intermediary_productions_group = @intermediary_productions.group('giis_intermediary.intm_name','giis_intermediary.intm_no','giis_intermediary.intm_type','giis_issource.iss_name').sum(:pre_amt)
     # @intermediary_productions_values1 = @intermediary_productions_group.values.paginate(:page => params[:value_page], :per_page => 30)
-    @intermediary_productions_values = @intermediary_productions_group.page(params[:page]).per(30)
+    # @intermediary_productions_values = @intermediary_productions_group.page(params[:page]).per(30)
 
-    #  @intermediary_productions = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).includes(:lines, :issource, :invoice, :intermediary).joins(:lines,:issource,:invoice,:intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name').group('giis_intermediary.intm_name','giis_intermediary.intm_no','giis_intermediary.intm_type','giis_issource.iss_name').sum(:pre_amt)
-    #  @intermediary_productions_view = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).includes(:lines,:issource,:invoice,:intermediary).joins(:lines,:issource,:invoice,:intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name').uniq('intermediary.intm_name').paginate(:page => params[:prem_page], :per_page => 30)
 
         respond_to do |format|
          format.html

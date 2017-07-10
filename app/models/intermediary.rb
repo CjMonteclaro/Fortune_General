@@ -35,7 +35,10 @@ class Intermediary < ApplicationRecord
 	alias_attribute :spec_rate, :special_rate
 
 	has_many :invoices, foreign_key: :intrmdry_intm_no
-	has_many :policies, foreign_key: :policy_id
+	has_many :policies, through: :invoices, foreign_key: :policy_id
+	has_one :issource, foreign_key: :iss_cd, primary_key: :iss_cd
+
+  scope :order_by_issue_cd, -> { order(iss_source: :asc, no: :asc, name: :asc, type: :asc) }
 
 	def self.search(search)
 				if search
@@ -68,5 +71,12 @@ class Intermediary < ApplicationRecord
 			"I"
 		end
 	end
+
+	def issue_source
+    if self.iss_cd == self.issource.iss_cd
+      self.issource.iss_name
+    end
+  end
+
 
 end

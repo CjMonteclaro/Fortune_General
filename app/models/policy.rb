@@ -51,6 +51,8 @@ class Policy < ApplicationRecord
 	has_one :production, through: :invoice, foreign_key: :intm_no
 
 	scope :filter_date, -> (start_date, end_date){ where(acct_ent: start_date..end_date).or(where(spld_ent_date: start_date..end_date ))   }
+	scope :order_by_line_cd, -> { order(line_cd: :asc)   }
+	# scope :cred_branch_filter, -> { where(if self.cred_branch.nil? then self.iss_cd else self.cred_branch end )  = Issource.iss_cd    }
 
 		def self.to_csv(start_date,end_date)
 			attributes = %w{Policy/Endorsement Insured Birthday Age Inception ExpiryDate Destination DestinationClass Duration CoverageLimit Remarks}

@@ -22,6 +22,9 @@ class ProductionsController < ApplicationController
   # GET /productions/1
   # GET /productions/1.json
   def show
+    @start_date = params[:start_date]
+    @end_date = params[:end_date]
+    @production = Production.find(926)
   end
 
   # GET /productions/new

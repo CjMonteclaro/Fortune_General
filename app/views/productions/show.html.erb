@@ -1,19 +1,30 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Intermediary:</strong>
-  <%= @production.intermediary %>
-</p>
 
-<p>
-  <strong>Intm no:</strong>
-  <%= @production.intm_no %>
-</p>
+<h2>INTERMEDIARY PRODUCTION</h2>
 
-<p>
-  <strong>Branch:</strong>
-  <%= @production.branch %>
-</p>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Policy ID</th>
+      <th>Line Code</th>
+      <th>Premium Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @production.policies.order_by_line_cd.search_date('2017-04-01', '2017-04-30').each do |pol| %>
 
-<%= link_to 'Edit', edit_production_path(@production) %> |
-<%= link_to 'Back', productions_path %>
+    <td><%= pol.id %></td>
+    <td><%= pol.line_cd %></td>
+    <td><%= pol.prem_amt %></td>
+
+  </tbody>
+  <% end %>
+</table>
+
+--END--
+<%#= link_to 'Edit', edit_production_path(@production) %>
+<%#= link_to 'Back', productions_path %>
+
+<%#= content_tag :div, page_entries_info(@productions) %>
+<%#= paginate @productions, theme: 'twitter-bootstrap-4' %>

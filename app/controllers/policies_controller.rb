@@ -7,8 +7,8 @@ class PoliciesController < ApplicationController
   def index
     start_date = params[:start_date]
     end_date = params[:end_date]
-    @policies = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).includes(:assured, :intermediary).order('iss_cd').paginate(:page => params[:page], :per_page => 30)
-    @policies_csv = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).includes(:assured, :intermediary).order('iss_cd')
+    @policies = Policy.pol_search_date(start_date,end_date).paginate(:page => params[:page], :per_page => 30)
+    @policies_csv = Policy.pol_search_date(start_date,end_date)
 
        respond_to do |format|
        format.html

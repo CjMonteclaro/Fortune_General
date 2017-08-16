@@ -8,4 +8,5 @@ class McCarCompany < ApplicationRecord
 
       has_one :vehicle, foreign_key: :policy_id
       belongs_to :policy
+      belongs_to :motorpolicy
 end

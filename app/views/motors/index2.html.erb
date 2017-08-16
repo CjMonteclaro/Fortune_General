@@ -7,6 +7,7 @@
 
 
   <table class="table" border = 1>
+
     <thead>
       <tr>
         <%= content_tag :th, "Policy No" %>
@@ -19,36 +20,19 @@
         <%= content_tag :th, "Sum Insured" %>
         <%= content_tag :th, "Premium" %>
         <%= content_tag :th, "Premium Rate" %>
-        <%#= content_tag :th, "Line CD" %>
-        <%#= content_tag :th, "Subline CD" %>
-        <%#= content_tag :th, "POL_ISS_CD" %>
-        <%#= content_tag :th, "ISSUE_YY" %>
-        <%#= content_tag :th, "POL_SEQ_NO" %>
-        <%#= content_tag :th, "RENEW_NO" %>
-        <%#= content_tag :th, "CLAIM" %>
-        <%#= content_tag :th, "Loss Date" %>
-        <%#= content_tag :th, "Claim File Date" %>
-        <%#= content_tag :th, "Loss Status" %>
-        <%#= content_tag :th, "Loss Reserve" %>
-        <%#= content_tag :th, "Loss Expense Reserve" %>
-        <%#= content_tag :th, "Loss Paid" %>
-        <%#= content_tag :th, "Loss Expense Paid" %>
-        <%#= content_tag :th, "Peril CD" %>
-        <%#= content_tag :th, "Peril CD" %>
-        <%#= content_tag :th, "Peril SNAME" %>
       </tr>
     </thead>
 
     <tbody>
       <% @motor_policies.each do |policy| %>
-      <%# policy.claims.each do |clm| %>
-      <%# @claims.each do |clm| %>
         <tr>
+
           <%= content_tag :td, rowspan: row_span_helper(policy) do %>
             <%= policy.policy_no %>
             <%= content_tag :p, "ID: #{policy.policy_id}", class: 'small' %>
-            <%= link_to('Show claim',motor_path(policy.policy_no)) %>
+            <%#= link_to('Show claim',motor_path(policy.policy_no)) %>
           <% end %>
+
           <%= content_tag :td, policy&.endorsemnt, rowspan: row_span_helper(policy) %>
           <%= content_tag :td, policy&.iss_date, rowspan: row_span_helper(policy) %>
           <%= content_tag :td, policy&.ef_date, rowspan: row_span_helper(policy) %>
@@ -63,29 +47,12 @@
                 <%= content_tag :td, currency(item&.proper_prem), class: "text-right" %>
                 <%= content_tag :td, number_to_percentage(item.proper_rate, precision: 4), class: "text-right" %>
               <% end %>
-              <%#= content_tag :td, clm&.line_code %>
-              <%#= content_tag :td, clm&.subline_code%>
-              <%#= content_tag :td, clm&.pol_iss_code %>
-              <%#= content_tag :td, clm&.issue_year %>
-              <%#= content_tag :td, clm&.pol_seq_number %>
-              <%#= content_tag :td, clm&.renew_number %>
-              <%#= content_tag :td, clm&.claim_no %>
-              <%#= content_tag :td, clm&.lossdate %>
-              <%#= content_tag :td, clm&.file_date %>
-              <%#= content_tag :td, clm.claim_status&.description %>
-              <%#= content_tag :td, clm&.lossres_amt %>
-              <%#= content_tag :td, clm&.expenseres_amt %>
-              <%#= content_tag :td, clm&.losspd_amt %>
-              <%#= content_tag :td, clm&.exppd_amt %>
-              <%#= content_tag :td, clm.gicl_itemperil&.peril_code %>
-              <%#= content_tag :td, clm.peril&.peril_code %>
-              <%#= content_tag :td, clm.peril&.shortname %>
-              <%# end %>
-            </tr>
+
         </tr>
       <% end %>
       <% end %>
     </tbody>
+
   </table>
 
   <p>

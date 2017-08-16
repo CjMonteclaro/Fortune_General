@@ -52,7 +52,6 @@ class Policy < ApplicationRecord
 
 	scope :filter_date, -> (start_date, end_date){ where(acct_ent: start_date..end_date).or(where(spld_ent_date: start_date..end_date ))   }
 	scope :order_by_line_cd, -> { order(line_cd: :asc)   }
-	# scope :cred_branch_filter, -> { where(if self.cred_branch.nil? then self.iss_cd else self.cred_branch end )  = Issource.iss_cd    }
 
 		def self.to_csv(start_date,end_date)
 			attributes = %w{Policy/Endorsement Insured Birthday Age Inception ExpiryDate Destination DestinationClass Duration CoverageLimit Remarks}
@@ -103,6 +102,10 @@ class Policy < ApplicationRecord
 		end
 	end
 
+	def self.travel_search_date(start_date,end_date)
+		self.where(iss_date: start_date&.to_date..if end_date.present? then end_date.to_date + 1.day end).where(line_code: "PA" ).where(subline_code: "TPS" ).where.not(polic_flag: ['4', '5']).includes(:assured, :item, :polgenin, :endttext, :accident_item)
+	end
+
 	def self.search2(search2)
 		if search2
 			@policies = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).includes(:assured, :intermediary).order('iss_cd','line_code', 'subline_code', 'issue_year', 'sequence_no','renew_number')
@@ -131,16 +134,25 @@ class Policy < ApplicationRecord
 	  self.where(acct_ent_date: start_date..end_date).or(self.where(spld_acct_ent_date: start_date..end_date)).joins(:lines, :issource, :invoice, :intermediary)
 	end
 
+	def self.pol_search_date(start_date,end_date)
+	  self.where(acct_ent_date: start_date..end_date).or(self.where(spld_acct_ent_date: start_date..end_date)).includes(:assured, :intermediary).order('iss_cd')
+	end
+
+
 	def full_policy_no
 		"#{self.line_code} - #{self.subline_code} - #{self.issue_source} - #{self.issue_year} - #{self.proper_seq_no} - #{self.proper_renew_number} #{"/" if self.en_y?} #{self.en_iss_cd if self.en_y?} #{"-" if self.en_y?} #{self.en_y if self.en_y?} #{"-" if self.en_y?} #{proper_en_seq_no if self.en_y?}"
 	end
 
-	def policy_no
+	def policy_no #for motorcar, connect or match with claims_no
 		"#{self.line_code} - #{self.subline_code} - #{self.issue_source} - #{self.issue_year} - #{self.proper_seq_no} - #{self.proper_renew_number}"
 	end
 
+	def pol_claim
+		self.policy_no == Claim.claim_no
+	end
+
 	def endorsemnt
-		"#{self.en_iss_cd} - #{ self.proper_en_y } - #{  proper_en_seq_no  }"
+		"#{self.en_iss_cd} - #{self.proper_en_y} - #{proper_en_seq_no}"
 	end
 
 	def proper_seq_no
@@ -203,67 +215,19 @@ class Policy < ApplicationRecord
 		end
 	end
 
+	def issue_src
+    if (if self.cred_branch.nil? then self.iss_cd else self.cred_branch end) == self.issource.iss_cd
+      self.issource.iss_name
+    end
+  end
+
 	def duration_date
 		(self.exp_date - self.ef_date).to_i + 1
 	end
 
-	def self.motor_search(start_date, end_date, page_no)
-		self.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).paginate(:page => page_no, :per_page => 5)
-	end
-
-	def int_prem_amt
-	#  @intermediary_productions_view&.sum(:prem_amt)
-	 if self.line_code == "PA"
-		 int_prem_amt = @intermediary_productions&.prem_amt
-	 else
-	 	 0
-	 end
-	 if self.line_code == "AH"
-		 int_prem_amt = @intermediary_productions&.prem_amt
-	 else
-		 0
-	 end
-	 if self.line_code == "CA"
-		 int_prem_amt = @intermediary_productions&.prem_amt
-	 else
-		 0
-	 end
-	 if self.line_code == "EN"
-		 int_prem_amt = @intermediary_productions&.prem_amt
-   else
-		   0
-   end
-	 if self.line_code == "FI"
-	   int_prem_amt = @intermediary_productions&.prem_amt
-   else
-	   0
-   end
-   if self.line_code == "MC"
-	   int_prem_amt = @intermediary_productions&.prem_amt
-   else
-		 0
-	 end
-	 if self.line_code == "MH"
-		 int_prem_amt = @intermediary_productions&.prem_amt
-	 else
-		 0
-	 end
-	 if self.line_code == "MN"
-		 int_prem_amt = @intermediary_productions&.prem_amt
-	 else
-		 0
-	 end
-	 if self.line_code == "SU"
-		 int_prem_amt = @intermediary_productions&.prem_amt
-	 else
-		 0
-	 end
-	 if self.line_code == "AV"
-		 int_prem_amt = @intermediary_productions&.prem_amt
-	 else
-		 0
-	 end
-
+	def self.motor_search(start_date, end_date)
+		self.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body)
+		#.paginate(:page => page_no, :per_page => 5)
 	end
 
 	def linecd_pa

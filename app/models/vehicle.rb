@@ -13,6 +13,7 @@ class Vehicle < ApplicationRecord
     has_one :item, foreign_key: :policy_id, primary_key: :policy_id
 
     has_one :policy, foreign_key: :policy_id
+    has_one :motorpolicy, foreign_key: :policy_id
     belongs_to :type_of_body, foreign_key: :type_of_body_cd
     belongs_to :mc_car_company, foreign_key: :car_company_cd
 

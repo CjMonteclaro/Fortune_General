@@ -3,6 +3,9 @@
 
 <h2>INTERMEDIARY PRODUCTION</h2>
 
+  <div><%= @product.name %></div>
+  <div><%= @product.no %></div>
+  <div> </div>
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -12,7 +15,7 @@
     </tr>
   </thead>
   <tbody>
-  <% @production.policies.order_by_line_cd.search_date('2017-04-01', '2017-04-30').each do |pol| %>
+  <% @product.policies.order_by_line_cd.search_date('2017-04-01', '2017-04-30').each do |pol| %>
 
     <td><%= pol.id %></td>
     <td><%= pol.line_cd %></td>
@@ -21,7 +24,7 @@
   </tbody>
   <% end %>
 </table>
-
+<%= content_tag :small, pluralize(@product.policies.order_by_line_cd.search_date('2017-04-01', '2017-04-30').count, 'policy') %><br>
 --END--
 <%#= link_to 'Edit', edit_production_path(@production) %>
 <%#= link_to 'Back', productions_path %>

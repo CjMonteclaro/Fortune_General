@@ -1,7 +1,7 @@
 class Claim < ApplicationRecord
 
   self.table_name = "gicl_claims"
-	self.primary_key = "claim_id"
+	self.primary_key = "claim_id", "line_cd", "subline_cd", "pol_iss_cd", "issue_yy", "pol_seq_no", "renew_no"
 
   alias_attribute :id, :claim_id
 	alias_attribute :line_code, :line_cd
@@ -21,18 +21,48 @@ class Claim < ApplicationRecord
   alias_attribute :status_code, :clm_stat_cd
   alias_attribute :file_date, :clm_file_date
 
-  has_one :gicl_itemperil, foreign_key: :claim_id
-  has_one :peril, through: :gicl_itemperil, foreign_key: :peril_cd, primary_key: :line_cd
+  has_one :gicl_itemperil, :foreign_key => [:claim_id, :line_cd]
+  has_one :peril, through: :gicl_itemperil, :foreign_key => [:peril_cd, :line_cd]
   has_one :claim_status, foreign_key: :clm_stat_cd, primary_key: :clm_stat_cd
 
   has_many :policies, foreign_key: :line_cd
+  # has_many :motorpolicies, :foreign_key => [:line_cd, :subline_cd, :iss_cd, :issue_yy, :pol_seq_no, :renew_no]
+  # belongs_to :motorpolicy, :foreign_key => [:line_cd, :subline_cd, :iss_cd, :issue_yy, :pol_seq_no, :renew_no]
 
   def self.claim_search(start_date, end_date, page_no)
     self.where(file_date: start_date..end_date).where(line_code: "MC").includes(:gicl_itemperil, :peril, :claim_status).paginate(:page => page_no, :per_page => 5)
   end
 
-  def claim_no
-    "#{line_code}-#{subline_code}-#{pol_iss_code}-#{claim_year}-#{claim_seq_number}"
+  def claim_no #connect or match with policy_no for motor car policies with claim
+    "#{line_code} - #{subline_code} - #{pol_iss_code} - #{issue_year} - #{proper_seq_no} - #{proper_renew_number}"
+  end
+
+  def proper_seq_no
+     case pol_seq_number.to_s.length
+    when 1
+     proper_seq_no = "000000" + pol_seq_number.to_s
+    when 2
+     proper_seq_no = "00000" + pol_seq_number.to_s
+    when 3
+     proper_seq_no = "0000" + pol_seq_number.to_s
+    when 4
+     proper_seq_no = "000" + pol_seq_number.to_s
+    when 5
+     proper_seq_no = "00" + pol_seq_number.to_s
+    when 6
+     proper_seq_no = "0" + pol_seq_number.to_s
+    end
+  end
+
+  def proper_renew_number
+    case renew_number.to_s.length
+    when 1
+     proper_renew_number = "0" + renew_number.to_s
+    when 2
+    proper_renew_number = " " + renew_number.to_s
+    when nil?
+     proper_renew_number = "00"
+    end
   end
 
   def line

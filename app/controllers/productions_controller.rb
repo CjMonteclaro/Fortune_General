@@ -14,8 +14,11 @@ class ProductionsController < ApplicationController
     @start_date = params[:start_date]
     @end_date = params[:end_date]
     # @productions = Production.includes(:policies).where('gipi_polbasic' => {acct_ent_date: @start_date..@end_date}).page(params[:page])
-    #  @productions = Production.limit(30).includes(:issource, :invoices).order(:iss_source).page(params[:page])
-    @productions = Production.distinct.order_by_issue_cd.filter_by_date(@start_date,@end_date).page(params[:page])
+    # @productions = Production.limit(30).includes(:issource, :invoices).order(:iss_source).page(params[:page])
+    # @productions = Production.order_by_issue_cd.filter_by_date(@start_date,@end_date).page(params[:page])
+    productions1 = Production.order_by_issue_cd.filter_by_date(@start_date,@end_date)
+    @productions = productions1.group_by{|e| [e.intm_name, e.intm_no, e.intm_type]}
+    # @productions =  Kaminari.paginate_array(productions2.keys).page(params[:page])
     render "index2"
   end
 
@@ -24,7 +27,7 @@ class ProductionsController < ApplicationController
   def show
     @start_date = params[:start_date]
     @end_date = params[:end_date]
-    @production = Production.find(926)
+    @product = Production.find(params[:id])
   end
 
   # GET /productions/new

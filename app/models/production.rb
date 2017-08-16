@@ -14,11 +14,15 @@ class Production < ApplicationRecord
   has_one :issource, foreign_key: :iss_cd, primary_key: :iss_cd
 
   scope :filter_by_date, lambda { | start_date,end_date | left_joins(:policies).merge(Policy.filter_date(start_date,end_date)) }
-  scope :order_by_issue_cd, -> { order(iss_source: :asc, no: :asc, name: :asc, type: :asc) }
+  scope :order_by_issue_cd, -> { order( no: :asc, name: :asc, type: :asc) }
 
-  def issue_source
-    if self.iss_cd == self.issource.iss_cd
-      self.issource.iss_name
+  def issue_src(start_date,end_date)
+    prod = self.policies.search_date(@start_date, @end_date).each do | policy |
+    for intm in prod[policy]
+        if intm.iss_cd == self.issource.iss_cd
+          self.issource.iss_name
+        end
+     end
     end
   end
 

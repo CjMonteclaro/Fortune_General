@@ -19,33 +19,39 @@
   </thead>
 
   <tbody>
-    <% @productions.each do | intermediary | %>
-
-      <% @policies = intermediary.policies.search_date(@start_date, @end_date) %>
+    <% @productions.keys.each do | name | %>
+      <% for intermediary in @productions[name] %>
+      <% @policies = intermediary.policies.search_date(@start_date, @end_date) end %>
 
       <tr>
 
-          <td><%= link_to(truncate(intermediary.name, length: 40), productions(intermediary)) %></td>
+          <td><%= link_to(truncate(intermediary.name, length: 40), productions_path(@product)) %></td>
           <td><%= intermediary.no %></td>
           <td><%= intermediary.type %></td>
-          <td><%= intermediary.issue_source %></td>
-          <% ["FI" , "MC" , "PA", "CA", "EN", "MN", "AH", "MH", "SU", "AV"].each do |line| %>
-            <td>
-              <% @policies.group_by(&:line_cd).each do | line_code, policies | %>
-                <% if line.include? line_code  %>
-                    <%= currency(policies.collect(&:pre_amt).sum) %><br>
-                    <%= content_tag :small, pluralize(policies.count, 'policy') %><br>
-                <% end %>
-              <% end %>
-            </td>
-          <% end %>
+          <%# for pols in @productions1 %>
+          <%# end %>
+        <% iss = @policies.group_by{|e| [e.line_cd, e.iss_cd]}  %>
+        <% ["FI" , "MC" , "PA", "CA", "EN", "MN", "AH", "MH", "SU", "AV"].each do |line| %>
+          <!-- <td><%#= iss.iss_cd %></td> -->
 
+              <% iss.each do | lin_cd, is_cd, production | %>
+              <!-- <tr> -->
+                <% if line.include? lin_cd.to_s %>
+                  <td><%= lin_cd  %></td>
+                  <td><%= is_cd %></td>
+                  <td><%#= production %></td>
+
+                    <!-- <%#= currency(collect('policies').sum) %><br> -->
+                    <!-- <%# content_tag :small, pluralize(policies.keys.count, 'policy') %><br> -->
+                <% end %>
+          <% end %>
+        <!-- </tr> -->
+          <% end %>
         <%= content_tag :td, currency(@policies.collect(&:pre_amt).sum) %>
       </tr>
-
     <% end %>
   </tbody>
 </table>
-
-<%= content_tag :div, page_entries_info(@productions) %>
-<%= paginate @productions, theme: 'twitter-bootstrap-4' %>
+<%= @productions.keys.count %>
+<%#= content_tag :div, page_entries_info(@productions) %>
+<%#= paginate @productions, theme: 'twitter-bootstrap-4' %>

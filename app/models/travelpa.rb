@@ -1,0 +1,2 @@
+class Travelpa < ApplicationRecord
+end

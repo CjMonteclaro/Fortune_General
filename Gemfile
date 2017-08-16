@@ -21,6 +21,7 @@ gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails' , '~> 4.17.47'
 gem 'kaminari'
 gem 'bootstrap4-kaminari-views'
+# gem 'composite_primary_keys'
 group :development do
   gem 'capistrano'
   gem 'capistrano3-puma'
@@ -34,7 +35,7 @@ gem 'rails', '~> 5.0.2'
 # Use oracle as the database for Active Record
 gem 'activerecord'
 gem 'ruby-oci8'
-gem 'activerecord-oracle_enhanced-adapter', '~> 1.7'
+gem 'activerecord-oracle_enhanced-adapter'
 # Use Puma as the app server
 gem 'puma', '~> 3.8', '>= 3.8.2'
 # Use SCSS for stylesheets
@@ -68,6 +69,7 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'
+  gem 'hirb'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

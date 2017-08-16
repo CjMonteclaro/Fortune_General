@@ -12,6 +12,7 @@ class ItemPeril < ApplicationRecord
   alias_attribute :line_code, :line_cd
 
   belongs_to :policy, foreign_key: :policy_id
+  belongs_to :motorpolicy, foreign_key: :policy_id
   belongs_to :item, foreign_key: :item_no
   belongs_to :peril, foreign_key: :peril_cd
 
@@ -23,15 +24,15 @@ class ItemPeril < ApplicationRecord
   end
 
   def proper_tsi
-    proper_tsi = (tsi.to_i * -1)
+    proper_tsi = (tsi.to_i)
   end
 
   def proper_prem
-    proper_prem = (prem.to_i * -1)
+    proper_prem = (prem.to_i)
   end
 
   def proper_rate
-    proper_rate = (rate.to_i * -1)
+    proper_rate = (rate.to_i)
   end
 
 end

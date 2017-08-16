@@ -1,0 +1,2 @@
+module TravelpasHelper
+end

@@ -20,8 +20,8 @@ default: &default
   adapter: oracle_enhanced
   username: CPI
   password: CPI12345!
-  # host: 172.16.110.8
-  # port: 1521
+  host: 172.16.110.8
+  port: 1521
   database: DEMO
 
 development:

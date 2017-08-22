@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Motor Decs</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Insured</th>
+      <th>Vehicle</th>
+      <th>Plate no</th>
+      <th>Serial no</th>
+      <th>Motor no</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @motor_decs.each do |motor_dec| %>
+      <tr>
+        <td>
+          <%= motor_dec.assured.assd_name %><br>
+          <div class="small">
+            Insured No. <%= motor_dec.insured_no %>
+          </div>
+          <%= link_to motor_dec.policy_no, motor_dec %><br>
+          <div class="small">
+            Term: <%= motor_dec.inception_date %> - <%= motor_dec.expiry_date %>
+          </div>
+        </td>
+        <td>
+          <%= motor_dec.vehicle&.vehicle_name %><br>
+          <div class="small">
+            Color: <%= motor_dec.vehicle&.color %>
+          </div>
+        </td>
+        <td><%= motor_dec.vehicle&.plate_no %></td>
+        <td><%= motor_dec.vehicle&.serial_no %></td>
+        <td><%= motor_dec.vehicle&.motor_no %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Motor Dec', new_motor_dec_path %>

@@ -19,8 +19,6 @@ class Vehicle < ApplicationRecord
 
   def vehicle_name
       "#{self.modelyear}  #{self.mc_car_company&.car_comp}  #{self.make} #{self.type_of_body&.body_type}"
-
-
   end
 
 end

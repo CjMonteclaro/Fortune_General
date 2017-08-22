@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :motor_decs
   root 'travelpas#home'
   resources :travelpas
   get 'travelpas/index'

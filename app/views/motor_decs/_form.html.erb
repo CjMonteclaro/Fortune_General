@@ -1,0 +1,62 @@
+<%= form_with(model: motor_dec, local: true) do |form| %>
+  <% if motor_dec.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(motor_dec.errors.count, "error") %> prohibited this motor_dec from being saved:</h2>
+
+      <ul>
+      <% motor_dec.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :insured %>
+    <%= form.number_field :insured, id: :motor_dec_insured %>
+  </div>
+
+  <div class="field">
+    <%= form.label :policy_no %>
+    <%= form.text_field :policy_no, id: :motor_dec_policy_no %>
+  </div>
+
+  <div class="field">
+    <%= form.label :plate_no %>
+    <%= form.text_field :plate_no, id: :motor_dec_plate_no %>
+  </div>
+
+  <div class="field">
+    <%= form.label :vehicle %>
+    <%= form.text_field :vehicle, id: :motor_dec_vehicle %>
+  </div>
+
+  <div class="field">
+    <%= form.label :color %>
+    <%= form.text_field :color, id: :motor_dec_color %>
+  </div>
+
+  <div class="field">
+    <%= form.label :chassis_no %>
+    <%= form.text_field :chassis_no, id: :motor_dec_chassis_no %>
+  </div>
+
+  <div class="field">
+    <%= form.label :motor_no %>
+    <%= form.text_field :motor_no, id: :motor_dec_motor_no %>
+  </div>
+
+  <div class="field">
+    <%= form.label :inception %>
+    <%= form.date_select :inception, id: :motor_dec_inception %>
+  </div>
+
+  <div class="field">
+    <%= form.label :expiry %>
+    <%= form.date_select :expiry, id: :motor_dec_expiry %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

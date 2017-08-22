@@ -14,7 +14,6 @@ gem 'prawn-format'
 gem 'prawn-table'
 gem 'responders'
 gem 'fastercsv'
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 gem 'thin'
 gem 'figaro'
 gem 'momentjs-rails', '>= 2.9.0'
@@ -31,7 +30,7 @@ group :development do
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.2'
+gem 'rails', '~> 5.1.1'
 # Use oracle as the database for Active Record
 gem 'activerecord'
 gem 'ruby-oci8'

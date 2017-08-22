@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Insured:</strong>
+  <%= @motor_dec.insured %>
+</p>
+
+<p>
+  <strong>Policy no:</strong>
+  <%= @motor_dec.policy_no %>
+</p>
+
+<p>
+  <strong>Plate no:</strong>
+  <%= @motor_dec.plate_no %>
+</p>
+
+<p>
+  <strong>Vehicle:</strong>
+  <%= @motor_dec.vehicle %>
+</p>
+
+<p>
+  <strong>Color:</strong>
+  <%= @motor_dec.color %>
+</p>
+
+<p>
+  <strong>Chassis no:</strong>
+  <%= @motor_dec.chassis_no %>
+</p>
+
+<p>
+  <strong>Motor no:</strong>
+  <%= @motor_dec.motor_no %>
+</p>
+
+<p>
+  <strong>Inception:</strong>
+  <%= @motor_dec.inception %>
+</p>
+
+<p>
+  <strong>Expiry:</strong>
+  <%= @motor_dec.expiry %>
+</p>
+
+<%= link_to 'Edit', edit_motor_dec_path(@motor_dec) %> |
+<%= link_to 'Back', motor_decs_path %>

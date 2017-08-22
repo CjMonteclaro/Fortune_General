@@ -9,6 +9,8 @@ class Assured < ApplicationRecord
 
 	has_many :policies, foreign_key: :policy_id
 
+	has_many :motor_decs, foreign_key: :policy_id
+
 	def complete_assd_name
 		"#{self.assd_nam1} #{self.assd_nam2}"
 	end

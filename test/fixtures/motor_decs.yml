@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  insured: 1
+  policy_no: MyString
+  plate_no: MyString
+  vehicle: MyString
+  color: MyString
+  chassis_no: MyString
+  motor_no: MyString
+  inception: 2017-08-17
+  expiry: 2017-08-17
+
+two:
+  insured: 1
+  policy_no: MyString
+  plate_no: MyString
+  vehicle: MyString
+  color: MyString
+  chassis_no: MyString
+  motor_no: MyString
+  inception: 2017-08-17
+  expiry: 2017-08-17

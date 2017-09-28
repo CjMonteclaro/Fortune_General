@@ -19,10 +19,11 @@
 default: &default
   adapter: oracle_enhanced
   username: CPI
-  password: CPI12345!
-  host: 172.16.110.8
+  password: cpi12345!
+  # host: 172.16.110.8
+  host: 172.16.110.31
   port: 1521
-  database: DEMO
+  database: FTEST
 
 development:
   <<: *default
@@ -31,14 +32,14 @@ development:
   password: CPI12345!
   # host: 172.16.110.8
   # port: 1521
-  database: DEMO
+  database: FTEST
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: DEMO
+  database: FTEST
     # //172.16.110.8:1521/DEMO
 
 # As with config/secrets.yml, you never want to store sensitive information,

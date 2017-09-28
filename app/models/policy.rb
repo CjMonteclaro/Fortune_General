@@ -26,6 +26,8 @@ class Policy < ApplicationRecord
 	alias_attribute :en_y, :endt_yy
 	alias_attribute :en_seq_no, :endt_seq_no
 	alias_attribute :polic_flag, :pol_flag
+	alias_attribute :sum_insured, :tsi_amt
+	alias_attribute :premium_amt, :prem_amt
 
 	has_one :intermediary, through: :invoice, foreign_key: :intm_no
 	has_one :issource, foreign_key: :iss_cd, primary_key: :iss_cd
@@ -53,31 +55,34 @@ class Policy < ApplicationRecord
 	scope :filter_date, -> (start_date, end_date){ where(acct_ent: start_date..end_date).or(where(spld_ent_date: start_date..end_date ))   }
 	scope :order_by_line_cd, -> { order(line_cd: :asc)   }
 
-	def self.to_csv(start_date,end_date)
+	def self.travel_search_date(start_date, end_date)
+		self.where(iss_date: start_date&.to_date..if end_date.present? then end_date.to_date + 1.day end).where(line_code: "PA" ).where(subline_code: "TPS" ).where.not(polic_flag: ['4', '5']).includes(:assured, :item, :polgenin, :endttext, :accident_item)
+	end
+
+	def self.to_csv(start_date, end_date)
 		attributes = %w{Policy/Endorsement Insured Birthday Age Inception ExpiryDate Destination DestinationClass Duration CoverageLimit EndorsementText}
 		CSV.generate(headers: true) do |csv|
 			csv << attributes
-			Policy.where(iss_date: start_date&.to_date..if end_date.present? then end_date.to_date + 1.day end).where(line_code: "PA" ).where(subline_code: "TPS" ).where.not(polic_flag: ['4', '5']).includes(:assured, :item, :polgenin, :endttext, :accident_item).each do |policy|
-			csv << [policy.full_policy_no, policy.assured.assd_name,(policy.accident_item.acc_bday unless policy.accident_item.nil?),(policy.accident_item.acc_age unless policy.accident_item.nil?), policy.inc_date, policy.exp_date, (policy.accident_item&.acc_item_destination ), (policy.polgenin&.polgenin_gen_info1), (pluralize(policy.duration_date, 'day')), policy&.coverage, policy.endttext&.endt_txt]
 
+			policies = Policy.where(iss_date: start_date&.to_date..if end_date.present? then end_date.to_date + 1.day end).where(line_code: "PA" ).where(subline_code: "TPS" ).where.not(polic_flag: ['4', '5']).includes(:assured, :item, :polgenin, :endttext, :accident_item)
+
+			policies.each do |policy|
+				csv << [policy.full_policy_no, policy.assured.assd_name,(policy.accident_item.acc_bday unless policy.accident_item.nil?),(policy.accident_item.acc_age unless policy.accident_item.nil?), policy.inc_date, policy.exp_date, (policy.accident_item&.acc_item_destination ), (policy.polgenin&.polgenin_gen_info1), (pluralize(policy.duration_date, 'day')), policy&.coverage, policy.endttext&.endt_txt]
 			end
 		end
 	end
 
-	def self.to_csv1(start_date,end_date)
-      attributes = %w{PolicyNo Endorsement IssueDate EffectiveDate ExpiryDate Vehicle PerilName SumInsured Premium PremiumRate}
+	def self.prod_to_csv(start_date,end_date)
+      attributes = %w{Policy_no Assured_Name Intermediary Sum_Insured Premium_Amount}
       CSV.generate(headers: true) do |csv|
         csv << attributes
-      Policy.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(Policy.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd').each do |policy|
-				policy.perils.where(line_code: "MC").find_each do |peril|
-					peril.item_perils.where(peril_cd: peril).find_each do |item|
+      # all.each do |policy|
+        Policy.where(acct_ent_date: start_date..end_date).or(self.where(spld_acct_ent_date: start_date..end_date)).includes(:assured, :intermediary).order('iss_cd').each do |policy|
+        csv << [policy.full_policy_no, policy.assured.assd_name, policy.intermediary&.name, policy.sum_insured, policy.premium_amt]
 
-        csv << [policy.policy_no, policy.endorsemnt, policy.iss_date, policy.ef_date, policy.exp_date, policy.vehicle&.vehicle_name, peril.shortname, item&.proper_tsi, item&.proper_prem, item.proper_rate ]
-					end
-				end
+        end
       end
     end
-  end
 
 	def self.intm_prod_csv(start_date,end_date)
 			attributes = %w{INTM INTM_NO INTM_TYPE ISS_NAME PA AH CA EN FI MC MH MN SU AV PREM}
@@ -102,9 +107,6 @@ class Policy < ApplicationRecord
 		end
 	end
 
-	def self.travel_search_date(start_date,end_date)
-		self.where(iss_date: start_date&.to_date..if end_date.present? then end_date.to_date + 1.day end).where(line_code: "PA" ).where(subline_code: "TPS" ).where.not(polic_flag: ['4', '5']).includes(:assured, :item, :polgenin, :endttext, :accident_item)
-	end
 
 	def self.search2(search2)
 		if search2
@@ -229,100 +231,7 @@ class Policy < ApplicationRecord
 	def duration_date
 		(self.exp_date - self.ef_date).to_i + 1
 	end
-
-	def linecd_pa
-		# @pols = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).joins(:lines, :issource, :invoice,:intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name'
-		if self.line_code == "PA"
-			self.int_prem_amt
-			# Policy.sum(:prem_amt).group('giis_intermediary.intm_name')
-			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'PA', :prem_amt, 0])]))
-		else
-			"0"
-		end
-
-	end
-
-	def linecd_ah
-		if self.line_code == "AH"
-			self.int_prem_amt
-			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'PA', :prem_amt, 0])]))
-		else
-			"0"
-		end
-	end
-
-	def linecd_ca
-		if self.line_code == "CA"
-			self.int_prem_amt
-			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'CA', :prem_amt, 0])]))
-		else
-			"0"
-		end
-	end
-
-	def linecd_en
-		if self.line_code == "EN"
-			self.int_prem_amt
-			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'EN', :prem_amt, 0])]))
-		else
-			"0"
-		end
-	end
-
-	def linecd_fi
-		if self.line_code == "FI"
-			self.int_prem_amt
-			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'FI', :prem_amt, 0])]))
-		else
-			"0"
-		end
-	end
-
-	def linecd_mc
-		if self.line_code == "MC"
-			self.int_prem_amt
-			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'MC', :prem_amt, 0])]))
- 	 else
- 		 "0"
- 	 end
-	end
-
-	def linecd_mh
-		if self.line_code == "MH"
-			self.int_prem_amt
-			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'MH', :prem_amt, 0])]))
-		else
-			"0"
-		end
-	end
-
-	def linecd_mn
-		if self.line_code == "MN"
-			self.int_prem_amt
-			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'MN', :prem_amt, 0])]))
-		else
-			"0"
-		end
-	end
-
-	def linecd_su
-		if self.line_code == "SU"
-			self.int_prem_amt
-			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'SU', :prem_amt, 0])]))
-		else
-			"0"
-		end
-	end
-
-	def linecd_av
-		if self.line_code == "AV"
-			self.int_prem_amt
-			# Policy.select(Arel::Nodes::NamedFunction.new('SUM', [Arel::Nodes::NamedFunction.new('DECODE', [:line_cd, 'AV', :prem_amt, 0])]))
-		else
-			"0"
-		end
-	end
-
+	
 	def coverage
 		if self.polgenin&.travel_class.nil? || polgenin&.travel_class.blank?
 					case self.accident_item&.destination_class

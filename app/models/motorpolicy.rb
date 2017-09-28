@@ -56,11 +56,11 @@ class Motorpolicy < ApplicationRecord
 	scope :filter_date, -> (start_date, end_date){ where(acct_ent: start_date..end_date).or(where(spld_ent_date: start_date..end_date ))   }
 	scope :order_by_line_cd, -> { order(line_cd: :asc)   }
 
-	def self.to_csv1(start_date,end_date)
+	def self.motor_to_csv(start_date,end_date)
       attributes = %w{PolicyNo Endorsement IssueDate EffectiveDate ExpiryDate Vehicle PerilName SumInsured Premium PremiumRate}
       CSV.generate(headers: true) do |csv|
         csv << attributes
-      Policy.where(acct_ent_date: start_date..end_date, line_code: "MC").or(Policy.where(spld_acct_ent_date: start_date..end_date, line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd,iss_cd,pol_seq_no,renew_no').each do |policy|
+      Motorpolicy.where(acct_ent_date: start_date..end_date, line_code: "MC").or(Motorpolicy.where(spld_acct_ent_date: start_date..end_date, line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd,iss_cd,pol_seq_no,renew_no').each do |policy|
 				policy.perils.where(line_code: "MC").find_each do |peril|
 					policy.item_perils.where(peril_cd: peril).find_each do |item|
 
@@ -71,8 +71,8 @@ class Motorpolicy < ApplicationRecord
     end
   end
 
-	def self.search4(search4)
-		if search4
+	def self.motor_search(motor_search)
+		if motor_search
 			@motor_policies = Policy.where(acct_ent_date: start_date..end_date, line_code: "MC").or(Policy.where(spld_acct_ent_date: start_date..end_date, line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd,iss_cd,pol_seq_no,renew_no')
     else
 			limit(10)
@@ -83,9 +83,8 @@ class Motorpolicy < ApplicationRecord
 	  self.where(acct_ent_date: start_date..end_date).or(self.where(spld_acct_ent_date: start_date..end_date)).joins(:lines, :issource, :invoice, :intermediary)
 	end
 
-	def self.motor_search(start_date, end_date)
+	def self.motors_search(start_date, end_date)
 		Policy.where(acct_ent_date: start_date..end_date, line_code: "MC").or(Policy.where(spld_acct_ent_date: start_date..end_date, line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd,iss_cd,pol_seq_no,renew_no')
-		#.paginate(:page => page_no, :per_page => 5)
 	end
 
 	def full_policy_no

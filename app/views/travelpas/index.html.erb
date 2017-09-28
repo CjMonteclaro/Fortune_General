@@ -2,7 +2,7 @@
 <p id="notice"><%= notice %></p>
 
   <div class="container">
-    <%= form_tag("search", method: "get") do %>
+    <%= form_tag({action: 'search'}, method: "get") do %>
     <div class='col-md-5'>
         <div class="form-group">
           <%= label_tag  "FROM" %>

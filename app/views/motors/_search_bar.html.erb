@@ -1,5 +1,5 @@
 <div class="container">
-    <%= form_tag("search4", method: "get") do %>
+    <%= form_tag({action: 'motor_search'}, method: "get") do %>
   <div class='col-md-5'>
       <div class="form-group">
         <%= label_tag  "Accounting Entry Date FROM" %>

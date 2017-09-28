@@ -4,22 +4,27 @@ class TravelpasController < ApplicationController
   # GET /travelpas
   # GET /travelpas.json
   def index
-    start_date =  (if params[:start_date].nil? then Date.current.beginning_of_month else  params[:start_date] end)
-    end_date =  (if params[:end_date].nil? then Date.current.end_of_month else  params[:end_date] end)
-  	@travels = Policy.travel_search_date(start_date,end_date).paginate(:page => params[:page], :per_page => 15)
-  	@travels_csv = Policy.travel_search_date(start_date,end_date)
-     respond_to do |format|
-     format.html
-     format.csv { send_data @travels_csv.to_csv(start_date,end_date), filename: "travelpa-#{start_date}/#{end_date}.csv" }
-     format.xls
-     format.pdf do
-        pdf = PolicyReport.new(@travels_csv, start_date, end_date)
-        send_data pdf.render,filename: "TravelPA.pdf",
-                            type: "application/pdf"
-                            # ,
-                            # disposition: "inline"
+    detect_date_params
+  	@travels = Policy.travel_search_date(@start_date, @end_date).paginate(:page => params[:page], :per_page => 15)
+    respond_to do |format|
+      format.html
+      format.csv {
+        detect_date_params
+        # @travels_csv = Policy.travel_search_date(@start_date, @end_date)
+        send_data Policy.to_csv(@start_date, @end_date), filename: "travelpa-#{@start_date}/#{@end_date}.csv"
+        }
+      format.xls
+      format.pdf do
+        pdf = PolicyReport.new(@travels_csv, @start_date, @end_date)
+        send_data pdf.render, filename: "TravelPA.pdf", type: "application/pdf"# ,disposition: "inline"
+      end
     end
   end
+
+  def search
+    detect_date_params
+    @travels = Policy.travel_search_date(@start_date, @end_date).paginate(:page => params[:page], :per_page => 15)
+    render 'index'
   end
 
   def show
@@ -77,6 +82,17 @@ class TravelpasController < ApplicationController
   end
 
   private
+
+  def detect_date_params
+    if params[:start_date].present?
+      @start_date = params[:start_date]
+      @end_date =  params[:end_date]
+    else
+      @start_date =  Date.current.beginning_of_month
+      @end_date =  Date.current.end_of_month
+    end
+  end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_travelpa
       @travelpa = Policy.find(params[:id])

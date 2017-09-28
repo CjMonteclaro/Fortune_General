@@ -1,19 +1,24 @@
 Rails.application.routes.draw do
   root 'travelpas#home'
-  resources :travelpas
-  get 'travelpas/index'
+  resources :travelpas do
+    get 'search', on: :collection
+  end
+  # get 'travelpas/index'
 
-  resources :motors
-  get 'motor_policies', action: :index2, controller: 'motors'
+  resources :policies do
+    get 'search2', on: :collection
+  end
+
+  resources :motors do
+    get 'motor_search', on: :collection
+  end
 
   resources :productions
   resources :intermediaries, :informations, :intermediary_productions
-  resources :policies, only: :index
 
-  match 'search2', to: 'policies#index', via: :get
-  match 'search', to: 'travelpas#index', via: :get
+  # match 'search2', to: 'policies#index', via: :get
+  # match 'search', to: 'travelpas#index', via: :get
   match 'search3', to: 'intermediaries#index', via: :get
-  match 'search4', to: 'motors#index2', via: :get
   # match 'intm_prod_search', to: 'intermediary_productions#index', via: :get
   match 'intm_prod_search', to: 'productions#index', via: :get
 

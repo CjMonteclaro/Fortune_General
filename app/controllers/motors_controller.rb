@@ -4,20 +4,18 @@ class MotorsController < ApplicationController
   # GET /motors
   # GET /Motorpolicy.json
   def index
-    @start_date =  (if params[:start_date].nil? then Date.current.beginning_of_month else  params[:start_date] end)
-    @end_date =  (if params[:end_date].nil? then Date.current.end_of_month else  params[:end_date] end)
+    detect_date_params
     @pol_no = params[:policy_no]
 
-    @motor_policies = Motorpolicy.motor_search(@start_date, @end_date).page(params[:page])
+    @motor_policies = Motorpolicy.motors_search(@start_date, @end_date).page(params[:page])
   #  @claims = Claim.claim_search(@start_date, @end_date, params[:page])
-    @motor_policies_csv = Motorpolicy.motor_search(@start_date, @end_date)
 
     respond_to do |format|
     format.html
-    format.csv { send_data @motor_policies_csv.to_csv1(@start_date,@end_date), filename: "motorcar-#{@start_date} "/" #{@end_date}.csv" }
+    format.csv { send_data Motorpolicy.motor_to_csv(@start_date,@end_date), filename: "motorcar-#{@start_date} "/" #{@end_date}.csv" }
     format.xls
     format.pdf do
-       pdf = MotorsReport.new(@motor_policies_csv, @start_date, @end_date)
+       pdf = MotorsReport.new(Motorpolicy, @start_date, @end_date)
        send_data pdf.render,filename: "MotorCar.pdf",
                            type: "application/pdf"
                            # ,
@@ -27,12 +25,16 @@ class MotorsController < ApplicationController
   end
 
   def index2
-    @start_date = params[:start_date]
-    @end_date = params[:end_date]
+    detect_date_params
     @pol_no = params[:policy_no]
-
     @motor_policies = Motorpolicy.motor_search(@start_date, @end_date).page(params[:page])
     # @motor_policies = Motorpolicy.where(line_code: "MC").order('policy_id DESC').limit(5).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).page(params[:page])
+  end
+
+  def motor_search
+    detect_date_params
+    @pol_no = params[:policy_no]
+    @motor_policies = Motorpolicy.motor_search(@start_date, @end_date).page(params[:page])
   end
 
   # GET /motors/1
@@ -91,6 +93,17 @@ class MotorsController < ApplicationController
   end
 
   private
+
+    def detect_date_params
+      if params[:start_date].present?
+        @start_date = params[:start_date]
+        @end_date =  params[:end_date]
+      else
+        @start_date =  Date.current.beginning_of_month
+        @end_date =  Date.current.end_of_month
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_motor
       @motors = Claim.where("claim_no like '%?%'", @pol_no)

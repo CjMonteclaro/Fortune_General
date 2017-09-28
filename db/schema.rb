@@ -2176,7 +2176,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.decimal "count"
   end
 
-  add_index "evt_monitor_node", ["node_name"], name: "sys_c005918", unique: true, tablespace: "indexes"
+  add_index "evt_monitor_node", ["node_name"], name: "sys_c0011989", unique: true, tablespace: "indexes"
 
   create_table "evt_notify_status", id: false, force: :cascade do |t|
     t.integer "notify_id",     limit: 7,  precision: 7
@@ -2202,7 +2202,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "email_subject",  limit: 200
   end
 
-  add_index "evt_operators", ["oper_id"], name: "sys_c005919", unique: true, tablespace: "indexes"
+  add_index "evt_operators", ["oper_id"], name: "sys_c0011990", unique: true, tablespace: "indexes"
 
   create_table "evt_operators_additional", id: false, force: :cascade do |t|
     t.string  "destination_name", limit: 80
@@ -2240,8 +2240,8 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "service_name",        limit: 80
   end
 
-  add_index "evt_profile", ["profile_id"], name: "sys_c005920", unique: true, tablespace: "indexes"
-  add_index "evt_profile", ["profile_name"], name: "sys_c005921", unique: true, tablespace: "indexes"
+  add_index "evt_profile", ["profile_id"], name: "sys_c0011991", unique: true, tablespace: "indexes"
+  add_index "evt_profile", ["profile_name"], name: "sys_c0011992", unique: true, tablespace: "indexes"
 
   create_table "evt_profile_events", id: false, force: :cascade do |t|
     t.integer "profile_id",      limit: 7,   precision: 7
@@ -2254,7 +2254,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.decimal "fixit_job_id"
   end
 
-  add_index "evt_profile_events", ["profile_id", "event_id"], name: "sys_c005922", unique: true, tablespace: "indexes"
+  add_index "evt_profile_events", ["profile_id", "event_id"], name: "sys_c0011993", unique: true, tablespace: "indexes"
 
   create_table "evt_registry", id: false, force: :cascade do |t|
     t.string "appid",       limit: 80
@@ -2309,7 +2309,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "ext_tag",     limit: 2
   end
 
-  add_index "extraction_hist", ["ext_id"], name: "sys_c005924", unique: true, tablespace: "indexes"
+  add_index "extraction_hist", ["ext_id"], name: "sys_c0011995", unique: true, tablespace: "indexes"
 
   create_table "fgen_adbrev_bipd_ref", id: false, force: :cascade do |t|
     t.decimal "tsi_amt",            precision: 16, scale: 2
@@ -2639,23 +2639,23 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   create_table "fgic_gae", id: false, force: :cascade do |t|
     t.integer "gacc_tran_id",     limit: 12,  precision: 12
     t.string  "branch_cd",        limit: 5,                            null: false
-    t.integer "sl_cd",            limit: 3,   precision: 3
-    t.string  "sl_type_cd",       limit: 2
+    t.integer "sl_cd",            limit: 5,   precision: 5
+    t.string  "sl_type_cd",       limit: 5
     t.string  "gl_acct_sname",    limit: 250
     t.integer "gl_acct_id",       limit: 20,  precision: 20,           null: false
-    t.boolean "gl_acct_category"
-    t.integer "gl_control_acct",  limit: 2,   precision: 2
-    t.integer "gl_sub_acct_1",    limit: 2,   precision: 2
-    t.integer "gl_sub_acct_2",    limit: 2,   precision: 2
-    t.integer "gl_sub_acct_3",    limit: 2,   precision: 2
-    t.integer "gl_sub_acct_4",    limit: 2,   precision: 2
-    t.integer "gl_sub_acct_5",    limit: 2,   precision: 2
-    t.integer "gl_sub_acct_6",    limit: 2,   precision: 2
-    t.integer "gl_sub_acct_7",    limit: 2,   precision: 2
+    t.integer "gl_acct_category", limit: 2,   precision: 2
+    t.integer "gl_control_acct",  limit: 3,   precision: 3
+    t.integer "gl_sub_acct_1",    limit: 3,   precision: 3
+    t.integer "gl_sub_acct_2",    limit: 3,   precision: 3
+    t.integer "gl_sub_acct_3",    limit: 3,   precision: 3
+    t.integer "gl_sub_acct_4",    limit: 3,   precision: 3
+    t.integer "gl_sub_acct_5",    limit: 3,   precision: 3
+    t.integer "gl_sub_acct_6",    limit: 3,   precision: 3
+    t.integer "gl_sub_acct_7",    limit: 3,   precision: 3
     t.decimal "debit_amt",                    precision: 15, scale: 2
     t.decimal "credit_amt",                   precision: 15, scale: 2
-    t.string  "include_tag",      limit: 2
-    t.string  "w_sl",             limit: 2
+    t.string  "include_tag",      limit: 5
+    t.string  "w_sl",             limit: 5
     t.date    "date_to"
     t.date    "date_from"
     t.string  "user_id",          limit: 20,                           null: false
@@ -4331,6 +4331,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "eff_date",       limit: 8
     t.integer "fc_tsi_amt",     limit: 12, precision: 12
     t.integer "tsi_amt",        limit: 12, precision: 12
+    t.string  "acct_no",        limit: 40
   end
 
   create_table "giac_apdc_payt", primary_key: "apdc_id", force: :cascade do |t|
@@ -4392,31 +4393,32 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_index "giac_apdc_payt_dtl", ["apdc_id"], name: "giac_apdc_payt_dtl_fk", tablespace: "indexes"
 
   create_table "giac_assumed_ri_ext", id: false, force: :cascade do |t|
-    t.string  "fund_cd",        limit: 3,                            null: false
-    t.string  "branch_cd",      limit: 2,                            null: false
-    t.integer "ri_cd",          limit: 5,   precision: 5,            null: false
-    t.integer "assd_no",        limit: 12,  precision: 12,           null: false
-    t.string  "assd_name",      limit: 500,                          null: false
-    t.string  "iss_cd",         limit: 2,                            null: false
-    t.integer "prem_seq_no",    limit: 12,  precision: 12,           null: false
-    t.integer "inst_no",        limit: 2,   precision: 2,            null: false
-    t.integer "policy_id",      limit: 12,  precision: 12,           null: false
-    t.string  "policy_no",      limit: 50,                           null: false
-    t.decimal "amt_insured",                precision: 16, scale: 2, null: false
-    t.decimal "gross_prem_amt",             precision: 16, scale: 2, null: false
-    t.decimal "ri_comm_exp",                precision: 16, scale: 2, null: false
-    t.date    "from_date",                                           null: false
-    t.date    "to_date",                                             null: false
-    t.date    "booking_date",                                        null: false
-    t.date    "invoice_date",                                        null: false
-    t.string  "line_cd",        limit: 2
-    t.decimal "net_premium",                precision: 16, scale: 2, null: false
-    t.string  "ri_name",        limit: 50
-    t.decimal "prem_vat",                   precision: 16, scale: 2
-    t.decimal "comm_vat",                   precision: 16, scale: 2
-    t.string  "param_line_cd",  limit: 2
-    t.string  "param_ri_cd",    limit: 5
-    t.string  "user_id",        limit: 8
+    t.string  "fund_cd",         limit: 3,                                            null: false
+    t.string  "branch_cd",       limit: 2,                                            null: false
+    t.integer "ri_cd",           limit: 5,   precision: 5,                            null: false
+    t.integer "assd_no",         limit: 12,  precision: 12,                           null: false
+    t.string  "assd_name",       limit: 500,                                          null: false
+    t.string  "iss_cd",          limit: 2,                                            null: false
+    t.integer "prem_seq_no",     limit: 12,  precision: 12,                           null: false
+    t.integer "inst_no",         limit: 2,   precision: 2,                            null: false
+    t.integer "policy_id",       limit: 12,  precision: 12,                           null: false
+    t.string  "policy_no",       limit: 50,                                           null: false
+    t.decimal "amt_insured",                 precision: 16, scale: 2,                 null: false
+    t.decimal "gross_prem_amt",              precision: 16, scale: 2,                 null: false
+    t.decimal "ri_comm_exp",                 precision: 16, scale: 2,                 null: false
+    t.date    "from_date",                                                            null: false
+    t.date    "to_date",                                                              null: false
+    t.date    "booking_date",                                                         null: false
+    t.date    "invoice_date",                                                         null: false
+    t.string  "line_cd",         limit: 2
+    t.decimal "net_premium",                 precision: 16, scale: 2,                 null: false
+    t.string  "ri_name",         limit: 50
+    t.decimal "prem_vat",                    precision: 16, scale: 2
+    t.decimal "comm_vat",                    precision: 16, scale: 2
+    t.string  "param_line_cd",   limit: 2
+    t.string  "param_ri_cd",     limit: 5
+    t.string  "user_id",         limit: 8
+    t.decimal "ri_wholding_tax",             precision: 12, scale: 2, default: "0.0", null: false, comment: "Withholding tax amount based on RI Commission multiplied by the withholding tax rate per reinsurer"
   end
 
   create_table "giac_bae_error_log", id: false, force: :cascade do |t|
@@ -5363,24 +5365,25 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "giac_cm_dm", primary_key: "gacc_tran_id", force: :cascade do |t|
-    t.string  "fund_cd",     limit: 3,                             null: false
-    t.string  "branch_cd",   limit: 2,                             null: false
-    t.string  "memo_type",   limit: 3,                             null: false
-    t.date    "memo_date",                                         null: false
-    t.integer "memo_year",   limit: 4,    precision: 4
-    t.integer "memo_seq_no", limit: 6,    precision: 6
-    t.string  "recipient",   limit: 550
-    t.decimal "amount",                   precision: 16, scale: 2
-    t.integer "currency_cd", limit: 2,    precision: 2
-    t.decimal "currency_rt",              precision: 12, scale: 9
-    t.decimal "local_amt",                precision: 16, scale: 2
-    t.string  "particulars", limit: 2000
-    t.string  "memo_status", limit: 1,                             null: false
-    t.string  "user_id",     limit: 8,                             null: false
-    t.date    "last_update",                                       null: false
-    t.integer "dv_tran_id",  limit: 12,   precision: 12
-    t.decimal "ri_comm_amt",              precision: 12, scale: 2
-    t.decimal "ri_comm_vat",              precision: 12, scale: 2
+    t.string  "fund_cd",      limit: 3,                             null: false
+    t.string  "branch_cd",    limit: 2,                             null: false
+    t.string  "memo_type",    limit: 3,                             null: false
+    t.date    "memo_date",                                          null: false
+    t.integer "memo_year",    limit: 4,    precision: 4
+    t.integer "memo_seq_no",  limit: 6,    precision: 6
+    t.string  "recipient",    limit: 550
+    t.decimal "amount",                    precision: 16, scale: 2
+    t.integer "currency_cd",  limit: 2,    precision: 2
+    t.decimal "currency_rt",               precision: 12, scale: 9
+    t.decimal "local_amt",                 precision: 16, scale: 2
+    t.string  "particulars",  limit: 2000
+    t.string  "memo_status",  limit: 1,                             null: false
+    t.string  "user_id",      limit: 8,                             null: false
+    t.date    "last_update",                                        null: false
+    t.integer "dv_tran_id",   limit: 12,   precision: 12
+    t.decimal "ri_comm_amt",               precision: 12, scale: 2
+    t.decimal "ri_comm_vat",               precision: 12, scale: 2
+    t.decimal "ri_comm_wtax",              precision: 16, scale: 2
   end
 
   create_table "giac_coll_analysis_ext", id: false, force: :cascade do |t|
@@ -6066,7 +6069,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "giac_dcb_users", ["dcb_user_id"], name: "giac_dcb_users_xx", tablespace: "indexes"
 
-  create_table "giac_deferred_comm_expense", primary_key: ["year", "mm", "iss_cd", "line_cd", "procedure_id"], force: :cascade do |t|
+  create_table "giac_deferred_comm_expense", id: false, force: :cascade do |t|
     t.integer "year",                  limit: 4,  precision: 4,                          null: false
     t.integer "mm",                    limit: 2,  precision: 2,                          null: false
     t.string  "iss_cd",                limit: 2,                                         null: false
@@ -6108,7 +6111,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "cpi_branch_cd",         limit: 2
   end
 
-  create_table "giac_deferred_comm_expense_dtl", primary_key: ["extract_year", "extract_mm", "year", "mm", "iss_cd", "line_cd", "procedure_id"], force: :cascade do |t|
+  create_table "giac_deferred_comm_expense_dtl", id: false, force: :cascade do |t|
     t.integer "extract_year",       limit: 4,  precision: 4,                          null: false
     t.integer "extract_mm",         limit: 2,  precision: 2,                          null: false
     t.integer "year",               limit: 4,  precision: 4,                          null: false
@@ -6150,7 +6153,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "giac_deferred_comm_expense_pol", ["policy_no"], name: "def_policy_no_idx4"
 
-  create_table "giac_deferred_comm_income", primary_key: ["year", "mm", "iss_cd", "line_cd", "procedure_id", "share_type"], force: :cascade do |t|
+  create_table "giac_deferred_comm_income", id: false, force: :cascade do |t|
     t.integer "year",                 limit: 4,  precision: 4,                          null: false
     t.integer "mm",                   limit: 2,  precision: 2,                          null: false
     t.string  "iss_cd",               limit: 2,                                         null: false
@@ -6197,7 +6200,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "cpi_branch_cd",        limit: 2
   end
 
-  create_table "giac_deferred_comm_income_dtl", primary_key: ["extract_year", "extract_mm", "year", "mm", "iss_cd", "line_cd", "procedure_id", "share_type", "acct_trty_type"], force: :cascade do |t|
+  create_table "giac_deferred_comm_income_dtl", id: false, force: :cascade do |t|
     t.integer "extract_year",       limit: 4, precision: 4,                          null: false
     t.integer "extract_mm",         limit: 2, precision: 2,                          null: false
     t.integer "year",               limit: 4, precision: 4,                          null: false
@@ -6260,7 +6263,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "comp_sw",            limit: 1,                 default: "N", null: false
   end
 
-  create_table "giac_deferred_factors", primary_key: ["procedure_id", "month"], force: :cascade do |t|
+  create_table "giac_deferred_factors", id: false, force: :cascade do |t|
     t.integer "procedure_id",       limit: 2,    precision: 2,  null: false
     t.integer "month",              limit: 2,    precision: 2,  null: false
     t.integer "numerator_factor",   limit: 2,    precision: 2
@@ -6640,27 +6643,28 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "giac_due_from_ext", id: false, force: :cascade do |t|
-    t.string  "fund_cd",        limit: 3,                            null: false
-    t.string  "branch_cd",      limit: 2,                            null: false
-    t.integer "ri_cd",          limit: 5,   precision: 5,            null: false
-    t.string  "ri_sname",       limit: 15,                           null: false
-    t.integer "policy_id",      limit: 12,  precision: 12,           null: false
-    t.string  "policy_no",      limit: 50,                           null: false
-    t.integer "inst_no",        limit: 2,   precision: 2,            null: false
-    t.string  "iss_cd",         limit: 2,                            null: false
-    t.integer "prem_seq_no",    limit: 12,  precision: 12,           null: false
-    t.date    "invoice_date",                                        null: false
-    t.decimal "ri_comm_exp",                precision: 16, scale: 2, null: false
-    t.decimal "amt_insured",                precision: 16, scale: 2, null: false
-    t.decimal "gross_prem_amt",             precision: 16, scale: 2, null: false
-    t.integer "assd_no",        limit: 12,  precision: 12,           null: false
-    t.string  "assd_name",      limit: 500,                          null: false
-    t.date    "cut_off_date",                                        null: false
-    t.date    "from_date",                                           null: false
-    t.date    "to_date",                                             null: false
-    t.date    "booking_date",                                        null: false
-    t.decimal "prem_vat",                   precision: 16, scale: 2
-    t.decimal "comm_vat",                   precision: 16, scale: 2
+    t.string  "fund_cd",         limit: 3,                                            null: false
+    t.string  "branch_cd",       limit: 2,                                            null: false
+    t.integer "ri_cd",           limit: 5,   precision: 5,                            null: false
+    t.string  "ri_sname",        limit: 15,                                           null: false
+    t.integer "policy_id",       limit: 12,  precision: 12,                           null: false
+    t.string  "policy_no",       limit: 50,                                           null: false
+    t.integer "inst_no",         limit: 2,   precision: 2,                            null: false
+    t.string  "iss_cd",          limit: 2,                                            null: false
+    t.integer "prem_seq_no",     limit: 12,  precision: 12,                           null: false
+    t.date    "invoice_date",                                                         null: false
+    t.decimal "ri_comm_exp",                 precision: 16, scale: 2,                 null: false
+    t.decimal "amt_insured",                 precision: 16, scale: 2,                 null: false
+    t.decimal "gross_prem_amt",              precision: 16, scale: 2,                 null: false
+    t.integer "assd_no",         limit: 12,  precision: 12,                           null: false
+    t.string  "assd_name",       limit: 500,                                          null: false
+    t.date    "cut_off_date",                                                         null: false
+    t.date    "from_date",                                                            null: false
+    t.date    "to_date",                                                              null: false
+    t.date    "booking_date",                                                         null: false
+    t.decimal "prem_vat",                    precision: 16, scale: 2
+    t.decimal "comm_vat",                    precision: 16, scale: 2
+    t.decimal "ri_wholding_tax",             precision: 12, scale: 2, default: "0.0", null: false, comment: "Withholding tax amount based on RI Commission multiplied by the withholding tax rate per reinsurer"
   end
 
   create_table "giac_due_to_from_branches", primary_key: ["gibr_branch_cd", "gibr_gfun_fund_cd", "item_no", "gacc_tran_id"], force: :cascade do |t|
@@ -8572,19 +8576,19 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_index "giac_out_treaty_qtr_soa", ["a630_line_cd", "a630_trty_yy", "a630_trty_seq_no", "a630_a180_ri_cd"], name: "gotq_a630_fk_i", tablespace: "indexes"
 
   create_table "giac_outfacul_prem_payts", primary_key: ["d010_fnl_binder_id", "gacc_tran_id", "a180_ri_cd", "record_no"], force: :cascade do |t|
-    t.integer "gacc_tran_id",       limit: 12,   precision: 12,           null: false, comment: " - Column already exists - Column already exists"
-    t.integer "a180_ri_cd",         limit: 5,    precision: 5,            null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.boolean "transaction_type",                                         null: false, comment: " - Column already exists - Column already exists"
-    t.integer "d010_fnl_binder_id", limit: 8,    precision: 8,            null: false, comment: " - Column already exists - Column already exists"
-    t.decimal "disbursement_amt",                precision: 12, scale: 2, null: false, comment: " - Column already exists - Column already exists"
-    t.integer "request_no",         limit: 6,    precision: 6,                         comment: " - Column already exists - Column already exists"
-    t.integer "currency_cd",        limit: 2,    precision: 2,                         comment: " - Column already exists - Column already exists"
-    t.decimal "convert_rate",                    precision: 12, scale: 9,              comment: " - Column already exists - Column already exists"
-    t.decimal "foreign_curr_amt",                precision: 12, scale: 2,              comment: " - Column already exists - Column already exists"
-    t.string  "or_print_tag",       limit: 1,                                          comment: " - Column already exists"
-    t.string  "remarks",            limit: 4000,                                       comment: " - Column already exists - Column already exists"
-    t.string  "user_id",            limit: 8,                             null: false, comment: " - Column already exists - Column already exists"
-    t.date    "last_update",                                              null: false, comment: " - Column already exists - Column already exists"
+    t.integer "gacc_tran_id",       limit: 12,   precision: 12,                           null: false, comment: " - Column already exists - Column already exists"
+    t.integer "a180_ri_cd",         limit: 5,    precision: 5,                            null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.boolean "transaction_type",                                                         null: false, comment: " - Column already exists - Column already exists"
+    t.integer "d010_fnl_binder_id", limit: 8,    precision: 8,                            null: false, comment: " - Column already exists - Column already exists"
+    t.decimal "disbursement_amt",                precision: 12, scale: 2,                 null: false, comment: " - Column already exists - Column already exists"
+    t.integer "request_no",         limit: 6,    precision: 6,                                         comment: " - Column already exists - Column already exists"
+    t.integer "currency_cd",        limit: 2,    precision: 2,                                         comment: " - Column already exists - Column already exists"
+    t.decimal "convert_rate",                    precision: 12, scale: 9,                              comment: " - Column already exists - Column already exists"
+    t.decimal "foreign_curr_amt",                precision: 12, scale: 2,                              comment: " - Column already exists - Column already exists"
+    t.string  "or_print_tag",       limit: 1,                                                          comment: " - Column already exists"
+    t.string  "remarks",            limit: 4000,                                                       comment: " - Column already exists - Column already exists"
+    t.string  "user_id",            limit: 8,                                             null: false, comment: " - Column already exists - Column already exists"
+    t.date    "last_update",                                                              null: false, comment: " - Column already exists - Column already exists"
     t.integer "cpi_rec_no",         limit: 12,   precision: 12
     t.string  "cpi_branch_cd",      limit: 2
     t.decimal "prem_amt",                        precision: 12, scale: 2
@@ -8592,10 +8596,11 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.decimal "comm_amt",                        precision: 12, scale: 2
     t.decimal "comm_vat",                        precision: 12, scale: 2
     t.decimal "wholding_vat",                    precision: 12, scale: 2
-    t.string  "cm_tag",             limit: 1,                                          comment: "Tag for automatic generation of Credit Memo for RI Commissions; Possible values: Y/N"
-    t.integer "record_no",          limit: 12,   precision: 12,           null: false
+    t.string  "cm_tag",             limit: 1,                                                          comment: "Tag for automatic generation of Credit Memo for RI Commissions; Possible values: Y/N"
+    t.integer "record_no",          limit: 12,   precision: 12,                           null: false
     t.integer "rev_gacc_tran_id",   limit: 12,   precision: 12
     t.integer "rev_record_no",      limit: 12,   precision: 12
+    t.decimal "wholding_tax",                    precision: 12, scale: 2, default: "0.0", null: false, comment: "Withholding tax amount based on RI Commission and the parameter RI_WTAX_RT in Accounting Parameters"
   end
 
   add_index "giac_outfacul_prem_payts", ["a180_ri_cd"], name: "gfpp_a180_fk_i", tablespace: "indexes"
@@ -8603,40 +8608,42 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_index "giac_outfacul_prem_payts", ["gacc_tran_id"], name: "gfpp_gacc_fk_i", tablespace: "indexes"
 
   create_table "giac_outfacul_soa_ext", comment: "Extract table for: Statement of Account - Outward Facultative Binders", id: false, force: :cascade do |t|
-    t.integer "ri_cd",         limit: 5,   precision: 5,            null: false, comment: "Reinsurer Code"
-    t.string  "ri_name",       limit: 50,                           null: false, comment: "Name of Reinsurer"
-    t.string  "line_cd",       limit: 2,                            null: false, comment: "Binder Line Code"
-    t.integer "policy_id",     limit: 12,  precision: 12,           null: false, comment: "Policy ID"
-    t.string  "policy_no",     limit: 50,                           null: false, comment: "Policy Number"
-    t.integer "fnl_binder_id", limit: 8,   precision: 8,            null: false, comment: "Binder ID"
-    t.string  "binder_no",     limit: 15,                           null: false, comment: "Binder Number"
-    t.date    "binder_date",                                        null: false, comment: "Binder Date"
-    t.date    "eff_date",                                           null: false, comment: "Effectivity date of Binder"
-    t.date    "booking_date",                                       null: false, comment: "Booking Date/Acctg Entry Date of Binder"
-    t.decimal "lprem_amt",                 precision: 12, scale: 2,              comment: "RI Premium Amount in Local Currency"
-    t.decimal "lprem_vat",                 precision: 12, scale: 2,              comment: "VAT on RI Premium in Local Currency"
-    t.decimal "lcomm_amt",                 precision: 12, scale: 2,              comment: "RI Commission Amount in Local Currency"
-    t.decimal "lcomm_vat",                 precision: 12, scale: 2,              comment: "VAT on RI Commission in Local Currency"
-    t.decimal "lwholding_vat",             precision: 12, scale: 2,              comment: "RI Withholding VAT in Local Currency"
-    t.decimal "lnet_due",                  precision: 12, scale: 2, null: false, comment: "Net Amount Due to RI in Local Currency"
-    t.decimal "fprem_amt",                 precision: 12, scale: 2,              comment: "RI Premium Amount in Foreign Currency"
-    t.decimal "fprem_vat",                 precision: 12, scale: 2,              comment: "VAT on RI Premium in Foreign Currency"
-    t.decimal "fcomm_amt",                 precision: 12, scale: 2,              comment: "RI Commission Amount in Foreign Currency"
-    t.decimal "fcomm_vat",                 precision: 12, scale: 2,              comment: "VAT on RI Commission in Foreign Currency"
-    t.decimal "fwholding_vat",             precision: 12, scale: 2,              comment: "RI Withholding VAT in Foreign Currency"
-    t.decimal "fnet_due",                  precision: 12, scale: 2, null: false, comment: "Net Amount Due to RI in Foreign Currency"
-    t.date    "as_of_date",                                         null: false, comment: "As of Date"
-    t.date    "cut_off_date",                                       null: false, comment: "Cut-off Date"
-    t.string  "user_id",       limit: 8,                            null: false, comment: "User ID of person who did the extraction"
-    t.date    "extract_date",                                       null: false, comment: "Date when the extraction was done"
-    t.integer "column_no",     limit: 2,   precision: 2,            null: false, comment: "Aging Column"
-    t.integer "currency_cd",   limit: 2,   precision: 2,                         comment: "Currency Code"
-    t.decimal "currency_rt",               precision: 12, scale: 9,              comment: "Currency Rate"
-    t.string  "assd_name",     limit: 500,                                       comment: "Assured Name"
-    t.decimal "prem_bal",                  precision: 12, scale: 2,              comment: "Premium Balance"
-    t.string  "loss_tag",      limit: 1,                                         comment: "Loss Tag"
-    t.string  "intm_name",     limit: 240,                                       comment: "Intermediary Name"
+    t.integer "ri_cd",         limit: 5,   precision: 5,                            null: false, comment: "Reinsurer Code"
+    t.string  "ri_name",       limit: 50,                                           null: false, comment: "Name of Reinsurer"
+    t.string  "line_cd",       limit: 2,                                            null: false, comment: "Binder Line Code"
+    t.integer "policy_id",     limit: 12,  precision: 12,                           null: false, comment: "Policy ID"
+    t.string  "policy_no",     limit: 50,                                           null: false, comment: "Policy Number"
+    t.integer "fnl_binder_id", limit: 8,   precision: 8,                            null: false, comment: "Binder ID"
+    t.string  "binder_no",     limit: 15,                                           null: false, comment: "Binder Number"
+    t.date    "binder_date",                                                        null: false, comment: "Binder Date"
+    t.date    "eff_date",                                                           null: false, comment: "Effectivity date of Binder"
+    t.date    "booking_date",                                                       null: false, comment: "Booking Date/Acctg Entry Date of Binder"
+    t.decimal "lprem_amt",                 precision: 12, scale: 2,                              comment: "RI Premium Amount in Local Currency"
+    t.decimal "lprem_vat",                 precision: 12, scale: 2,                              comment: "VAT on RI Premium in Local Currency"
+    t.decimal "lcomm_amt",                 precision: 12, scale: 2,                              comment: "RI Commission Amount in Local Currency"
+    t.decimal "lcomm_vat",                 precision: 12, scale: 2,                              comment: "VAT on RI Commission in Local Currency"
+    t.decimal "lwholding_vat",             precision: 12, scale: 2,                              comment: "RI Withholding VAT in Local Currency"
+    t.decimal "lnet_due",                  precision: 12, scale: 2,                 null: false, comment: "Net Amount Due to RI in Local Currency"
+    t.decimal "fprem_amt",                 precision: 12, scale: 2,                              comment: "RI Premium Amount in Foreign Currency"
+    t.decimal "fprem_vat",                 precision: 12, scale: 2,                              comment: "VAT on RI Premium in Foreign Currency"
+    t.decimal "fcomm_amt",                 precision: 12, scale: 2,                              comment: "RI Commission Amount in Foreign Currency"
+    t.decimal "fcomm_vat",                 precision: 12, scale: 2,                              comment: "VAT on RI Commission in Foreign Currency"
+    t.decimal "fwholding_vat",             precision: 12, scale: 2,                              comment: "RI Withholding VAT in Foreign Currency"
+    t.decimal "fnet_due",                  precision: 12, scale: 2,                 null: false, comment: "Net Amount Due to RI in Foreign Currency"
+    t.date    "as_of_date",                                                         null: false, comment: "As of Date"
+    t.date    "cut_off_date",                                                       null: false, comment: "Cut-off Date"
+    t.string  "user_id",       limit: 8,                                            null: false, comment: "User ID of person who did the extraction"
+    t.date    "extract_date",                                                       null: false, comment: "Date when the extraction was done"
+    t.integer "column_no",     limit: 2,   precision: 2,                            null: false, comment: "Aging Column"
+    t.integer "currency_cd",   limit: 2,   precision: 2,                                         comment: "Currency Code"
+    t.decimal "currency_rt",               precision: 12, scale: 9,                              comment: "Currency Rate"
+    t.string  "assd_name",     limit: 500,                                                       comment: "Assured Name"
+    t.decimal "prem_bal",                  precision: 12, scale: 2,                              comment: "Premium Balance"
+    t.string  "loss_tag",      limit: 1,                                                         comment: "Loss Tag"
+    t.string  "intm_name",     limit: 240,                                                       comment: "Intermediary Name"
     t.date    "ppw"
+    t.decimal "lwholding_tax",             precision: 12, scale: 2, default: "0.0", null: false, comment: "Withholding tax amount due, in local currency, based on RI Commission and the parameter RI_WTAX_RT in Accounting Parameters"
+    t.decimal "fwholding_tax",             precision: 12, scale: 2, default: "0.0", null: false, comment: "Withholding tax amount due, in foreign currency, based on RI Commission and the parameter RI_WTAX_RT in Accounting Parameters"
   end
 
   create_table "giac_outward_oblig_payts", primary_key: ["gacc_tran_id", "year_covered", "a630_ri_cd", "a630_trty_yy", "a630_trty_seq_no", "a630_line_cd", "quarter_covered"], force: :cascade do |t|
@@ -10957,45 +10964,47 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_index "giac_ri_req_payt_hdr", ["ri_cd"], name: "reinsurer_ri_req_payt_hdr_fk_i", tablespace: "indexes"
 
   create_table "giac_ri_stmt_ext", id: false, force: :cascade do |t|
-    t.string  "fund_cd",             limit: 3,                            null: false
-    t.integer "ri_cd",               limit: 5,   precision: 5,            null: false
-    t.integer "assd_no",             limit: 12,  precision: 12,           null: false
-    t.string  "assd_name",           limit: 500,                          null: false
-    t.integer "aging_id",            limit: 12,  precision: 12,           null: false
-    t.string  "iss_cd",              limit: 2,                            null: false
-    t.integer "prem_seq_no",         limit: 12,  precision: 12,           null: false
-    t.integer "inst_no",             limit: 2,   precision: 2,            null: false
-    t.integer "policy_id",           limit: 12,  precision: 12,           null: false
-    t.string  "policy_no",           limit: 50,                           null: false
-    t.decimal "amt_insured",                     precision: 16, scale: 2, null: false
-    t.decimal "gross_prem_amt",                  precision: 16, scale: 2, null: false
-    t.decimal "ri_comm_exp",                     precision: 16, scale: 2, null: false
-    t.date    "from_date",                                                null: false
-    t.date    "to_date",                                                  null: false
-    t.date    "cut_off_date",                                             null: false
-    t.date    "booking_date",                                             null: false
-    t.date    "invoice_date",                                             null: false
-    t.integer "column_no",           limit: 2,   precision: 2,            null: false
-    t.string  "user_id",             limit: 8,                            null: false
-    t.string  "ri_name",             limit: 50
-    t.string  "bill_address",        limit: 155
-    t.string  "line_cd",             limit: 2,                            null: false
-    t.string  "line_name",           limit: 20,                           null: false
-    t.string  "ri_policy_no",        limit: 27
-    t.string  "ri_binder_no",        limit: 20
+    t.string  "fund_cd",               limit: 3,                                            null: false
+    t.integer "ri_cd",                 limit: 5,   precision: 5,                            null: false
+    t.integer "assd_no",               limit: 12,  precision: 12,                           null: false
+    t.string  "assd_name",             limit: 500,                                          null: false
+    t.integer "aging_id",              limit: 12,  precision: 12,                           null: false
+    t.string  "iss_cd",                limit: 2,                                            null: false
+    t.integer "prem_seq_no",           limit: 12,  precision: 12,                           null: false
+    t.integer "inst_no",               limit: 2,   precision: 2,                            null: false
+    t.integer "policy_id",             limit: 12,  precision: 12,                           null: false
+    t.string  "policy_no",             limit: 50,                                           null: false
+    t.decimal "amt_insured",                       precision: 16, scale: 2,                 null: false
+    t.decimal "gross_prem_amt",                    precision: 16, scale: 2,                 null: false
+    t.decimal "ri_comm_exp",                       precision: 16, scale: 2,                 null: false
+    t.date    "from_date",                                                                  null: false
+    t.date    "to_date",                                                                    null: false
+    t.date    "cut_off_date",                                                               null: false
+    t.date    "booking_date",                                                               null: false
+    t.date    "invoice_date",                                                               null: false
+    t.integer "column_no",             limit: 2,   precision: 2,                            null: false
+    t.string  "user_id",               limit: 8,                                            null: false
+    t.string  "ri_name",               limit: 50
+    t.string  "bill_address",          limit: 155
+    t.string  "line_cd",               limit: 2,                                            null: false
+    t.string  "line_name",             limit: 20,                                           null: false
+    t.string  "ri_policy_no",          limit: 27
+    t.string  "ri_binder_no",          limit: 20
     t.date    "incept_date"
-    t.date    "due_date",                                                 null: false
-    t.string  "branch_cd",           limit: 2,                            null: false
+    t.date    "due_date",                                                                   null: false
+    t.string  "branch_cd",             limit: 2,                                            null: false
     t.date    "acct_ent_date"
-    t.decimal "after_date_prem",                 precision: 16, scale: 2
-    t.decimal "after_date_comm",                 precision: 16, scale: 2
+    t.decimal "after_date_prem",                   precision: 16, scale: 2
+    t.decimal "after_date_comm",                   precision: 16, scale: 2
     t.date    "extract_date"
-    t.string  "date_tag",            limit: 2
-    t.decimal "prem_vat",                        precision: 16, scale: 2
-    t.decimal "comm_vat",                        precision: 16, scale: 2
-    t.integer "currency_cd",         limit: 2,   precision: 2
-    t.decimal "currency_rt",                     precision: 12, scale: 9
-    t.decimal "after_date_comm_vat",             precision: 16, scale: 2
+    t.string  "date_tag",              limit: 2
+    t.decimal "prem_vat",                          precision: 16, scale: 2
+    t.decimal "comm_vat",                          precision: 16, scale: 2
+    t.integer "currency_cd",           limit: 2,   precision: 2
+    t.decimal "currency_rt",                       precision: 12, scale: 9
+    t.decimal "after_date_comm_vat",               precision: 16, scale: 2
+    t.decimal "after_date_comm_whtax",             precision: 12, scale: 2, default: "0.0", null: false
+    t.decimal "comm_whtax",                        precision: 12, scale: 2, default: "0.0", null: false
   end
 
   create_table "giac_ri_week_per_dtl", primary_key: ["ri_iss_type", "gwph_week_started", "gwph_week"], force: :cascade do |t|
@@ -11342,7 +11351,6 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   add_index "giac_soa_rep_ext", ["policy_no"], name: "giac_soa_rep_ext_policy_no_idx"
-  add_index "giac_soa_rep_ext", ["user_id"], name: "giac_soa_rep_ext_user_id_idx"
 
   create_table "giac_soa_rep_ext1", id: false, force: :cascade do |t|
     t.string  "fund_cd",         limit: 3,                            null: false
@@ -13449,19 +13457,20 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "gicl_cat_dtl", primary_key: "catastrophic_cd", force: :cascade do |t|
-    t.string "catastrophic_desc", limit: 50,   null: false, comment: "CATASTROPHIC EVENT DESCRIPTION"
-    t.string "line_cd",           limit: 2,                 comment: "CATASTROPHIC EVENT LINE CODE"
-    t.string "loss_cat_cd",       limit: 2,                 comment: "CODE FOR THE EVENT LOSS CATEGORY"
-    t.date   "start_date",                                  comment: "CATASTROPHIC EVENT START DATE"
-    t.date   "end_date",                                    comment: "CATASTROPHIC EVENT END DATE"
-    t.string "location",          limit: 160,               comment: "ACCIDENT LOCATION OF A CATASTROPHIC EVENT"
-    t.string "district_no",       limit: 6,                 comment: "DISTRICT NO. (FOR LINE FIRE USE ONLY)"
-    t.string "block_no",          limit: 6,                 comment: "BLOCK_NO. (FOR LINE FIRE USE ONLY)"
-    t.string "city_cd",           limit: 6,                 comment: "CITY_CD. (FOR LINE FIRE USE ONLY)"
-    t.string "province_cd",       limit: 6,                 comment: "PROVINCE_CD. (FOR LINE FIRE USE ONLY)"
-    t.string "remarks",           limit: 4000,              comment: "FIELD FOR USER`S REMARKS"
-    t.string "user_id",           limit: 8,                 comment: "ID OF USER WHO UPDATED THE RECORD"
-    t.date   "last_update",                                 comment: "DATE WHEN RECORD WAS UPDATED BY THE USER"
+    t.string "catastrophic_desc", limit: 50,                 null: false, comment: "CATASTROPHIC EVENT DESCRIPTION"
+    t.string "line_cd",           limit: 2,                               comment: "CATASTROPHIC EVENT LINE CODE"
+    t.string "loss_cat_cd",       limit: 2,                               comment: "CODE FOR THE EVENT LOSS CATEGORY"
+    t.date   "start_date",                                                comment: "CATASTROPHIC EVENT START DATE"
+    t.date   "end_date",                                                  comment: "CATASTROPHIC EVENT END DATE"
+    t.string "location",          limit: 160,                             comment: "ACCIDENT LOCATION OF A CATASTROPHIC EVENT"
+    t.string "district_no",       limit: 6,                               comment: "DISTRICT NO. (FOR LINE FIRE USE ONLY)"
+    t.string "block_no",          limit: 6,                               comment: "BLOCK_NO. (FOR LINE FIRE USE ONLY)"
+    t.string "city_cd",           limit: 6,                               comment: "CITY_CD. (FOR LINE FIRE USE ONLY)"
+    t.string "province_cd",       limit: 6,                               comment: "PROVINCE_CD. (FOR LINE FIRE USE ONLY)"
+    t.string "remarks",           limit: 4000,                            comment: "FIELD FOR USER`S REMARKS"
+    t.string "user_id",           limit: 8,                               comment: "ID OF USER WHO UPDATED THE RECORD"
+    t.date   "last_update",                                               comment: "DATE WHEN RECORD WAS UPDATED BY THE USER"
+    t.string "active_tag",        limit: 1,    default: "A", null: false, comment: "Indicates if the record is active and may be used in claim processing."
   end
 
   create_table "gicl_ceiling_dtl", primary_key: ["line_cd", "prod_year", "prod_month"], force: :cascade do |t|
@@ -14880,12 +14889,13 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "gicl_drvr_occptn", primary_key: "drvr_occ_cd", id: :string, limit: 6, force: :cascade do |t|
-    t.string  "occ_desc",      limit: 50,                  null: false
+    t.string  "occ_desc",      limit: 50,                                null: false
     t.integer "cpi_rec_no",    limit: 12,   precision: 12
     t.string  "cpi_branch_cd", limit: 2
-    t.string  "user_id",       limit: 8,                   null: false
-    t.date    "last_update",                               null: false
+    t.string  "user_id",       limit: 8,                                 null: false
+    t.date    "last_update",                                             null: false
     t.string  "remarks",       limit: 4000
+    t.string  "active_tag",    limit: 1,                   default: "A", null: false, comment: "Indicates if the record is active and may be used in claim processing."
   end
 
   create_table "gicl_engineering_dtl", primary_key: ["claim_id", "item_no"], force: :cascade do |t|
@@ -15324,12 +15334,13 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "gicl_le_stat", primary_key: "le_stat_cd", id: :string, limit: 2, force: :cascade do |t|
-    t.string  "le_stat_desc",  limit: 30,                  null: false
+    t.string  "le_stat_desc",  limit: 30,                                null: false
     t.string  "remarks",       limit: 4000
-    t.string  "user_id",       limit: 8,                   null: false
-    t.date    "last_update",                               null: false
+    t.string  "user_id",       limit: 8,                                 null: false
+    t.date    "last_update",                                             null: false
     t.integer "cpi_rec_no",    limit: 12,   precision: 12
     t.string  "cpi_branch_cd", limit: 2
+    t.string  "active_tag",    limit: 1,                   default: "A", null: false, comment: "Indicates if the record is active and may be used in claim processing."
   end
 
   create_table "gicl_loa", primary_key: ["claim_id", "item_no", "payee_class_cd", "clmnt_no", "advice_id", "clm_clmnt_no"], force: :cascade do |t|
@@ -15766,7 +15777,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.integer "block_id", limit: 12, precision: 12
   end
 
-  add_index "gicl_loss_profile_ext3", ["claim_id"], name: "sys_c0010546", unique: true, tablespace: "indexes"
+  add_index "gicl_loss_profile_ext3", ["claim_id"], name: "sys_c0016625", unique: true, tablespace: "indexes"
 
   create_table "gicl_loss_profile_peril", id: false, force: :cascade do |t|
     t.decimal "profile_id",                                     null: false
@@ -15981,14 +15992,15 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_index "gicl_mc_evaluation", ["eval_stat_cd"], name: "gicl_mc_evaluation_fk", tablespace: "indexes"
 
   create_table "gicl_mc_lps", id: false, force: :cascade do |t|
-    t.string  "loss_exp_cd",     limit: 5,                             null: false
+    t.string  "loss_exp_cd",     limit: 5,                                           null: false
     t.decimal "tinsmith_light",               precision: 11, scale: 2
     t.decimal "tinsmith_medium",              precision: 11, scale: 2
     t.decimal "tinsmith_heavy",               precision: 11, scale: 2
     t.decimal "painting",                     precision: 11, scale: 2
     t.string  "remarks",         limit: 4000
-    t.string  "user_id",         limit: 8,                             null: false
-    t.date    "last_update",                                           null: false
+    t.string  "user_id",         limit: 8,                                           null: false
+    t.date    "last_update",                                                         null: false
+    t.string  "active_tag",      limit: 1,                             default: "A", null: false, comment: "Indicates if the record is active and may be used in claim processing."
   end
 
   create_table "gicl_mc_lps_hist", primary_key: ["history_id", "loss_exp_cd"], force: :cascade do |t|
@@ -16004,17 +16016,18 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "gicl_mc_part_cost", primary_key: "part_cost_id", force: :cascade do |t|
-    t.string  "model_year",     limit: 4,                             null: false
-    t.integer "car_company_cd", limit: 6,    precision: 6,            null: false
-    t.integer "make_cd",        limit: 12,   precision: 12,           null: false
-    t.string  "loss_exp_cd",    limit: 5,                             null: false
-    t.decimal "orig_amt",                    precision: 16, scale: 2, null: false
-    t.decimal "surp_amt",                    precision: 16, scale: 2, null: false
-    t.date    "eff_date_org",                                         null: false
-    t.date    "eff_date_surp",                                        null: false
+    t.string  "model_year",     limit: 4,                                           null: false
+    t.integer "car_company_cd", limit: 6,    precision: 6,                          null: false
+    t.integer "make_cd",        limit: 12,   precision: 12,                         null: false
+    t.string  "loss_exp_cd",    limit: 5,                                           null: false
+    t.decimal "orig_amt",                    precision: 16, scale: 2,               null: false
+    t.decimal "surp_amt",                    precision: 16, scale: 2,               null: false
+    t.date    "eff_date_org",                                                       null: false
+    t.date    "eff_date_surp",                                                      null: false
     t.string  "remarks",        limit: 4000
-    t.string  "user_id",        limit: 8,                             null: false
+    t.string  "user_id",        limit: 8,                                           null: false
     t.date    "last_update"
+    t.string  "active_tag",     limit: 1,                             default: "A", null: false, comment: "Indicates if the record is active and may be used in claim processing."
   end
 
   add_index "gicl_mc_part_cost", ["car_company_cd"], name: "gicl_mc_part_cost_fk2", tablespace: "indexes"
@@ -16507,11 +16520,12 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "gicl_reasons", primary_key: "reason_cd", id: :string, limit: 5, force: :cascade do |t|
-    t.string "reason_desc", limit: 500,  null: false
+    t.string "reason_desc", limit: 500,                null: false
     t.string "clm_stat_cd", limit: 2
     t.string "remarks",     limit: 4000
-    t.string "user_id",     limit: 8,    null: false
-    t.date   "last_update",              null: false
+    t.string "user_id",     limit: 8,                  null: false
+    t.date   "last_update",                            null: false
+    t.string "active_tag",  limit: 1,    default: "A", null: false, comment: "Indicates if the record is active and may be used in claim processing."
   end
 
   create_table "gicl_rec_acct_entries", primary_key: ["recovery_acct_id", "acct_entry_id"], force: :cascade do |t|
@@ -16554,17 +16568,18 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "gicl_recovery_acct", primary_key: "recovery_acct_id", force: :cascade do |t|
-    t.string  "iss_cd",             limit: 2,                           null: false
-    t.integer "rec_acct_year",      limit: 4,  precision: 4,            null: false
-    t.integer "rec_acct_seq_no",    limit: 6,  precision: 6,            null: false
-    t.decimal "recovery_amt",                  precision: 16, scale: 2
-    t.string  "recovery_acct_flag", limit: 1,                           null: false
-    t.integer "acct_tran_id",       limit: 12, precision: 12
+    t.string  "iss_cd",             limit: 2,                             null: false
+    t.integer "rec_acct_year",      limit: 4,    precision: 4,            null: false
+    t.integer "rec_acct_seq_no",    limit: 6,    precision: 6,            null: false
+    t.decimal "recovery_amt",                    precision: 16, scale: 2
+    t.string  "recovery_acct_flag", limit: 1,                             null: false
+    t.integer "acct_tran_id",       limit: 12,   precision: 12
     t.date    "tran_date"
-    t.string  "user_id",            limit: 8,                           null: false
-    t.date    "last_update",                                            null: false
-    t.integer "cpi_rec_no",         limit: 12, precision: 12
+    t.string  "user_id",            limit: 8,                             null: false
+    t.date    "last_update",                                              null: false
+    t.integer "cpi_rec_no",         limit: 12,   precision: 12
     t.string  "cpi_branch_cd",      limit: 2
+    t.string  "particulars",        limit: 2000,                                       comment: "System generated particulars for Loss Recovery upon generation of accounting entries."
   end
 
   add_index "gicl_recovery_acct", ["iss_cd", "rec_acct_year", "rec_acct_seq_no"], name: "rec_acct_u1", unique: true, tablespace: "indexes"
@@ -16681,11 +16696,12 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "gicl_repair_type", primary_key: "repair_cd", id: :string, limit: 2, force: :cascade do |t|
-    t.string "repair_desc", limit: 30,   null: false
+    t.string "repair_desc", limit: 30,                 null: false
     t.string "remarks",     limit: 4000
     t.string "required",    limit: 1
-    t.string "user_id",     limit: 8,    null: false
-    t.date   "last_update",              null: false
+    t.string "user_id",     limit: 8,                  null: false
+    t.date   "last_update",                            null: false
+    t.string "active_tag",  limit: 1,    default: "A", null: false, comment: "Indicates if the record is active and may be used in claim processing."
   end
 
   create_table "gicl_replace", id: false, force: :cascade do |t|
@@ -17038,7 +17054,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.decimal "xol_ded",                     precision: 16, scale: 2
   end
 
-  add_index "gicl_reserve_ds", ["claim_id", "clm_res_hist_id", "clm_dist_no", "grp_seq_no"], name: "clm_res_ds_pk", unique: true, tablespace: "indexes"
+  add_index "gicl_reserve_ds", ["claim_id", "clm_res_hist_id", "grp_seq_no", "clm_dist_no"], name: "reserve_ds_pk", unique: true, tablespace: "indexes"
   add_index "gicl_reserve_ds", ["claim_id", "item_no", "peril_cd", "grouped_item_no"], name: "gicl_reserve_ds_fk", tablespace: "indexes"
 
   create_table "gicl_reserve_ds_hist", primary_key: ["claim_id", "clm_res_hist_id", "clm_dist_no", "grp_seq_no"], force: :cascade do |t|
@@ -17282,7 +17298,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   create_table "gicl_take_up_hist", primary_key: ["claim_id", "take_up_hist"], force: :cascade do |t|
     t.integer "claim_id",        limit: 12, precision: 12,           null: false
-    t.integer "take_up_hist",    limit: 3,  precision: 3,            null: false
+    t.integer "take_up_hist",    limit: 5,  precision: 5,            null: false
     t.string  "take_up_type",    limit: 1,                           null: false
     t.integer "item_no",         limit: 9,  precision: 9,            null: false
     t.integer "peril_cd",        limit: 5,  precision: 5,            null: false
@@ -17834,7 +17850,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "giex_rn_no", ["line_cd", "iss_cd", "rn_yy", "rn_seq_no"], name: "rn_no_u1", unique: true, tablespace: "indexes"
 
-  create_table "giex_sms_dtl", primary_key: ["policy_id", "cellphone_no"], force: :cascade do |t|
+  create_table "giex_sms_dtl", id: false, force: :cascade do |t|
     t.integer "policy_id",        limit: 12,  precision: 12, null: false
     t.string  "cellphone_no",     limit: 40,                 null: false
     t.string  "message",          limit: 480
@@ -18430,27 +18446,28 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "giis_adjuster", primary_key: ["adj_company_cd", "priv_adj_cd"], force: :cascade do |t|
-    t.integer "adj_company_cd",   limit: 12,   precision: 12, null: false, comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
-    t.integer "priv_adj_cd",      limit: 3,    precision: 3,  null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "payee_name",       limit: 50,                  null: false, comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
-    t.date    "entry_date",                                   null: false, comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
-    t.string  "loc_cd",           limit: 3,                                comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
+    t.integer "adj_company_cd",   limit: 12,   precision: 12,               null: false, comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
+    t.integer "priv_adj_cd",      limit: 3,    precision: 3,                null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "payee_name",       limit: 50,                                null: false, comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
+    t.date    "entry_date",                                                 null: false, comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
+    t.string  "loc_cd",           limit: 3,                                              comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
     t.string  "payee_class_cd",   limit: 2
-    t.string  "line_cd",          limit: 2,                                comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "mail_addr",        limit: 90,                               comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
-    t.string  "bill_addr",        limit: 90,                               comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
-    t.string  "contact_pers",     limit: 50,                               comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
-    t.string  "designation",      limit: 5,                                comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
-    t.string  "phone_no",         limit: 40,                               comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
-    t.string  "lf_sw",            limit: 1,                                comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
-    t.string  "attention",        limit: 50,                               comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
-    t.string  "select_sw",        limit: 1,                                comment: " - Column already exists - Column already exists - Column already exists"
-    t.date    "last_select_date",                                          comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "user_id",          limit: 8,                   null: false, comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
-    t.date    "last_update",                                  null: false, comment: " - Column already exists - Column already exists"
-    t.string  "remarks",          limit: 4000,                             comment: " - Column already exists - Column already exists"
+    t.string  "line_cd",          limit: 2,                                              comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "mail_addr",        limit: 90,                                             comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
+    t.string  "bill_addr",        limit: 90,                                             comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
+    t.string  "contact_pers",     limit: 50,                                             comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
+    t.string  "designation",      limit: 5,                                              comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
+    t.string  "phone_no",         limit: 40,                                             comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
+    t.string  "lf_sw",            limit: 1,                                              comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
+    t.string  "attention",        limit: 50,                                             comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
+    t.string  "select_sw",        limit: 1,                                              comment: " - Column already exists - Column already exists - Column already exists"
+    t.date    "last_select_date",                                                        comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "user_id",          limit: 8,                                 null: false, comment: " - Column already exists - Column already exists - Column already exists - Column already exists"
+    t.date    "last_update",                                                null: false, comment: " - Column already exists - Column already exists"
+    t.string  "remarks",          limit: 4000,                                           comment: " - Column already exists - Column already exists"
     t.integer "cpi_rec_no",       limit: 12,   precision: 12
     t.string  "cpi_branch_cd",    limit: 2
+    t.string  "active_tag",       limit: 1,                   default: "A", null: false, comment: "Indicates if the record is active and may be used in claim processing."
   end
 
   add_index "giis_adjuster", ["line_cd"], name: "giis_adjuster_xx", tablespace: "indexes"
@@ -18509,34 +18526,34 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "giis_assured", primary_key: "assd_no", force: :cascade do |t|
-    t.string  "assd_name",         limit: 500,                 null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.boolean "govt_tag",                                      null: false, comment: " - Column already exists - Column already exists"
-    t.date    "tran_date",                                     null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "designation",       limit: 5,                                comment: " - Column already exists - Column already exists - Column already exists"
-    t.integer "gsis_no",           limit: 10,   precision: 10,              comment: " - Column already exists - Column already exists"
-    t.string  "mail_addr1",        limit: 50,                               comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "mail_addr2",        limit: 50,                               comment: " - Column already exists - Column already exists"
-    t.string  "mail_addr3",        limit: 50,                               comment: " - Column already exists - Column already exists"
-    t.string  "bill_addr1",        limit: 50,                  null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "bill_addr2",        limit: 50,                               comment: " - Column already exists - Column already exists"
-    t.string  "bill_addr3",        limit: 50,                               comment: " - Column already exists - Column already exists"
-    t.string  "contact_pers",      limit: 50,                               comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "phone_no",          limit: 40,                               comment: " - Column already exists - Column already exists - Column already exists"
-    t.integer "industry_cd",       limit: 3,    precision: 3,               comment: " - Column already exists - Column already exists - Column already exists"
-    t.integer "prnt_assd_no",      limit: 12,   precision: 12,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "office_type",       limit: 2,                                comment: " - Column already exists - Column already exists"
-    t.boolean "govt_type",                                                  comment: " - Column already exists - Column already exists"
-    t.string  "reference_no",      limit: 20,                               comment: " - Retrofitted - Column already exists"
-    t.string  "corporate_tag",     limit: 1,                                comment: " - Column already exists"
-    t.string  "institutional_tag", limit: 1,                                comment: " - Column already exists"
+    t.string  "assd_name",         limit: 500,                               null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.boolean "govt_tag",                                                    null: false, comment: " - Column already exists - Column already exists"
+    t.date    "tran_date",                                                   null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "designation",       limit: 5,                                              comment: " - Column already exists - Column already exists - Column already exists"
+    t.integer "gsis_no",           limit: 10,   precision: 10,                            comment: " - Column already exists - Column already exists"
+    t.string  "mail_addr1",        limit: 50,                                             comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "mail_addr2",        limit: 50,                                             comment: " - Column already exists - Column already exists"
+    t.string  "mail_addr3",        limit: 50,                                             comment: " - Column already exists - Column already exists"
+    t.string  "bill_addr1",        limit: 50,                                null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "bill_addr2",        limit: 50,                                             comment: " - Column already exists - Column already exists"
+    t.string  "bill_addr3",        limit: 50,                                             comment: " - Column already exists - Column already exists"
+    t.string  "contact_pers",      limit: 50,                                             comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "phone_no",          limit: 40,                                             comment: " - Column already exists - Column already exists - Column already exists"
+    t.integer "industry_cd",       limit: 3,    precision: 3,                             comment: " - Column already exists - Column already exists - Column already exists"
+    t.integer "prnt_assd_no",      limit: 12,   precision: 12,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "office_type",       limit: 2,                                              comment: " - Column already exists - Column already exists"
+    t.boolean "govt_type",                                                                comment: " - Column already exists - Column already exists"
+    t.string  "reference_no",      limit: 20,                                             comment: " - Retrofitted - Column already exists"
+    t.string  "corporate_tag",     limit: 1,                                              comment: " - Column already exists"
+    t.string  "institutional_tag", limit: 1,                                              comment: " - Column already exists"
     t.string  "first_name",        limit: 249
     t.string  "last_name",         limit: 249
     t.string  "middle_initial",    limit: 2
     t.integer "cpi_rec_no",        limit: 12,   precision: 12
     t.string  "cpi_branch_cd",     limit: 2
-    t.string  "user_id",           limit: 8,                   null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.date    "last_update",                                   null: false, comment: " - Column already exists - Column already exists"
-    t.string  "remarks",           limit: 4000,                             comment: " - Column already exists - Column already exists"
+    t.string  "user_id",           limit: 8,                                 null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.date    "last_update",                                                 null: false, comment: " - Column already exists - Column already exists"
+    t.string  "remarks",           limit: 4000,                                           comment: " - Column already exists - Column already exists"
     t.string  "assd_name2",        limit: 50
     t.integer "parent_assd_no",    limit: 12,   precision: 12
     t.string  "active_tag",        limit: 1
@@ -18549,12 +18566,13 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.integer "control_type_cd",   limit: 5,    precision: 5
     t.string  "default_network",   limit: 1
     t.string  "vat_tag",           limit: 1
-    t.string  "no_tin_reason",     limit: 50,                               comment: "No TIN Reason"
+    t.string  "no_tin_reason",     limit: 50,                                             comment: "No TIN Reason"
     t.integer "birth_date",        limit: 2,    precision: 2
     t.string  "birth_month",       limit: 9
     t.integer "birth_year",        limit: 4,    precision: 4
     t.string  "email_address",     limit: 100
     t.string  "suffix",            limit: 5
+    t.string  "peza_tag",          limit: 1,                   default: "N",              comment: "PEZA-tagging of assured; value is either Y or N."
   end
 
   add_index "giis_assured", ["reference_no"], name: "assured_uk", unique: true, tablespace: "indexes"
@@ -18590,6 +18608,18 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.date    "last_update",                             null: false
     t.date    "create_date",                             null: false
     t.string  "create_user", limit: 8,                   null: false
+  end
+
+  create_table "giis_assured_peza", primary_key: ["assd_no", "cert_cd", "cr_no"], force: :cascade do |t|
+    t.integer "assd_no",     limit: 12,   precision: 12, null: false, comment: "References GIIS_ASSURED.ASSD_NO; relates PEZA certification information to its corresponding assured"
+    t.string  "cert_cd",     limit: 1,                   null: false, comment: "PEZA certification type code"
+    t.date    "cr_date",                                              comment: "Date of PEZA registration."
+    t.string  "cr_no",       limit: 30,                  null: false, comment: "Certificate of registration number."
+    t.date    "eff_date",                                null: false, comment: "Effectivity date of certification."
+    t.date    "expiry_date",                             null: false, comment: "Expiry date of certification."
+    t.string  "user_id",     limit: 8,                   null: false, comment: "User ID of the user who added the record."
+    t.date    "last_update",                             null: false, comment: "System date when record is created."
+    t.string  "remarks",     limit: 4000,                             comment: "Any relevant information about the record. This field is optional."
   end
 
   create_table "giis_banc_area", primary_key: "area_cd", force: :cascade do |t|
@@ -18904,13 +18934,14 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "giis_clm_stat", primary_key: "clm_stat_cd", id: :string, limit: 2, force: :cascade do |t|
-    t.string  "clm_stat_desc", limit: 30,                  null: false
-    t.string  "clm_stat_type", limit: 2,                   null: false
+    t.string  "clm_stat_desc", limit: 30,                                null: false
+    t.string  "clm_stat_type", limit: 2,                                 null: false
     t.string  "remarks",       limit: 4000
-    t.string  "user_id",       limit: 8,                   null: false
-    t.date    "last_update",                               null: false
+    t.string  "user_id",       limit: 8,                                 null: false
+    t.date    "last_update",                                             null: false
     t.integer "cpi_rec_no",    limit: 12,   precision: 12
     t.string  "cpi_branch_cd", limit: 2
+    t.string  "active_tag",    limit: 1,                   default: "A", null: false, comment: "Indicates if the record is active and may be used in claim processing."
   end
 
   create_table "giis_co_intrmdry_types", primary_key: ["iss_cd", "co_intm_type"], force: :cascade do |t|
@@ -19603,6 +19634,14 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string "remarks",     limit: 4000
   end
 
+  create_table "giis_insp_approver", primary_key: "userid", id: :string, limit: 8, comment: "User ID who approves the inspection report", force: :cascade do |t|
+    t.date   "valid_from",               null: false, comment: "Start of the validity duration"
+    t.date   "valid_to",                              comment: "End of the validity duration"
+    t.string "remarks",     limit: 4000,              comment: "Any pertinent information regarding the record. This is free-entry and an optional field."
+    t.string "user_id",     limit: 8,    null: false, comment: "User ID of last person who updated the record. This is system generated."
+    t.date   "last_update",              null: false, comment: "Date and time record is created or last updated/modified."
+  end
+
   create_table "giis_inspector", primary_key: "insp_cd", force: :cascade do |t|
     t.string "insp_name",   limit: 100,  null: false
     t.string "remarks",     limit: 4000
@@ -19610,7 +19649,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.date   "last_update",              null: false
   end
 
-  add_index "giis_inspector", ["insp_name"], name: "sys_c0012091", unique: true
+  add_index "giis_inspector", ["insp_name"], name: "sys_c0018189", unique: true
 
   create_table "giis_intermediary", comment: "Intermediary (agent) information", primary_key: "intm_no", force: :cascade do |t|
     t.string  "intm_name",        limit: 240,                           null: false, comment: "Agent's full name"
@@ -19934,26 +19973,27 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_index "giis_line_subline_coverages", ["pack_line_cd", "pack_subline_cd"], name: "giis_line_subline_coverages_xx", tablespace: "indexes"
 
   create_table "giis_loss_ctgry", primary_key: ["line_cd", "loss_cat_cd"], force: :cascade do |t|
-    t.string  "line_cd",        limit: 2,                   null: false
-    t.string  "loss_cat_cd",    limit: 2,                   null: false
-    t.string  "loss_cat_des",   limit: 25,                  null: false
-    t.string  "user_id",        limit: 8,                   null: false
-    t.date    "last_update",                                null: false
+    t.string  "line_cd",        limit: 2,                                 null: false
+    t.string  "loss_cat_cd",    limit: 2,                                 null: false
+    t.string  "loss_cat_des",   limit: 25,                                null: false
+    t.string  "user_id",        limit: 8,                                 null: false
+    t.date    "last_update",                                              null: false
     t.string  "loss_cat_group", limit: 50
     t.string  "remarks",        limit: 4000
     t.integer "cpi_rec_no",     limit: 12,   precision: 12
     t.string  "cpi_branch_cd",  limit: 2
     t.string  "total_tag",      limit: 1
     t.integer "peril_cd",       limit: 5,    precision: 5
+    t.string  "active_tag",     limit: 1,                   default: "A", null: false, comment: "Indicates if the record is active and may be used in claim processing."
   end
 
   create_table "giis_loss_exp", id: false, force: :cascade do |t|
-    t.string  "line_cd",         limit: 2,                             null: false
-    t.string  "loss_exp_cd",     limit: 5,                             null: false
-    t.string  "loss_exp_desc",   limit: 30,                            null: false
-    t.string  "loss_exp_type",   limit: 1,                             null: false
-    t.string  "user_id",         limit: 8,                             null: false
-    t.date    "last_update",                                           null: false
+    t.string  "line_cd",         limit: 2,                                           null: false
+    t.string  "loss_exp_cd",     limit: 5,                                           null: false
+    t.string  "loss_exp_desc",   limit: 30,                                          null: false
+    t.string  "loss_exp_type",   limit: 1,                                           null: false
+    t.string  "user_id",         limit: 8,                                           null: false
+    t.date    "last_update",                                                         null: false
     t.string  "remarks",         limit: 4000
     t.string  "subline_cd",      limit: 7
     t.string  "comp_sw",         limit: 1
@@ -19963,6 +20003,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "cpi_branch_cd",   limit: 2
     t.integer "peril_cd",        limit: 5,    precision: 5
     t.string  "lps_sw",          limit: 1
+    t.string  "active_tag",      limit: 1,                             default: "A", null: false, comment: "Indicates if the record is active and may be used in claim processing."
   end
 
   add_index "giis_loss_exp", ["line_cd", "subline_cd", "loss_exp_cd", "loss_exp_type"], name: "giis_loss_exp_uk", unique: true, tablespace: "indexes"
@@ -20214,16 +20255,17 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "giis_modules", comment: "The GIIS_MODULES table contains all the underwriting modules that is accessible to the user.\nModules not listed in this table will not be accessible to any user. Values in this table are used by the GIIS_MODULES_USER table to define accessible underwriting modules for each particular user.", primary_key: "module_id", id: :string, limit: 10, comment: " - Column already exists - Column already exists", force: :cascade do |t|
-    t.string  "module_desc",    limit: 100,                              comment: " - Column already exists - Column already exists"
-    t.string  "user_id",        limit: 8,                   null: false, comment: " - Column already exists - Column already exists"
-    t.date    "last_update",                                null: false, comment: " - Column already exists - Column already exists"
-    t.string  "remarks",        limit: 4000,                             comment: " - Column already exists - Column already exists"
+    t.string  "module_desc",    limit: 100,                                            comment: " - Column already exists - Column already exists"
+    t.string  "user_id",        limit: 8,                                 null: false, comment: " - Column already exists - Column already exists"
+    t.date    "last_update",                                              null: false, comment: " - Column already exists - Column already exists"
+    t.string  "remarks",        limit: 4000,                                           comment: " - Column already exists - Column already exists"
     t.integer "cpi_rec_no",     limit: 12,   precision: 12
     t.string  "cpi_branch_cd",  limit: 2
-    t.string  "module_type",    limit: 1,                                comment: "I = Inquiry, M = Maintenance, T = Transaction, U = Utility, (C is unused and undocumented, no definition is provided for the meaning of the check constraint C)"
-    t.string  "module_grp",     limit: 1,                                comment: "A = Accounting, C = Claims, U = Underwriting"
+    t.string  "module_type",    limit: 1,                                              comment: "I = Inquiry, M = Maintenance, T = Transaction, U = Utility, (C is unused and undocumented, no definition is provided for the meaning of the check constraint C)"
+    t.string  "module_grp",     limit: 1,                                              comment: "A = Accounting, C = Claims, U = Underwriting"
     t.boolean "mod_access_tag"
     t.string  "web_enabled",    limit: 1
+    t.string  "upload_sw",      limit: 1,                   default: "N"
   end
 
   create_table "giis_modules_tran", primary_key: ["module_id", "tran_cd"], force: :cascade do |t|
@@ -20319,10 +20361,11 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "giis_nationality", primary_key: "nationality_cd", id: :string, limit: 2, force: :cascade do |t|
-    t.string "nationality_desc", limit: 30,   null: false
+    t.string "nationality_desc", limit: 30,                 null: false
     t.string "remarks",          limit: 4000
-    t.string "user_id",          limit: 8,    null: false
-    t.date   "last_update",                   null: false
+    t.string "user_id",          limit: 8,                  null: false
+    t.date   "last_update",                                 null: false
+    t.string "active_tag",       limit: 1,    default: "A", null: false, comment: "Indicates if the record is active and may be used in claim processing."
   end
 
   create_table "giis_non_renew_reason", primary_key: "non_ren_reason_cd", id: :string, limit: 4, force: :cascade do |t|
@@ -20766,6 +20809,26 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.date    "last_update",                               null: false
   end
 
+  create_table "giis_peza_cert", primary_key: "cert_cd", id: :string, limit: 1, comment: "PEZA certification type code I - ITH G - 5% GIT", force: :cascade do |t|
+    t.string "cert_type",   limit: 50,   null: false, comment: "Type of PEZA certification; either ITH or 5% GIT"
+    t.string "tax_exempt",  limit: 50,   null: false, comment: "Tax incentive applicable to the type of PEZA certification; Local taxes for ITH; national and local taxes for 5% GIT"
+    t.string "user_id",     limit: 8,    null: false, comment: "User ID of the user who added the record."
+    t.date   "last_update",              null: false, comment: "System date when record is created."
+    t.string "remarks",     limit: 4000,              comment: "Any relevant information about the record. This field is optional."
+  end
+
+  create_table "giis_peza_pictures", id: false, force: :cascade do |t|
+    t.integer "assd_no",     limit: 12,   precision: 12, null: false, comment: "References GIIS_ASSURED.ASSD_NO; relates PEZA certification information to its corresponding assured"
+    t.string  "cert_cd",     limit: 1,                   null: false
+    t.string  "cr_no",       limit: 30,                  null: false
+    t.string  "file_name",   limit: 2000,                null: false, comment: "The complete path including the file name of the attachment."
+    t.string  "file_type",   limit: 1,                                comment: "Type of file; D for document files, P for pictures"
+    t.string  "file_ext",    limit: 6,                   null: false, comment: "File extension of the media file attached to the PEZA certification maintenance."
+    t.string  "user_id",     limit: 8,                   null: false, comment: "User ID of the user who added the record."
+    t.date    "last_update",                             null: false, comment: "System date when record is created."
+    t.string  "remarks",     limit: 4000,                             comment: "Any relevant information about the record. This field is optional."
+  end
+
   create_table "giis_plan", primary_key: "plan_cd", force: :cascade do |t|
     t.string "plan_desc",   limit: 50,   null: false, comment: "Plan Description"
     t.string "line_cd",     limit: 3,    null: false, comment: "Line Code"
@@ -20986,22 +21049,24 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_index "giis_racs", ["ggrp_grp_cd"], name: "giis_racs_xx", tablespace: "indexes"
 
   create_table "giis_recovery_status", primary_key: "rec_stat_cd", id: :string, limit: 5, force: :cascade do |t|
-    t.string  "rec_stat_desc", limit: 50,                  null: false
+    t.string  "rec_stat_desc", limit: 50,                                null: false
     t.string  "remarks",       limit: 4000
     t.integer "cpi_rec_no",    limit: 12,   precision: 12
     t.string  "cpi_branch_cd", limit: 2
-    t.string  "user_id",       limit: 8,                   null: false
-    t.date    "last_update",                               null: false
-    t.string  "rec_stat_type", limit: 1,                   null: false
+    t.string  "user_id",       limit: 8,                                 null: false
+    t.date    "last_update",                                             null: false
+    t.string  "rec_stat_type", limit: 1,                                 null: false
+    t.string  "active_tag",    limit: 1,                   default: "A", null: false, comment: "Indicates if the record is active and may be used in claim processing."
   end
 
   create_table "giis_recovery_type", primary_key: "rec_type_cd", id: :string, limit: 5, force: :cascade do |t|
-    t.string  "rec_type_desc", limit: 50,                  null: false
+    t.string  "rec_type_desc", limit: 50,                                null: false
     t.string  "remarks",       limit: 4000
     t.integer "cpi_rec_no",    limit: 12,   precision: 12
     t.string  "cpi_branch_cd", limit: 2
-    t.string  "user_id",       limit: 8,                   null: false
-    t.date    "last_update",                               null: false
+    t.string  "user_id",       limit: 8,                                 null: false
+    t.date    "last_update",                                             null: false
+    t.string  "active_tag",    limit: 1,                   default: "A", null: false, comment: "Indicates if the record is active and may be used in claim processing."
   end
 
   create_table "giis_ref_seq", primary_key: ["acct_iss_cd", "branch_cd"], force: :cascade do |t|
@@ -21189,7 +21254,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.date   "from_date"
     t.date   "to_date"
     t.string "short_name",     limit: 1
-    t.string "file_name",      limit: 100
+    t.string "file_name",      limit: 2000
   end
 
   create_table "giis_slid_comm", primary_key: ["line_cd", "subline_cd", "peril_cd", "hi_prem_lim", "lo_prem_lim"], force: :cascade do |t|
@@ -21608,6 +21673,34 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "zone_grp",          limit: 2
   end
 
+  create_table "giis_upload_columns", primary_key: ["up_mod_cd", "upload_cd", "col_no"], force: :cascade do |t|
+    t.integer "up_mod_cd",   limit: 10,   precision: 10, null: false
+    t.integer "upload_cd",   limit: 5,    precision: 5,  null: false
+    t.string  "col_no",      limit: 3,                   null: false
+    t.string  "col_name",    limit: 50,                  null: false
+    t.string  "table_name",  limit: 30
+    t.string  "column_name", limit: 30
+    t.string  "parameters",  limit: 4000
+    t.string  "user_id",     limit: 8,                   null: false
+    t.date    "last_update",                             null: false
+  end
+
+  create_table "giis_upload_modules", primary_key: "up_mod_cd", force: :cascade do |t|
+    t.string "module_id",   limit: 10, null: false
+    t.string "user_id",     limit: 8,  null: false
+    t.date   "last_update",            null: false
+  end
+
+  create_table "giis_uploads", primary_key: ["up_mod_cd", "upload_cd"], force: :cascade do |t|
+    t.integer "up_mod_cd",     limit: 10, precision: 10, null: false
+    t.integer "upload_cd",     limit: 5,  precision: 5,  null: false
+    t.string  "upload_desc",   limit: 40,                null: false
+    t.string  "staging_sw",    limit: 1
+    t.string  "staging_table", limit: 40
+    t.string  "user_id",       limit: 8,                 null: false
+    t.date    "last_update",                             null: false
+  end
+
   create_table "giis_user_grp_dtl", primary_key: ["user_grp", "tran_cd", "iss_cd"], force: :cascade do |t|
     t.integer "user_grp",    limit: 4,    precision: 4, null: false, comment: " - Column already exists"
     t.string  "iss_cd",      limit: 2,                  null: false, comment: " - Column already exists"
@@ -21763,22 +21856,18 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "ri_sw",               limit: 1,                                           comment: " - Column already exists - Column already exists - Column already exists"
     t.string  "comm_update_tag",     limit: 1,                              null: false, comment: " - Column already exists"
     t.string  "mgr_sw",              limit: 1,                                           comment: " - Column already exists"
-    t.string  "mktng_sw",            limit: 1
     t.string  "all_user_sw",         limit: 1
     t.string  "remarks",             limit: 4000,                                        comment: " - Column already exists - Column already exists - Column already exists"
     t.string  "last_user_id",        limit: 8,                                           comment: " - Column already exists"
     t.date    "last_update",                                                null: false, comment: " - Column already exists - Column already exists - Column already exists"
     t.string  "active_flag",         limit: 1
     t.string  "change_pass_sw",      limit: 1
-    t.string  "workflow_tag",        limit: 1
     t.date    "last_login"
     t.date    "password_reset_date"
     t.string  "email_address",       limit: 200
     t.string  "password",            limit: 1000
     t.string  "valid_ip",            limit: 15
-    t.string  "temp_access_tag",     limit: 1
     t.date    "last_password_reset"
-    t.string  "allow_gen_file_sw",   limit: 1
     t.string  "salt",                limit: 1000
     t.string  "unchanged_pw",        limit: 1
     t.integer "invalid_login_tries", limit: 2,    precision: 2, default: 0
@@ -22231,24 +22320,25 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_index "gipi_cargo_carrier", ["vessel_cd"], name: "gipi_cargo_carrier_xx", tablespace: "indexes"
 
   create_table "gipi_casualty_item", primary_key: ["policy_id", "item_no"], force: :cascade do |t|
-    t.integer "policy_id",              limit: 12,   precision: 12, null: false, comment: " - Column already exists - Column already exists"
-    t.integer "item_no",                limit: 9,    precision: 9,  null: false, comment: " - Column already exists - Column already exists"
-    t.string  "section_line_cd",        limit: 2,                                comment: " - Column already exists - Column already exists"
-    t.string  "section_subline_cd",     limit: 7,                                comment: " - Column already exists - Column already exists"
-    t.string  "section_or_hazard_cd",   limit: 3,                                comment: " - Column already exists - Column already exists"
-    t.integer "capacity_cd",            limit: 4,    precision: 4,               comment: " - Column already exists - Column already exists"
-    t.string  "property_no_type",       limit: 1,                                comment: " - Column already exists - Column already exists"
-    t.string  "property_no",            limit: 30,                               comment: " - Column already exists - Column already exists"
-    t.string  "location",               limit: 150,                              comment: " - Column already exists - Column already exists"
-    t.string  "conveyance_info",        limit: 60,                               comment: " - Column already exists - Column already exists"
-    t.string  "interest_on_premises",   limit: 500,                              comment: " - Column already exists - Column already exists"
-    t.string  "limit_of_liability",     limit: 500,                              comment: " - Column already exists - Column already exists"
-    t.string  "section_or_hazard_info", limit: 2000,                             comment: " - Column already exists - Column already exists"
+    t.integer "policy_id",              limit: 12,   precision: 12,               null: false, comment: " - Column already exists - Column already exists"
+    t.integer "item_no",                limit: 9,    precision: 9,                null: false, comment: " - Column already exists - Column already exists"
+    t.string  "section_line_cd",        limit: 2,                                              comment: " - Column already exists - Column already exists"
+    t.string  "section_subline_cd",     limit: 7,                                              comment: " - Column already exists - Column already exists"
+    t.string  "section_or_hazard_cd",   limit: 3,                                              comment: " - Column already exists - Column already exists"
+    t.integer "capacity_cd",            limit: 4,    precision: 4,                             comment: " - Column already exists - Column already exists"
+    t.string  "property_no_type",       limit: 1,                                              comment: " - Column already exists - Column already exists"
+    t.string  "property_no",            limit: 30,                                             comment: " - Column already exists - Column already exists"
+    t.string  "location",               limit: 150,                                            comment: " - Column already exists - Column already exists"
+    t.string  "conveyance_info",        limit: 60,                                             comment: " - Column already exists - Column already exists"
+    t.string  "interest_on_premises",   limit: 500,                                            comment: " - Column already exists - Column already exists"
+    t.string  "limit_of_liability",     limit: 500,                                            comment: " - Column already exists - Column already exists"
+    t.string  "section_or_hazard_info", limit: 2000,                                           comment: " - Column already exists - Column already exists"
     t.integer "cpi_rec_no",             limit: 12,   precision: 12
     t.string  "cpi_branch_cd",          limit: 2
-    t.integer "location_cd",            limit: 5,    precision: 5,               comment: "Unique code of each location per treaty year; basis of accumulation"
+    t.integer "location_cd",            limit: 5,    precision: 5,                             comment: "Unique code of each location per treaty year; basis of accumulation"
     t.string  "arc_ext_data",           limit: 1
     t.integer "old_capacity_cd",        limit: 4,    precision: 4
+    t.string  "upload_sw",              limit: 1,                   default: "N"
   end
 
   add_index "gipi_casualty_item", ["capacity_cd"], name: "gipi_casualty_item_xx2", tablespace: "indexes"
@@ -22544,37 +22634,38 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "gipi_fireitem", primary_key: ["policy_id", "item_no"], force: :cascade do |t|
-    t.integer "policy_id",            limit: 12,   precision: 12, null: false, comment: " - Column already exists - Column already exists"
-    t.integer "item_no",              limit: 9,    precision: 9,  null: false, comment: " - Column already exists - Column already exists"
-    t.string  "district_no",          limit: 6,                                comment: " - Column already exists - Column already exists"
-    t.string  "eq_zone",              limit: 2,                                comment: " - Column already exists - Column already exists"
-    t.string  "tarf_cd",              limit: 12,                               comment: " - Column already exists - Column already exists"
-    t.string  "block_no",             limit: 6,                                comment: " - Column already exists - Column already exists"
-    t.string  "fr_item_type",         limit: 3,                                comment: " - Column already exists - Column already exists"
-    t.string  "loc_risk1",            limit: 50,                               comment: " - Column already exists - Column already exists"
-    t.string  "loc_risk2",            limit: 50,                               comment: " - Column already exists - Column already exists"
-    t.string  "loc_risk3",            limit: 50,                               comment: " - Column already exists - Column already exists"
-    t.string  "tariff_zone",          limit: 2,                                comment: " - Column already exists - Column already exists"
-    t.string  "typhoon_zone",         limit: 2,                                comment: " - Column already exists - Column already exists"
-    t.string  "construction_cd",      limit: 2,                                comment: " - Column already exists - Column already exists"
-    t.string  "construction_remarks", limit: 2000,                             comment: " - Column already exists - Column already exists"
-    t.string  "front",                limit: 2000,                             comment: " - Column already exists - Column already exists"
-    t.string  "right",                limit: 2000,                             comment: " - Column already exists - Column already exists"
-    t.string  "left",                 limit: 2000,                             comment: " - Column already exists - Column already exists"
-    t.string  "rear",                 limit: 2000,                             comment: " - Column already exists - Column already exists"
-    t.string  "occupancy_cd",         limit: 3,                                comment: " - Column already exists - Column already exists"
-    t.string  "occupancy_remarks",    limit: 2000,                             comment: " - Column already exists - Column already exists"
-    t.string  "flood_zone",           limit: 2,                                comment: " - Column already exists"
+    t.integer "policy_id",            limit: 12,   precision: 12,               null: false, comment: " - Column already exists - Column already exists"
+    t.integer "item_no",              limit: 9,    precision: 9,                null: false, comment: " - Column already exists - Column already exists"
+    t.string  "district_no",          limit: 6,                                              comment: " - Column already exists - Column already exists"
+    t.string  "eq_zone",              limit: 2,                                              comment: " - Column already exists - Column already exists"
+    t.string  "tarf_cd",              limit: 12,                                             comment: " - Column already exists - Column already exists"
+    t.string  "block_no",             limit: 6,                                              comment: " - Column already exists - Column already exists"
+    t.string  "fr_item_type",         limit: 3,                                              comment: " - Column already exists - Column already exists"
+    t.string  "loc_risk1",            limit: 50,                                             comment: " - Column already exists - Column already exists"
+    t.string  "loc_risk2",            limit: 50,                                             comment: " - Column already exists - Column already exists"
+    t.string  "loc_risk3",            limit: 50,                                             comment: " - Column already exists - Column already exists"
+    t.string  "tariff_zone",          limit: 2,                                              comment: " - Column already exists - Column already exists"
+    t.string  "typhoon_zone",         limit: 2,                                              comment: " - Column already exists - Column already exists"
+    t.string  "construction_cd",      limit: 2,                                              comment: " - Column already exists - Column already exists"
+    t.string  "construction_remarks", limit: 2000,                                           comment: " - Column already exists - Column already exists"
+    t.string  "front",                limit: 2000,                                           comment: " - Column already exists - Column already exists"
+    t.string  "right",                limit: 2000,                                           comment: " - Column already exists - Column already exists"
+    t.string  "left",                 limit: 2000,                                           comment: " - Column already exists - Column already exists"
+    t.string  "rear",                 limit: 2000,                                           comment: " - Column already exists - Column already exists"
+    t.string  "occupancy_cd",         limit: 3,                                              comment: " - Column already exists - Column already exists"
+    t.string  "occupancy_remarks",    limit: 2000,                                           comment: " - Column already exists - Column already exists"
+    t.string  "flood_zone",           limit: 2,                                              comment: " - Column already exists"
     t.string  "assignee",             limit: 30
-    t.string  "user_id",              limit: 8,                                comment: " - Column already exists"
-    t.date    "last_update",                                                   comment: " - Column already exists"
+    t.string  "user_id",              limit: 8,                                              comment: " - Column already exists"
+    t.date    "last_update",                                                                 comment: " - Column already exists"
     t.integer "cpi_rec_no",           limit: 12,   precision: 12
     t.string  "cpi_branch_cd",        limit: 2
-    t.integer "block_id",             limit: 12,   precision: 12, null: false
+    t.integer "block_id",             limit: 12,   precision: 12,               null: false
     t.string  "risk_cd",              limit: 7
     t.string  "arc_ext_data",         limit: 1
-    t.string  "latitude",             limit: 50,                               comment: "Latitude coordinates of the location of risk."
-    t.string  "longitude",            limit: 50,                               comment: "Longitude coordinates of the location of risk."
+    t.string  "latitude",             limit: 50,                                             comment: "Latitude coordinates of the location of risk."
+    t.string  "longitude",            limit: 50,                                             comment: "Longitude coordinates of the location of risk."
+    t.string  "upload_sw",            limit: 1,                   default: "N"
   end
 
   add_index "gipi_fireitem", ["block_id"], name: "gipi_fireitem_xx1", tablespace: "indexes"
@@ -22994,27 +23085,27 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "gipi_item", comment: "This is the main transaction table for the common item information used by all underwriting lines.", primary_key: ["policy_id", "item_no"], force: :cascade do |t|
-    t.integer "policy_id",             limit: 12,   precision: 12,           null: false, comment: " - Column already exists - Column already exists"
-    t.integer "item_grp",              limit: 5,    precision: 5,            null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.integer "item_no",               limit: 9,    precision: 9,            null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "item_title",            limit: 50,                            null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "item_desc",             limit: 2000,                                       comment: " - Column already exists - Column already exists - Column already exists"
+    t.integer "policy_id",             limit: 12,   precision: 12,                         null: false, comment: " - Column already exists - Column already exists"
+    t.integer "item_grp",              limit: 5,    precision: 5,                          null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.integer "item_no",               limit: 9,    precision: 9,                          null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "item_title",            limit: 50,                                          null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "item_desc",             limit: 2000,                                                     comment: " - Column already exists - Column already exists - Column already exists"
     t.string  "item_desc2",            limit: 2000
-    t.decimal "tsi_amt",                            precision: 16, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "prem_amt",                           precision: 12, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "ann_tsi_amt",                        precision: 16, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "ann_prem_amt",                       precision: 12, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "rec_flag",              limit: 1,                                          comment: " - Column already exists - Column already exists - Column already exists"
-    t.integer "currency_cd",           limit: 2,    precision: 2,                         comment: " - Column already exists - Column already exists"
-    t.decimal "currency_rt",                        precision: 12, scale: 9,              comment: " - Column already exists - Column already exists"
-    t.integer "group_cd",              limit: 4,    precision: 4,                         comment: " - Column already exists - Column already exists"
-    t.date    "from_date",                                                                comment: " - Column already exists - Column already exists"
-    t.date    "to_date",                                                                  comment: " - Column already exists - Column already exists"
-    t.string  "pack_line_cd",          limit: 2,                                          comment: " - Column already exists - Column already exists"
-    t.string  "pack_subline_cd",       limit: 7,                                          comment: " - Column already exists - Column already exists"
-    t.string  "discount_sw",           limit: 1,                                          comment: " - Column already exists"
+    t.decimal "tsi_amt",                            precision: 16, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "prem_amt",                           precision: 12, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "ann_tsi_amt",                        precision: 16, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "ann_prem_amt",                       precision: 12, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "rec_flag",              limit: 1,                                                        comment: " - Column already exists - Column already exists - Column already exists"
+    t.integer "currency_cd",           limit: 2,    precision: 2,                                       comment: " - Column already exists - Column already exists"
+    t.decimal "currency_rt",                        precision: 12, scale: 9,                            comment: " - Column already exists - Column already exists"
+    t.integer "group_cd",              limit: 4,    precision: 4,                                       comment: " - Column already exists - Column already exists"
+    t.date    "from_date",                                                                              comment: " - Column already exists - Column already exists"
+    t.date    "to_date",                                                                                comment: " - Column already exists - Column already exists"
+    t.string  "pack_line_cd",          limit: 2,                                                        comment: " - Column already exists - Column already exists"
+    t.string  "pack_subline_cd",       limit: 7,                                                        comment: " - Column already exists - Column already exists"
+    t.string  "discount_sw",           limit: 1,                                                        comment: " - Column already exists"
     t.integer "coverage_cd",           limit: 2,    precision: 2
-    t.string  "other_info",            limit: 2000,                                       comment: " - Column already exists"
+    t.string  "other_info",            limit: 2000,                                                     comment: " - Column already exists"
     t.date    "mc_coc_printed_date"
     t.integer "mc_coc_printed_cnt",    limit: 3,    precision: 3
     t.integer "cpi_rec_no",            limit: 12,   precision: 12
@@ -23031,6 +23122,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.integer "risk_no",               limit: 5,    precision: 5
     t.integer "risk_item_no",          limit: 9,    precision: 9
     t.string  "arc_ext_data",          limit: 1
+    t.string  "upload_sw",             limit: 1,                             default: "N"
   end
 
   add_index "gipi_item", ["coverage_cd"], name: "gipi_item_xx1", tablespace: "indexes"
@@ -23110,22 +23202,22 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "gipi_itmperil", comment: "This is the main transaction table for the perils covered per item of a policy.", primary_key: ["policy_id", "item_no", "line_cd", "peril_cd"], force: :cascade do |t|
-    t.integer "policy_id",     limit: 12, precision: 12,           null: false, comment: " - Column already exists - Column already exists"
-    t.integer "item_no",       limit: 9,  precision: 9,            null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "line_cd",       limit: 2,                           null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.integer "peril_cd",      limit: 5,  precision: 5,            null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "rec_flag",      limit: 1,                           null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "tarf_cd",       limit: 12,                                       comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "prem_rt",                  precision: 12, scale: 9,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "tsi_amt",                  precision: 16, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "prem_amt",                 precision: 12, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "ann_tsi_amt",              precision: 16, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "ann_prem_amt",             precision: 12, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "comp_rem",      limit: 50,                                       comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "discount_sw",   limit: 1,                                        comment: " - Column already exists - Column already exists"
+    t.integer "policy_id",     limit: 12, precision: 12,                         null: false, comment: " - Column already exists - Column already exists"
+    t.integer "item_no",       limit: 9,  precision: 9,                          null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "line_cd",       limit: 2,                                         null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.integer "peril_cd",      limit: 5,  precision: 5,                          null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "rec_flag",      limit: 1,                                         null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "tarf_cd",       limit: 12,                                                     comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "prem_rt",                  precision: 12, scale: 9,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "tsi_amt",                  precision: 16, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "prem_amt",                 precision: 12, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "ann_tsi_amt",              precision: 16, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "ann_prem_amt",             precision: 12, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "comp_rem",      limit: 50,                                                     comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "discount_sw",   limit: 1,                                                      comment: " - Column already exists - Column already exists"
     t.string  "prt_flag",      limit: 1
-    t.decimal "ri_comm_rate",             precision: 12, scale: 9,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "ri_comm_amt",              precision: 14, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "ri_comm_rate",             precision: 12, scale: 9,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "ri_comm_amt",              precision: 14, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
     t.integer "cpi_rec_no",    limit: 12, precision: 12
     t.string  "cpi_branch_cd", limit: 2
     t.string  "as_charge_sw",  limit: 1
@@ -23134,6 +23226,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.decimal "base_amt",                 precision: 16, scale: 2
     t.string  "aggregate_sw",  limit: 1
     t.string  "arc_ext_data",  limit: 1
+    t.string  "upload_sw",     limit: 1,                           default: "N"
   end
 
   add_index "gipi_itmperil", ["line_cd", "peril_cd"], name: "gipi_itmperil_xx1", tablespace: "indexes"
@@ -23372,7 +23465,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "gipi_open_cargo", ["cargo_class_cd"], name: "gipi_open_cargo_xx", tablespace: "indexes"
 
-  create_table "gipi_open_liab", primary_key: ["policy_id", "geog_cd"], force: :cascade do |t|
+  create_table "gipi_open_liab", id: false, force: :cascade do |t|
     t.integer "policy_id",        limit: 12,  precision: 12,           null: false, comment: " - Column already exists - Column already exists - Column already exists"
     t.integer "geog_cd",          limit: 2,   precision: 2,            null: false, comment: " - Column already exists - Column already exists - Column already exists"
     t.string  "rec_flag",         limit: 1,                            null: false, comment: " - Column already exists - Column already exists - Column already exists"
@@ -23391,7 +23484,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_index "gipi_open_liab", ["currency_cd"], name: "gipi_open_liab_xx1", tablespace: "indexes"
   add_index "gipi_open_liab", ["geog_cd"], name: "gipi_open_liab_xx2", tablespace: "indexes"
 
-  create_table "gipi_open_peril", primary_key: ["policy_id", "geog_cd", "line_cd", "peril_cd"], force: :cascade do |t|
+  create_table "gipi_open_peril", id: false, force: :cascade do |t|
     t.integer "policy_id",        limit: 12,   precision: 12,           null: false, comment: " - Column already exists"
     t.integer "geog_cd",          limit: 2,    precision: 2,            null: false, comment: " - Column already exists"
     t.string  "line_cd",          limit: 2,                             null: false, comment: " - Column already exists"
@@ -25342,7 +25435,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "subcon_sw",          limit: 1,                 null: false
   end
 
-  create_table "gipi_quote_reminder", primary_key: ["quote_id", "note_id"], force: :cascade do |t|
+  create_table "gipi_quote_reminder", id: false, force: :cascade do |t|
     t.integer "quote_id",     limit: 12,   precision: 12, null: false
     t.integer "note_id",      limit: 5,    precision: 5,  null: false, comment: "UNIQUE IDENTIFICATION OF NOTES PER QUOTATION"
     t.string  "note_type",    limit: 1,                   null: false, comment: "R-REMINDER/ALARM, N-NOTE"
@@ -25924,6 +26017,20 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "arc_ext_data", limit: 1
   end
 
+  create_table "gipi_upload", primary_key: ["up_mod_cd", "upload_cd", "upload_no"], force: :cascade do |t|
+    t.integer "up_mod_cd",        limit: 10, precision: 10, null: false
+    t.integer "upload_cd",        limit: 5,  precision: 5,  null: false
+    t.integer "upload_no",        limit: 12, precision: 12, null: false
+    t.string  "file_name",        limit: 70,                null: false
+    t.integer "no_of_up_records", limit: 12, precision: 12
+    t.integer "no_of_records",    limit: 12, precision: 12
+    t.string  "process_sw",       limit: 1
+    t.string  "process_user",     limit: 8
+    t.date    "process_date"
+    t.string  "user_id",          limit: 8,                 null: false
+    t.date    "last_update",                                null: false
+  end
+
   create_table "gipi_upload_beneficiary", id: false, force: :cascade do |t|
     t.integer "upload_no",        limit: 12,  precision: 12, null: false
     t.string  "filename",         limit: 50,                 null: false
@@ -25938,6 +26045,16 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "sex",              limit: 1
     t.string  "user_id",          limit: 8,                  null: false
     t.date    "last_update",                                 null: false
+  end
+
+  create_table "gipi_upload_error_log", primary_key: ["up_mod_cd", "upload_cd", "upload_no", "record_no"], force: :cascade do |t|
+    t.integer "up_mod_cd",   limit: 10,   precision: 10, null: false
+    t.integer "upload_cd",   limit: 5,    precision: 5,  null: false
+    t.integer "upload_no",   limit: 12,   precision: 12, null: false
+    t.integer "record_no",   limit: 10,   precision: 10, null: false
+    t.string  "error_desc",  limit: 4000
+    t.string  "user_id",     limit: 8,                   null: false
+    t.date    "last_update",                             null: false
   end
 
   create_table "gipi_upload_itmperil", id: false, force: :cascade do |t|
@@ -26658,28 +26775,28 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_index "gipi_uwreports_temp_ext", ["policy_id"], name: "uwreports_temp_u1", unique: true, tablespace: "indexes"
 
   create_table "gipi_vehicle", primary_key: ["policy_id", "item_no"], force: :cascade do |t|
-    t.integer "policy_id",       limit: 12, precision: 12,           null: false, comment: " - Column already exists - Column already exists"
-    t.integer "item_no",         limit: 9,  precision: 9,            null: false, comment: " - Column already exists - Column already exists"
-    t.string  "subline_cd",      limit: 7,                           null: false, comment: " - Column already exists - Column already exists"
-    t.string  "motor_no",        limit: 30,                          null: false, comment: " - Column already exists - Column already exists"
-    t.integer "coc_yy",          limit: 2,  precision: 2,                         comment: " - Column already exists - Column already exists"
-    t.integer "coc_seq_no",      limit: 6,  precision: 6,                         comment: " - Column already exists - Column already exists"
-    t.integer "coc_serial_no",   limit: 7,  precision: 7,                         comment: " - Column already exists - Column already exists"
-    t.string  "coc_type",        limit: 7,                                        comment: " - Column already exists - Column already exists"
-    t.decimal "repair_lim",                 precision: 16, scale: 2,              comment: " - Column already exists - Column already exists"
-    t.string  "color",           limit: 50,                                       comment: " - Column already exists - Column already exists"
-    t.string  "model_year",      limit: 4,                                        comment: " - Column already exists - Column already exists"
-    t.string  "make",            limit: 50,                                       comment: " - Column already exists - Column already exists"
-    t.integer "mot_type",        limit: 2,  precision: 2,                         comment: " - Column already exists - Column already exists"
-    t.decimal "est_value",                  precision: 16, scale: 2,              comment: " - Column already exists - Column already exists"
-    t.string  "serial_no",       limit: 25,                                       comment: " - Column already exists - Column already exists"
-    t.decimal "towing",                     precision: 16, scale: 2,              comment: " - Column already exists - Column already exists"
-    t.string  "assignee",        limit: 30,                                       comment: " - Column already exists - Column already exists"
-    t.string  "plate_no",        limit: 10,                                       comment: " - Column already exists - Column already exists"
-    t.string  "subline_type_cd", limit: 3,                                        comment: " - Column already exists - Column already exists"
-    t.integer "no_of_pass",      limit: 3,  precision: 3,                         comment: " - Column already exists - Column already exists"
-    t.string  "tariff_zone",     limit: 2,                                        comment: " - Column already exists - Column already exists"
-    t.date    "coc_issue_date",                                                   comment: " - Column already exists - Column already exists"
+    t.integer "policy_id",       limit: 12, precision: 12,                         null: false, comment: " - Column already exists - Column already exists"
+    t.integer "item_no",         limit: 9,  precision: 9,                          null: false, comment: " - Column already exists - Column already exists"
+    t.string  "subline_cd",      limit: 7,                                         null: false, comment: " - Column already exists - Column already exists"
+    t.string  "motor_no",        limit: 30,                                        null: false, comment: " - Column already exists - Column already exists"
+    t.integer "coc_yy",          limit: 2,  precision: 2,                                       comment: " - Column already exists - Column already exists"
+    t.integer "coc_seq_no",      limit: 6,  precision: 6,                                       comment: " - Column already exists - Column already exists"
+    t.integer "coc_serial_no",   limit: 7,  precision: 7,                                       comment: " - Column already exists - Column already exists"
+    t.string  "coc_type",        limit: 7,                                                      comment: " - Column already exists - Column already exists"
+    t.decimal "repair_lim",                 precision: 16, scale: 2,                            comment: " - Column already exists - Column already exists"
+    t.string  "color",           limit: 50,                                                     comment: " - Column already exists - Column already exists"
+    t.string  "model_year",      limit: 4,                                                      comment: " - Column already exists - Column already exists"
+    t.string  "make",            limit: 50,                                                     comment: " - Column already exists - Column already exists"
+    t.integer "mot_type",        limit: 2,  precision: 2,                                       comment: " - Column already exists - Column already exists"
+    t.decimal "est_value",                  precision: 16, scale: 2,                            comment: " - Column already exists - Column already exists"
+    t.string  "serial_no",       limit: 25,                                                     comment: " - Column already exists - Column already exists"
+    t.decimal "towing",                     precision: 16, scale: 2,                            comment: " - Column already exists - Column already exists"
+    t.string  "assignee",        limit: 30,                                                     comment: " - Column already exists - Column already exists"
+    t.string  "plate_no",        limit: 10,                                                     comment: " - Column already exists - Column already exists"
+    t.string  "subline_type_cd", limit: 3,                                                      comment: " - Column already exists - Column already exists"
+    t.integer "no_of_pass",      limit: 3,  precision: 3,                                       comment: " - Column already exists - Column already exists"
+    t.string  "tariff_zone",     limit: 2,                                                      comment: " - Column already exists - Column already exists"
+    t.date    "coc_issue_date",                                                                 comment: " - Column already exists - Column already exists"
     t.string  "mv_file_no",      limit: 15
     t.string  "acquired_from",   limit: 30
     t.string  "ctv_tag",         limit: 1
@@ -26702,6 +26819,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "mv_type",         limit: 10
     t.string  "reg_type",        limit: 1
     t.string  "tax_type",        limit: 1
+    t.string  "upload_sw",       limit: 1,                           default: "N"
   end
 
   add_index "gipi_vehicle", ["basic_color_cd", "color_cd"], name: "gipi_vehicle_xx", tablespace: "indexes"
@@ -26899,21 +27017,22 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_index "gipi_wcargo_carrier", ["vessel_cd"], name: "gipi_wcargo_carrier_xx", tablespace: "indexes"
 
   create_table "gipi_wcasualty_item", primary_key: ["par_id", "item_no"], force: :cascade do |t|
-    t.integer "par_id",                 limit: 12,   precision: 12, null: false, comment: " - Column already exists - Column already exists"
-    t.integer "item_no",                limit: 9,    precision: 9,  null: false, comment: " - Column already exists - Column already exists"
-    t.string  "section_line_cd",        limit: 2,                                comment: " - Column already exists - Column already exists"
-    t.string  "section_subline_cd",     limit: 7,                                comment: " - Column already exists - Column already exists"
-    t.string  "section_or_hazard_cd",   limit: 3,                                comment: " - Column already exists - Column already exists"
-    t.string  "property_no_type",       limit: 1,                                comment: " - Column already exists - Column already exists"
-    t.integer "capacity_cd",            limit: 4,    precision: 4,               comment: " - Column already exists - Column already exists"
-    t.string  "property_no",            limit: 30,                               comment: " - Column already exists - Column already exists"
-    t.string  "location",               limit: 150,                              comment: " - Column already exists - Column already exists"
-    t.string  "conveyance_info",        limit: 60,                               comment: " - Column already exists - Column already exists"
-    t.string  "limit_of_liability",     limit: 500,                              comment: " - Column already exists - Column already exists"
-    t.string  "interest_on_premises",   limit: 500,                              comment: " - Column already exists - Column already exists"
-    t.string  "section_or_hazard_info", limit: 2000,                             comment: " - Column already exists - Column already exists"
-    t.integer "location_cd",            limit: 5,    precision: 5,               comment: "Unique code of each location per treaty year; basis of accumulation"
+    t.integer "par_id",                 limit: 12,   precision: 12,               null: false, comment: " - Column already exists - Column already exists"
+    t.integer "item_no",                limit: 9,    precision: 9,                null: false, comment: " - Column already exists - Column already exists"
+    t.string  "section_line_cd",        limit: 2,                                              comment: " - Column already exists - Column already exists"
+    t.string  "section_subline_cd",     limit: 7,                                              comment: " - Column already exists - Column already exists"
+    t.string  "section_or_hazard_cd",   limit: 3,                                              comment: " - Column already exists - Column already exists"
+    t.string  "property_no_type",       limit: 1,                                              comment: " - Column already exists - Column already exists"
+    t.integer "capacity_cd",            limit: 4,    precision: 4,                             comment: " - Column already exists - Column already exists"
+    t.string  "property_no",            limit: 30,                                             comment: " - Column already exists - Column already exists"
+    t.string  "location",               limit: 150,                                            comment: " - Column already exists - Column already exists"
+    t.string  "conveyance_info",        limit: 60,                                             comment: " - Column already exists - Column already exists"
+    t.string  "limit_of_liability",     limit: 500,                                            comment: " - Column already exists - Column already exists"
+    t.string  "interest_on_premises",   limit: 500,                                            comment: " - Column already exists - Column already exists"
+    t.string  "section_or_hazard_info", limit: 2000,                                           comment: " - Column already exists - Column already exists"
+    t.integer "location_cd",            limit: 5,    precision: 5,                             comment: "Unique code of each location per treaty year; basis of accumulation"
     t.integer "old_capacity_cd",        limit: 4,    precision: 4
+    t.string  "upload_sw",              limit: 1,                   default: "N"
   end
 
   add_index "gipi_wcasualty_item", ["capacity_cd"], name: "gipi_wcasualty_item_xx2", tablespace: "indexes"
@@ -27039,32 +27158,33 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "gipi_wfireitm", primary_key: ["par_id", "item_no"], force: :cascade do |t|
-    t.integer "par_id",               limit: 12,   precision: 12, null: false, comment: " - Column already exists - Column already exists"
-    t.integer "item_no",              limit: 9,    precision: 9,  null: false, comment: " - Column already exists - Column already exists"
-    t.string  "district_no",          limit: 6,                                comment: " - Column already exists - Column already exists"
-    t.string  "eq_zone",              limit: 2,                                comment: " - Column already exists - Column already exists"
-    t.string  "tarf_cd",              limit: 12,                               comment: " - Column already exists - Column already exists"
-    t.string  "block_no",             limit: 6,                                comment: " - Column already exists - Column already exists"
-    t.string  "fr_item_type",         limit: 3,                                comment: " - Column already exists - Column already exists"
-    t.string  "loc_risk1",            limit: 50,                               comment: " - Column already exists - Column already exists"
-    t.string  "loc_risk2",            limit: 50,                               comment: " - Column already exists - Column already exists"
-    t.string  "loc_risk3",            limit: 50,                               comment: " - Column already exists - Column already exists"
-    t.string  "tariff_zone",          limit: 2,                                comment: " - Column already exists - Column already exists"
-    t.string  "typhoon_zone",         limit: 2,                                comment: " - Column already exists - Column already exists"
-    t.string  "construction_cd",      limit: 2,                                comment: " - Column already exists - Column already exists"
-    t.string  "construction_remarks", limit: 2000,                             comment: " - Column already exists - Column already exists"
-    t.string  "front",                limit: 2000,                             comment: " - Column already exists - Column already exists"
-    t.string  "right",                limit: 2000,                             comment: " - Column already exists - Column already exists"
-    t.string  "left",                 limit: 2000,                             comment: " - Column already exists - Column already exists"
-    t.string  "rear",                 limit: 2000,                             comment: " - Column already exists - Column already exists"
-    t.string  "occupancy_cd",         limit: 3,                                comment: " - Column already exists - Column already exists"
-    t.string  "occupancy_remarks",    limit: 2000,                             comment: " - Column already exists - Column already exists"
-    t.string  "flood_zone",           limit: 2,                                comment: " - Column already exists"
+    t.integer "par_id",               limit: 12,   precision: 12,               null: false, comment: " - Column already exists - Column already exists"
+    t.integer "item_no",              limit: 9,    precision: 9,                null: false, comment: " - Column already exists - Column already exists"
+    t.string  "district_no",          limit: 6,                                              comment: " - Column already exists - Column already exists"
+    t.string  "eq_zone",              limit: 2,                                              comment: " - Column already exists - Column already exists"
+    t.string  "tarf_cd",              limit: 12,                                             comment: " - Column already exists - Column already exists"
+    t.string  "block_no",             limit: 6,                                              comment: " - Column already exists - Column already exists"
+    t.string  "fr_item_type",         limit: 3,                                              comment: " - Column already exists - Column already exists"
+    t.string  "loc_risk1",            limit: 50,                                             comment: " - Column already exists - Column already exists"
+    t.string  "loc_risk2",            limit: 50,                                             comment: " - Column already exists - Column already exists"
+    t.string  "loc_risk3",            limit: 50,                                             comment: " - Column already exists - Column already exists"
+    t.string  "tariff_zone",          limit: 2,                                              comment: " - Column already exists - Column already exists"
+    t.string  "typhoon_zone",         limit: 2,                                              comment: " - Column already exists - Column already exists"
+    t.string  "construction_cd",      limit: 2,                                              comment: " - Column already exists - Column already exists"
+    t.string  "construction_remarks", limit: 2000,                                           comment: " - Column already exists - Column already exists"
+    t.string  "front",                limit: 2000,                                           comment: " - Column already exists - Column already exists"
+    t.string  "right",                limit: 2000,                                           comment: " - Column already exists - Column already exists"
+    t.string  "left",                 limit: 2000,                                           comment: " - Column already exists - Column already exists"
+    t.string  "rear",                 limit: 2000,                                           comment: " - Column already exists - Column already exists"
+    t.string  "occupancy_cd",         limit: 3,                                              comment: " - Column already exists - Column already exists"
+    t.string  "occupancy_remarks",    limit: 2000,                                           comment: " - Column already exists - Column already exists"
+    t.string  "flood_zone",           limit: 2,                                              comment: " - Column already exists"
     t.string  "assignee",             limit: 30
     t.integer "block_id",             limit: 12,   precision: 12
     t.string  "risk_cd",              limit: 7
-    t.string  "latitude",             limit: 50,                               comment: "Latitude coordinates of the location of risk."
-    t.string  "longitude",            limit: 50,                               comment: "Longitude coordinates of the location of risk."
+    t.string  "latitude",             limit: 50,                                             comment: "Latitude coordinates of the location of risk."
+    t.string  "longitude",            limit: 50,                                             comment: "Longitude coordinates of the location of risk."
+    t.string  "upload_sw",            limit: 1,                   default: "N"
   end
 
   add_index "gipi_wfireitm", ["block_id"], name: "gipi_wfireitm_xx1", tablespace: "indexes"
@@ -27201,27 +27321,27 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   end
 
   create_table "gipi_witem", comment: "This is the working transaction table for the common item information used by all underwriting lines.", primary_key: ["par_id", "item_no"], force: :cascade do |t|
-    t.integer "par_id",           limit: 12,   precision: 12,           null: false, comment: " - Column already exists - Column already exists"
-    t.integer "item_no",          limit: 9,    precision: 9,            null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "item_title",       limit: 50,                            null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.integer "item_grp",         limit: 5,    precision: 5,            null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "item_desc",        limit: 2000,                                       comment: " - Column already exists - Column already exists - Column already exists"
+    t.integer "par_id",           limit: 12,   precision: 12,                         null: false, comment: " - Column already exists - Column already exists"
+    t.integer "item_no",          limit: 9,    precision: 9,                          null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "item_title",       limit: 50,                                          null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.integer "item_grp",         limit: 5,    precision: 5,                          null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "item_desc",        limit: 2000,                                                     comment: " - Column already exists - Column already exists - Column already exists"
     t.string  "item_desc2",       limit: 2000
-    t.decimal "tsi_amt",                       precision: 16, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "prem_amt",                      precision: 12, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "ann_prem_amt",                  precision: 12, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "ann_tsi_amt",                   precision: 16, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "rec_flag",         limit: 1,                                          comment: " - Column already exists - Column already exists - Column already exists"
-    t.integer "currency_cd",      limit: 2,    precision: 2,                         comment: " - Column already exists - Column already exists"
-    t.decimal "currency_rt",                   precision: 12, scale: 9,              comment: " - Column already exists - Column already exists"
-    t.integer "group_cd",         limit: 4,    precision: 4,                         comment: " - Column already exists - Column already exists"
-    t.date    "from_date",                                                           comment: " - Column already exists - Column already exists"
-    t.date    "to_date",                                                             comment: " - Column already exists - Column already exists"
-    t.string  "pack_line_cd",     limit: 2,                                          comment: " - Column already exists - Column already exists"
-    t.string  "pack_subline_cd",  limit: 7,                                          comment: " - Column already exists - Column already exists"
-    t.string  "discount_sw",      limit: 1,                                          comment: " - Column already exists"
+    t.decimal "tsi_amt",                       precision: 16, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "prem_amt",                      precision: 12, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "ann_prem_amt",                  precision: 12, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "ann_tsi_amt",                   precision: 16, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "rec_flag",         limit: 1,                                                        comment: " - Column already exists - Column already exists - Column already exists"
+    t.integer "currency_cd",      limit: 2,    precision: 2,                                       comment: " - Column already exists - Column already exists"
+    t.decimal "currency_rt",                   precision: 12, scale: 9,                            comment: " - Column already exists - Column already exists"
+    t.integer "group_cd",         limit: 4,    precision: 4,                                       comment: " - Column already exists - Column already exists"
+    t.date    "from_date",                                                                         comment: " - Column already exists - Column already exists"
+    t.date    "to_date",                                                                           comment: " - Column already exists - Column already exists"
+    t.string  "pack_line_cd",     limit: 2,                                                        comment: " - Column already exists - Column already exists"
+    t.string  "pack_subline_cd",  limit: 7,                                                        comment: " - Column already exists - Column already exists"
+    t.string  "discount_sw",      limit: 1,                                                        comment: " - Column already exists"
     t.integer "coverage_cd",      limit: 2,    precision: 2
-    t.string  "other_info",       limit: 2000,                                       comment: " - Column already exists"
+    t.string  "other_info",       limit: 2000,                                                     comment: " - Column already exists"
     t.string  "surcharge_sw",     limit: 1
     t.integer "region_cd",        limit: 2,    precision: 2
     t.string  "changed_tag",      limit: 1
@@ -27232,6 +27352,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "payt_terms",       limit: 3
     t.integer "risk_no",          limit: 5,    precision: 5
     t.integer "risk_item_no",     limit: 9,    precision: 9
+    t.string  "upload_sw",        limit: 1,                             default: "N"
   end
 
   add_index "gipi_witem", ["coverage_cd"], name: "gipi_witem_xx1", tablespace: "indexes"
@@ -27283,27 +27404,28 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_index "gipi_witem_ves", ["par_id", "vessel_cd"], name: "witem_ves_u1", unique: true, tablespace: "indexes"
 
   create_table "gipi_witmperl", comment: "This is the working transaction table for the perils covered for an item.", primary_key: ["par_id", "item_no", "line_cd", "peril_cd"], force: :cascade do |t|
-    t.integer "par_id",       limit: 12, precision: 12,           null: false, comment: " - Column already exists - Column already exists"
-    t.integer "item_no",      limit: 9,  precision: 9,            null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "line_cd",      limit: 2,                           null: false, comment: " - Column already exists - Column already exists"
-    t.integer "peril_cd",     limit: 5,  precision: 5,            null: false, comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "tarf_cd",      limit: 12,                                       comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "prem_rt",                 precision: 12, scale: 9,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "tsi_amt",                 precision: 16, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "prem_amt",                precision: 12, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "ann_tsi_amt",             precision: 16, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "ann_prem_amt",            precision: 12, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "rec_flag",     limit: 1,                                        comment: "Record flag. Value is automatically determined by the system. For new policy/renewal, the value (A) is automatically assigned by the system. Allowed values: A - additional; C - changed; D - deleted; S - spoiled"
-    t.string  "comp_rem",     limit: 50,                                       comment: " - Column already exists - Column already exists - Column already exists"
-    t.string  "discount_sw",  limit: 1,                                        comment: " - Column already exists - Column already exists"
+    t.integer "par_id",       limit: 12, precision: 12,                         null: false, comment: " - Column already exists - Column already exists"
+    t.integer "item_no",      limit: 9,  precision: 9,                          null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "line_cd",      limit: 2,                                         null: false, comment: " - Column already exists - Column already exists"
+    t.integer "peril_cd",     limit: 5,  precision: 5,                          null: false, comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "tarf_cd",      limit: 12,                                                     comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "prem_rt",                 precision: 12, scale: 9,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "tsi_amt",                 precision: 16, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "prem_amt",                precision: 12, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "ann_tsi_amt",             precision: 16, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "ann_prem_amt",            precision: 12, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "rec_flag",     limit: 1,                                                      comment: "Record flag. Value is automatically determined by the system. For new policy/renewal, the value (A) is automatically assigned by the system. Allowed values: A - additional; C - changed; D - deleted; S - spoiled"
+    t.string  "comp_rem",     limit: 50,                                                     comment: " - Column already exists - Column already exists - Column already exists"
+    t.string  "discount_sw",  limit: 1,                                                      comment: " - Column already exists - Column already exists"
     t.string  "prt_flag",     limit: 1
-    t.decimal "ri_comm_rate",            precision: 12, scale: 9,              comment: " - Column already exists - Column already exists - Column already exists"
-    t.decimal "ri_comm_amt",             precision: 14, scale: 2,              comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "ri_comm_rate",            precision: 12, scale: 9,                            comment: " - Column already exists - Column already exists - Column already exists"
+    t.decimal "ri_comm_amt",             precision: 14, scale: 2,                            comment: " - Column already exists - Column already exists - Column already exists"
     t.string  "as_charge_sw", limit: 1
     t.string  "surcharge_sw", limit: 1
     t.integer "no_of_days",   limit: 5,  precision: 5
     t.decimal "base_amt",                precision: 16, scale: 2
     t.string  "aggregate_sw", limit: 1
+    t.string  "upload_sw",    limit: 1,                           default: "N"
   end
 
   add_index "gipi_witmperl", ["line_cd", "peril_cd"], name: "gipi_witmperl_xx1", tablespace: "indexes"
@@ -27429,7 +27551,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "gipi_wopen_cargo", ["cargo_class_cd"], name: "gipi_wopen_cargo_xx", tablespace: "indexes"
 
-  create_table "gipi_wopen_liab", primary_key: ["par_id", "geog_cd"], force: :cascade do |t|
+  create_table "gipi_wopen_liab", id: false, force: :cascade do |t|
     t.integer "par_id",           limit: 12,  precision: 12,           null: false, comment: " - Column already exists - Column already exists - Column already exists"
     t.integer "geog_cd",          limit: 2,   precision: 2,            null: false, comment: " - Column already exists - Column already exists - Column already exists"
     t.string  "rec_flag",         limit: 1,                            null: false, comment: " - Column already exists - Column already exists - Column already exists"
@@ -27449,7 +27571,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_index "gipi_wopen_liab", ["currency_cd"], name: "gipi_wopen_liab_xx1", tablespace: "indexes"
   add_index "gipi_wopen_liab", ["geog_cd"], name: "gipi_wopen_liab_xx2", tablespace: "indexes"
 
-  create_table "gipi_wopen_peril", primary_key: ["par_id", "geog_cd", "line_cd", "peril_cd"], force: :cascade do |t|
+  create_table "gipi_wopen_peril", id: false, force: :cascade do |t|
     t.integer "par_id",           limit: 12,   precision: 12,           null: false, comment: " - Column already exists"
     t.integer "geog_cd",          limit: 2,    precision: 2,            null: false, comment: " - Column already exists"
     t.string  "line_cd",          limit: 2,                             null: false, comment: " - Column already exists"
@@ -27480,6 +27602,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "gipi_wopen_policy", ["line_cd", "op_subline_cd"], name: "gipi_wopen_policy_xx2", tablespace: "indexes"
   add_index "gipi_wopen_policy", ["op_iss_cd"], name: "gipi_wopen_policy_xx1", tablespace: "indexes"
+  add_index "gipi_wopen_policy", ["par_id"], name: "gipi_wopen_policy_uk", unique: true
 
   create_table "gipi_wpack_line_subline", primary_key: ["par_id", "pack_line_cd", "pack_subline_cd"], force: :cascade do |t|
     t.integer "par_id",          limit: 12,   precision: 12, null: false, comment: " - Column already exists - Column already exists"
@@ -27769,28 +27892,28 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_index "gipi_wreqdocs", ["par_id"], name: "gipi_wreqdocs_xx1", tablespace: "indexes"
 
   create_table "gipi_wvehicle", primary_key: ["par_id", "item_no"], force: :cascade do |t|
-    t.integer "par_id",          limit: 12, precision: 12,           null: false, comment: " - Column already exists - Column already exists"
-    t.integer "item_no",         limit: 9,  precision: 9,            null: false, comment: " - Column already exists - Column already exists"
-    t.string  "subline_cd",      limit: 7,                           null: false, comment: " - Column already exists - Column already exists"
-    t.string  "motor_no",        limit: 30,                          null: false, comment: " - Column already exists - Column already exists"
-    t.string  "plate_no",        limit: 10,                                       comment: " - Column already exists - Column already exists"
-    t.decimal "est_value",                  precision: 16, scale: 2,              comment: " - Column already exists - Column already exists"
-    t.string  "make",            limit: 50,                                       comment: " - Column already exists - Column already exists"
-    t.integer "mot_type",        limit: 2,  precision: 2,                         comment: " - Column already exists - Column already exists"
-    t.string  "color",           limit: 50,                                       comment: " - Column already exists - Column already exists"
-    t.decimal "repair_lim",                 precision: 16, scale: 2,              comment: " - Column already exists - Column already exists"
-    t.string  "serial_no",       limit: 25,                                       comment: " - Column already exists - Column already exists"
-    t.integer "coc_seq_no",      limit: 6,  precision: 6,                         comment: " - Column already exists - Column already exists"
-    t.integer "coc_serial_no",   limit: 7,  precision: 7,                         comment: " - Column already exists - Column already exists"
-    t.string  "coc_type",        limit: 7,                                        comment: " - Column already exists - Column already exists"
-    t.string  "assignee",        limit: 30,                                       comment: " - Column already exists - Column already exists"
-    t.string  "model_year",      limit: 4,                                        comment: " - Column already exists - Column already exists"
-    t.date    "coc_issue_date",                                                   comment: " - Column already exists - Column already exists"
-    t.integer "coc_yy",          limit: 2,  precision: 2,                         comment: " - Column already exists - Column already exists"
-    t.decimal "towing",                     precision: 16, scale: 2,              comment: " - Column already exists - Column already exists"
-    t.string  "subline_type_cd", limit: 3,                                        comment: " - Column already exists - Column already exists"
-    t.integer "no_of_pass",      limit: 3,  precision: 3,                         comment: " - Column already exists - Column already exists"
-    t.string  "tariff_zone",     limit: 2,                                        comment: " - Column already exists - Column already exists"
+    t.integer "par_id",          limit: 12, precision: 12,                         null: false, comment: " - Column already exists - Column already exists"
+    t.integer "item_no",         limit: 9,  precision: 9,                          null: false, comment: " - Column already exists - Column already exists"
+    t.string  "subline_cd",      limit: 7,                                         null: false, comment: " - Column already exists - Column already exists"
+    t.string  "motor_no",        limit: 30,                                        null: false, comment: " - Column already exists - Column already exists"
+    t.string  "plate_no",        limit: 10,                                                     comment: " - Column already exists - Column already exists"
+    t.decimal "est_value",                  precision: 16, scale: 2,                            comment: " - Column already exists - Column already exists"
+    t.string  "make",            limit: 50,                                                     comment: " - Column already exists - Column already exists"
+    t.integer "mot_type",        limit: 2,  precision: 2,                                       comment: " - Column already exists - Column already exists"
+    t.string  "color",           limit: 50,                                                     comment: " - Column already exists - Column already exists"
+    t.decimal "repair_lim",                 precision: 16, scale: 2,                            comment: " - Column already exists - Column already exists"
+    t.string  "serial_no",       limit: 25,                                                     comment: " - Column already exists - Column already exists"
+    t.integer "coc_seq_no",      limit: 6,  precision: 6,                                       comment: " - Column already exists - Column already exists"
+    t.integer "coc_serial_no",   limit: 7,  precision: 7,                                       comment: " - Column already exists - Column already exists"
+    t.string  "coc_type",        limit: 7,                                                      comment: " - Column already exists - Column already exists"
+    t.string  "assignee",        limit: 30,                                                     comment: " - Column already exists - Column already exists"
+    t.string  "model_year",      limit: 4,                                                      comment: " - Column already exists - Column already exists"
+    t.date    "coc_issue_date",                                                                 comment: " - Column already exists - Column already exists"
+    t.integer "coc_yy",          limit: 2,  precision: 2,                                       comment: " - Column already exists - Column already exists"
+    t.decimal "towing",                     precision: 16, scale: 2,                            comment: " - Column already exists - Column already exists"
+    t.string  "subline_type_cd", limit: 3,                                                      comment: " - Column already exists - Column already exists"
+    t.integer "no_of_pass",      limit: 3,  precision: 3,                                       comment: " - Column already exists - Column already exists"
+    t.string  "tariff_zone",     limit: 2,                                                      comment: " - Column already exists - Column already exists"
     t.string  "mv_file_no",      limit: 15
     t.string  "acquired_from",   limit: 30
     t.string  "ctv_tag",         limit: 1
@@ -27810,6 +27933,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "mv_type",         limit: 10
     t.string  "reg_type",        limit: 1
     t.string  "tax_type",        limit: 1
+    t.string  "upload_sw",       limit: 1,                           default: "N"
   end
 
   add_index "gipi_wvehicle", ["basic_color_cd", "color_cd"], name: "gipi_wvehicle_xx1", tablespace: "indexes"
@@ -27886,6 +28010,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.date    "release_date"
     t.string  "released_by",        limit: 20
     t.string  "arc_ext_data",       limit: 1
+    t.decimal "ri_comm_wtax",                    precision: 16, scale: 2
   end
 
   add_index "giri_binder", ["acc_ent_date"], name: "acc_ent_date_nuk", tablespace: "indexes"
@@ -29397,7 +29522,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "giuw_wpolicyds_dtl", ["line_cd", "share_cd"], name: "giuw_wpolicyds_dtl_xx", tablespace: "indexes"
 
-  create_table "gixx_accident_item", primary_key: ["extract_id", "item_no"], force: :cascade do |t|
+  create_table "gixx_accident_item", id: false, force: :cascade do |t|
     t.integer "extract_id",      limit: 12,  precision: 12,           null: false, comment: " - Column already exists"
     t.integer "item_no",         limit: 9,   precision: 9,            null: false, comment: " - Column already exists"
     t.date    "date_of_birth",                                                     comment: " - Column already exists"
@@ -29421,7 +29546,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "gixx_accident_item", ["extract_id", "item_no"], name: "accident_itemxx_pk", tablespace: "indexes"
 
-  create_table "gixx_aviation_item", primary_key: ["extract_id", "item_no"], force: :cascade do |t|
+  create_table "gixx_aviation_item", id: false, force: :cascade do |t|
     t.integer "extract_id",     limit: 12,  precision: 12, null: false, comment: " - Column already exists"
     t.integer "item_no",        limit: 9,   precision: 9,  null: false, comment: " - Column already exists"
     t.string  "vessel_cd",      limit: 6,                               comment: " - Column already exists"
@@ -29440,7 +29565,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "gixx_aviation_item", ["extract_id", "item_no"], name: "aviation_itemxx_pk", tablespace: "indexes"
 
-  create_table "gixx_bank_schedule", primary_key: ["extract_id", "bank_item_no"], force: :cascade do |t|
+  create_table "gixx_bank_schedule", id: false, force: :cascade do |t|
     t.integer "extract_id",       limit: 12,   precision: 12,           null: false, comment: " - Column already exists"
     t.integer "bank_item_no",     limit: 4,    precision: 4,            null: false, comment: " - Column already exists"
     t.string  "bank_line_cd",     limit: 2,                                          comment: " - Column already exists"
@@ -29462,7 +29587,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "gixx_bank_schedule", ["extract_id", "bank_item_no"], name: "xbank_schedule_pk", tablespace: "indexes"
 
-  create_table "gixx_beneficiary", primary_key: ["extract_id", "item_no", "beneficiary_no"], force: :cascade do |t|
+  create_table "gixx_beneficiary", id: false, force: :cascade do |t|
     t.integer "extract_id",       limit: 15,   precision: 15, null: false, comment: " - Column already exists"
     t.integer "item_no",          limit: 9,    precision: 9,  null: false, comment: " - Column already exists"
     t.string  "beneficiary_name", limit: 30,                               comment: " - Column already exists"
@@ -29555,7 +29680,8 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "risk_cd",          limit: 7
   end
 
-  create_table "gixx_bond_basic", primary_key: "extract_id", force: :cascade do |t|
+  create_table "gixx_bond_basic", id: false, force: :cascade do |t|
+    t.integer "extract_id",      limit: 12,   precision: 12,           null: false, comment: " - Column already exists"
     t.integer "obligee_no",      limit: 6,    precision: 6,                         comment: " - Column already exists"
     t.integer "prin_id",         limit: 6,    precision: 6,                         comment: " - Column already exists"
     t.string  "coll_flag",       limit: 1,                             null: false, comment: " - Column already exists"
@@ -29647,7 +29773,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "cancel_tag",   limit: 1
   end
 
-  create_table "gixx_cargo", primary_key: ["extract_id", "item_no"], force: :cascade do |t|
+  create_table "gixx_cargo", id: false, force: :cascade do |t|
     t.integer "extract_id",           limit: 12,  precision: 12, null: false, comment: " - Column already exists"
     t.integer "item_no",              limit: 9,   precision: 9,  null: false, comment: " - Column already exists"
     t.string  "vessel_cd",            limit: 6,                               comment: " - Column already exists"
@@ -29672,7 +29798,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "gixx_cargo", ["extract_id", "item_no"], name: "cargoxx_pk", tablespace: "indexes"
 
-  create_table "gixx_cargo_carrier", primary_key: ["extract_id", "item_no", "vessel_cd"], force: :cascade do |t|
+  create_table "gixx_cargo_carrier", id: false, force: :cascade do |t|
     t.integer "extract_id",           limit: 12,  precision: 12,           null: false, comment: " - Column already exists"
     t.integer "item_no",              limit: 9,   precision: 9,            null: false, comment: " - Column already exists"
     t.string  "vessel_cd",            limit: 6,                            null: false, comment: " - Column already exists"
@@ -29688,7 +29814,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "gixx_cargo_carrier", ["extract_id", "item_no", "vessel_cd"], name: "xcargo_carrier_pk", tablespace: "indexes"
 
-  create_table "gixx_casualty_item", primary_key: ["extract_id", "item_no"], force: :cascade do |t|
+  create_table "gixx_casualty_item", id: false, force: :cascade do |t|
     t.integer "extract_id",             limit: 12,   precision: 12, null: false, comment: " - Column already exists - Column already exists"
     t.integer "item_no",                limit: 9,    precision: 9,  null: false, comment: " - Column already exists - Column already exists"
     t.string  "section_line_cd",        limit: 2,                                comment: " - Column already exists - Column already exists"
@@ -29710,7 +29836,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "gixx_casualty_item", ["extract_id", "item_no"], name: "casualtyxx_pk", tablespace: "indexes"
 
-  create_table "gixx_casualty_personnel", primary_key: ["extract_id", "item_no", "personnel_no", "name"], force: :cascade do |t|
+  create_table "gixx_casualty_personnel", id: false, force: :cascade do |t|
     t.integer "extract_id",      limit: 12,   precision: 12,           null: false, comment: " - Column already exists - Column already exists"
     t.integer "item_no",         limit: 9,    precision: 9,            null: false, comment: " - Column already exists - Column already exists"
     t.integer "personnel_no",    limit: 4,    precision: 4,            null: false, comment: " - Column already exists - Column already exists"
@@ -29765,7 +29891,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "assured_name",  limit: 500,                                       comment: " - Column already exists - Column already exists"
   end
 
-  create_table "gixx_co_insurer", primary_key: ["extract_id", "co_ri_cd"], force: :cascade do |t|
+  create_table "gixx_co_insurer", id: false, force: :cascade do |t|
     t.integer "extract_id",     limit: 12, precision: 12,           null: false, comment: " - Column already exists"
     t.integer "co_ri_cd",       limit: 5,  precision: 5,            null: false, comment: " - Column already exists"
     t.decimal "co_ri_shr_pct",             precision: 12, scale: 9, null: false, comment: " - Column already exists"
@@ -29816,7 +29942,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "gixx_comm_invoice", ["extract_id"], name: "gixx_comm_invoice_i", tablespace: "indexes"
 
-  create_table "gixx_cosigntry", primary_key: ["extract_id", "cosign_id"], force: :cascade do |t|
+  create_table "gixx_cosigntry", id: false, force: :cascade do |t|
     t.integer "extract_id",    limit: 12, precision: 12, null: false
     t.integer "cosign_id",     limit: 6,  precision: 6,  null: false
     t.integer "assd_no",       limit: 12, precision: 12, null: false
@@ -29954,7 +30080,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 # Could not dump table "gixx_endttext" because of following StandardError
 #   Unknown type 'LONG' for column 'endt_text'
 
-  create_table "gixx_engg_basic", primary_key: ["extract_id", "engg_basic_infonum"], force: :cascade do |t|
+  create_table "gixx_engg_basic", id: false, force: :cascade do |t|
     t.integer "extract_id",               limit: 12,  precision: 12, null: false, comment: " - Column already exists"
     t.boolean "engg_basic_infonum",                                  null: false, comment: " - Column already exists"
     t.string  "contract_proj_buss_title", limit: 250,                             comment: " - Column already exists"
@@ -30059,7 +30185,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.decimal "binder_tsi",             precision: 16, scale: 2
   end
 
-  create_table "gixx_fireitem", primary_key: ["extract_id", "item_no"], force: :cascade do |t|
+  create_table "gixx_fireitem", id: false, force: :cascade do |t|
     t.integer "extract_id",           limit: 12,   precision: 12, null: false, comment: " - Column already exists"
     t.integer "item_no",              limit: 9,    precision: 9,  null: false, comment: " - Column already exists"
     t.string  "district_no",          limit: 6,                                comment: " - Column already exists"
@@ -30191,7 +30317,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.date    "extract_date"
   end
 
-  create_table "gixx_grouped_items", primary_key: ["extract_id", "item_no", "grouped_item_no"], force: :cascade do |t|
+  create_table "gixx_grouped_items", id: false, force: :cascade do |t|
     t.integer "extract_id",         limit: 12,   precision: 12,           null: false, comment: " - Column already exists"
     t.integer "item_no",            limit: 9,    precision: 9,                         comment: " - Column already exists"
     t.string  "line_cd",            limit: 2,                                          comment: " - Column already exists"
@@ -30232,7 +30358,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "gixx_grouped_items", ["extract_id", "item_no", "grouped_item_no"], name: "grouped_itemxx_pk", tablespace: "indexes"
 
-  create_table "gixx_grp_items_beneficiary", primary_key: ["extract_id", "item_no", "grouped_item_no", "beneficiary_no"], force: :cascade do |t|
+  create_table "gixx_grp_items_beneficiary", id: false, force: :cascade do |t|
     t.integer "extract_id",       limit: 12, precision: 12, null: false
     t.integer "item_no",          limit: 9,  precision: 9,  null: false
     t.integer "grouped_item_no",  limit: 9,  precision: 9,  null: false
@@ -30353,7 +30479,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.integer "policy_id",    limit: 12, precision: 12
   end
 
-  create_table "gixx_item", primary_key: ["extract_id", "item_no"], force: :cascade do |t|
+  create_table "gixx_item", id: false, force: :cascade do |t|
     t.integer "extract_id",            limit: 12,   precision: 12,           null: false, comment: " - Column already exists"
     t.integer "item_grp",              limit: 5,    precision: 5,            null: false, comment: " - Column already exists"
     t.integer "item_no",               limit: 9,    precision: 9,            null: false, comment: " - Column already exists"
@@ -30409,7 +30535,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.decimal "surcharge_amt",              precision: 12, scale: 2
   end
 
-  create_table "gixx_item_ves", primary_key: ["extract_id", "item_no"], force: :cascade do |t|
+  create_table "gixx_item_ves", id: false, force: :cascade do |t|
     t.integer "extract_id",  limit: 12,  precision: 12, null: false, comment: " - Column already exists - Column already exists"
     t.integer "item_no",     limit: 9,   precision: 9,  null: false, comment: " - Column already exists - Column already exists - Column already exists"
     t.string  "vessel_cd",   limit: 6,                  null: false, comment: " - Column already exists - Column already exists"
@@ -30423,7 +30549,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "gixx_item_ves", ["extract_id", "item_no"], name: "item_vesxx_pk", tablespace: "indexes"
 
-  create_table "gixx_itmperil", primary_key: ["extract_id", "item_no", "line_cd", "peril_cd"], force: :cascade do |t|
+  create_table "gixx_itmperil", id: false, force: :cascade do |t|
     t.integer "extract_id",   limit: 12, precision: 12,           null: false, comment: " - Column already exists - Column already exists"
     t.integer "item_no",      limit: 9,  precision: 9,            null: false, comment: " - Column already exists - Column already exists - Column already exists"
     t.string  "line_cd",      limit: 2,                           null: false, comment: " - Column already exists - Column already exists - Column already exists"
@@ -30497,11 +30623,12 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.date    "last_update",                                          null: false
   end
 
-  create_table "gixx_main_co_ins", primary_key: "extract_id", force: :cascade do |t|
-    t.decimal "prem_amt",             precision: 14, scale: 2, null: false, comment: " - Column already exists"
-    t.decimal "tsi_amt",              precision: 18, scale: 2, null: false, comment: " - Column already exists"
-    t.integer "par_id",    limit: 12, precision: 12
-    t.integer "policy_id", limit: 12, precision: 12
+  create_table "gixx_main_co_ins", id: false, force: :cascade do |t|
+    t.integer "extract_id", limit: 12, precision: 12,           null: false, comment: " - Column already exists"
+    t.decimal "prem_amt",              precision: 14, scale: 2, null: false, comment: " - Column already exists"
+    t.decimal "tsi_amt",               precision: 18, scale: 2, null: false, comment: " - Column already exists"
+    t.integer "par_id",     limit: 12, precision: 12
+    t.integer "policy_id",  limit: 12, precision: 12
   end
 
   add_index "gixx_main_co_ins", ["extract_id"], name: "xmain_co_ins_pk", tablespace: "indexes"
@@ -30680,7 +30807,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.integer "policy_id",        limit: 12,   precision: 12
   end
 
-  create_table "gixx_open_policy", primary_key: ["extract_id", "line_cd", "op_subline_cd", "op_iss_cd", "op_pol_seqno"], force: :cascade do |t|
+  create_table "gixx_open_policy", id: false, force: :cascade do |t|
     t.integer "extract_id",    limit: 12, precision: 12, null: false, comment: " - Column already exists"
     t.string  "line_cd",       limit: 2,                 null: false, comment: " - Column already exists"
     t.string  "op_subline_cd", limit: 7,                 null: false, comment: " - Column already exists"
@@ -30781,7 +30908,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "cpi_branch_cd", limit: 2
   end
 
-  create_table "gixx_orig_itmperil", primary_key: ["extract_id", "item_no", "line_cd", "peril_cd"], force: :cascade do |t|
+  create_table "gixx_orig_itmperil", id: false, force: :cascade do |t|
     t.integer "extract_id",    limit: 12, precision: 12,           null: false, comment: " - Column already exists"
     t.integer "item_no",       limit: 9,  precision: 9,            null: false, comment: " - Column already exists"
     t.string  "line_cd",       limit: 2,                           null: false, comment: " - Column already exists"
@@ -30875,7 +31002,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "cpi_branch_cd", limit: 2
   end
 
-  create_table "gixx_pack_line_subline", primary_key: ["policy_id", "pack_line_cd", "pack_subline_cd"], force: :cascade do |t|
+  create_table "gixx_pack_line_subline", id: false, force: :cascade do |t|
     t.integer "extract_id",      limit: 12,   precision: 12, null: false
     t.integer "policy_id",       limit: 12,   precision: 12, null: false
     t.string  "pack_line_cd",    limit: 2,                   null: false
@@ -30896,7 +31023,8 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "parstat_cd",   limit: 2
   end
 
-  create_table "gixx_pack_parlist", primary_key: "extract_id", force: :cascade do |t|
+  create_table "gixx_pack_parlist", id: false, force: :cascade do |t|
+    t.integer "extract_id",    limit: 12,   precision: 12, null: false
     t.string  "line_cd",       limit: 2,                   null: false
     t.string  "iss_cd",        limit: 2,                   null: false
     t.integer "par_yy",        limit: 2,    precision: 2,  null: false
@@ -30920,7 +31048,8 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "gixx_pack_parlist", ["extract_id"], name: "gixx_pack_parlist_pk", tablespace: "indexes"
 
-  create_table "gixx_pack_polbasic", primary_key: "extract_id", force: :cascade do |t|
+  create_table "gixx_pack_polbasic", id: false, force: :cascade do |t|
+    t.integer "extract_id",           limit: 12, precision: 12,           null: false
     t.string  "line_cd",              limit: 2,                           null: false
     t.string  "subline_cd",           limit: 7,                           null: false
     t.string  "iss_cd",               limit: 2,                           null: false
@@ -31034,7 +31163,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.integer "par_id",        limit: 12, precision: 12
   end
 
-  create_table "gixx_pack_polwc", primary_key: ["extract_id", "line_cd", "wc_cd", "swc_seq_no"], force: :cascade do |t|
+  create_table "gixx_pack_polwc", id: false, force: :cascade do |t|
     t.integer "extract_id",    limit: 12,   precision: 12, null: false
     t.string  "line_cd",       limit: 2,                   null: false
     t.string  "wc_cd",         limit: 4,                   null: false
@@ -31069,7 +31198,8 @@ ActiveRecord::Schema.define(version: 20170315055856) do
 
   add_index "gixx_pack_polwc", ["extract_id", "line_cd", "wc_cd", "swc_seq_no"], name: "gixx_pack_polwc_pk", tablespace: "indexes"
 
-  create_table "gixx_parlist", primary_key: "extract_id", force: :cascade do |t|
+  create_table "gixx_parlist", id: false, force: :cascade do |t|
+    t.integer "extract_id",     limit: 12,   precision: 12, null: false
     t.string  "line_cd",        limit: 2,                   null: false
     t.string  "iss_cd",         limit: 2,                   null: false
     t.integer "par_yy",         limit: 2,    precision: 2,  null: false
@@ -31122,7 +31252,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.integer "extract_id",    limit: 12,   precision: 12, null: false
     t.integer "item_no",       limit: 9,    precision: 9,  null: false
     t.string  "file_name",     limit: 2000,                null: false
-    t.string  "file_type",     limit: 1,                   null: false
+    t.string  "file_type",     limit: 1
     t.string  "file_ext",      limit: 6,                   null: false
     t.string  "remarks",       limit: 4000
     t.string  "user_id",       limit: 8,                   null: false
@@ -31132,7 +31262,8 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "create_user",   limit: 8
   end
 
-  create_table "gixx_polbasic", primary_key: "extract_id", force: :cascade do |t|
+  create_table "gixx_polbasic", id: false, force: :cascade do |t|
+    t.integer "extract_id",           limit: 12, precision: 12,           null: false, comment: " - Column already exists"
     t.string  "line_cd",              limit: 2,                           null: false, comment: " - Column already exists"
     t.string  "subline_cd",           limit: 7,                           null: false, comment: " - Column already exists"
     t.string  "iss_cd",               limit: 2,                           null: false, comment: " - Column already exists"
@@ -31270,7 +31401,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.integer "par_id",        limit: 12, precision: 12
   end
 
-  create_table "gixx_polwc", primary_key: ["extract_id", "line_cd", "wc_cd", "swc_seq_no"], force: :cascade do |t|
+  create_table "gixx_polwc", id: false, force: :cascade do |t|
     t.integer "extract_id",    limit: 12,   precision: 12, null: false, comment: " - Column already exists - Column already exists - Column already exists"
     t.string  "line_cd",       limit: 2,                   null: false, comment: " - Column already exists - Column already exists - Column already exists"
     t.string  "wc_cd",         limit: 4,                   null: false, comment: " - Column already exists - Column already exists - Column already exists"
@@ -31552,7 +31683,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
     t.string  "param_share_cd", limit: 3
   end
 
-  create_table "gixx_vehicle", primary_key: ["extract_id", "item_no"], force: :cascade do |t|
+  create_table "gixx_vehicle", id: false, force: :cascade do |t|
     t.integer "extract_id",      limit: 12, precision: 12,           null: false, comment: " - Column already exists"
     t.string  "item_no",         limit: 5,                           null: false, comment: " - Column already exists"
     t.string  "subline_cd",      limit: 7,                                        comment: " - Column already exists"
@@ -33013,8 +33144,8 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_foreign_key "eul4_sumo_exp_usgs", "eul4_functions", column: "sfu_fun_id", primary_key: "fun_id", name: "eul4_sfu_fun_fk"
   add_foreign_key "eul4_sumo_exp_usgs", "eul4_functions", column: "smiu_fun_id", primary_key: "fun_id", name: "eul4_smiu_fun_fk"
   add_foreign_key "eul4_sumo_exp_usgs", "eul4_summary_objs", column: "seu_sumo_id", primary_key: "sumo_id", name: "eul4_seu_sumo_fk"
-  add_foreign_key "evt_dest_profile", "evt_profile", column: "profile_id", primary_key: "profile_id", name: "sys_c0017480"
-  add_foreign_key "evt_instance", "evt_profile", column: "profile_id", primary_key: "profile_id", name: "sys_c0017481"
+  add_foreign_key "evt_dest_profile", "evt_profile", column: "profile_id", primary_key: "profile_id", name: "sys_c0024189"
+  add_foreign_key "evt_instance", "evt_profile", column: "profile_id", primary_key: "profile_id", name: "sys_c0024190"
   add_foreign_key "giac_acct_entries", "giac_acctrans", column: "gacc_tran_id", primary_key: "tran_id", name: "giae_gacc_fk"
   add_foreign_key "giac_acct_entries", "giac_chart_of_accts", column: "gl_acct_id", primary_key: "gl_acct_id", name: "giae_gicoa_fk"
   add_foreign_key "giac_acctrans", "giac_branches", column: "gfun_fund_cd", primary_key: "gfun_fund_cd", name: "gacc_gibr_fk"
@@ -33092,7 +33223,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_foreign_key "giac_close_acct_entries_ext", "giac_acct_entries", column: "gacc_tran_id", primary_key: "gacc_tran_id", name: "gcae_giae_fk"
   add_foreign_key "giac_cm_dm", "giac_acctrans", column: "gacc_tran_id", primary_key: "tran_id", name: "gcmdm_gacc_fk"
   add_foreign_key "giac_collection_dtl", "giac_acctrans", column: "gacc_tran_id", primary_key: "tran_id", name: "gicd_gacc_fk"
-  add_foreign_key "giac_collection_dtl", "giac_apdc_payt_dtl", column: "pdc_id", primary_key: "pdc_id", name: "sys_c0017533"
+  add_foreign_key "giac_collection_dtl", "giac_apdc_payt_dtl", column: "pdc_id", primary_key: "pdc_id", name: "sys_c0024242"
   add_foreign_key "giac_collection_dtl", "giac_banks", column: "bank_cd", primary_key: "bank_cd", name: "gicd_gbnk_fk"
   add_foreign_key "giac_collection_dtl", "giis_currency", column: "currency_cd", primary_key: "main_currency_cd", name: "gicd_a430_fk"
   add_foreign_key "giac_colln_batch", "giac_branches", column: "branch_cd", primary_key: "branch_cd", name: "gcob_gibr_fk"
@@ -33661,7 +33792,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_foreign_key "giis_bond_class_subline", "giis_bond_class_clause", column: "clause_type", primary_key: "clause_type", name: "class_clause_sub_fk"
   add_foreign_key "giis_bond_class_subline", "giis_subline", column: "line_cd", primary_key: "line_cd", name: "subline_class_sub_fk"
   add_foreign_key "giis_bond_class_subline", "giis_subline", column: "subline_cd", primary_key: "subline_cd", name: "subline_class_sub_fk"
-  add_foreign_key "giis_bond_seq", "giis_line", column: "line_cd", primary_key: "line_cd", name: "sys_c0017882"
+  add_foreign_key "giis_bond_seq", "giis_line", column: "line_cd", primary_key: "line_cd", name: "sys_c0024591"
   add_foreign_key "giis_cargo_type", "giis_cargo_class", column: "cargo_class_cd", primary_key: "cargo_class_cd", name: "cargo_class_cargo_type_fk"
   add_foreign_key "giis_city", "giis_province", column: "province_cd", primary_key: "province_cd", name: "province_city_fk"
   add_foreign_key "giis_co_intrmdry_types", "giis_issource", column: "iss_cd", primary_key: "iss_cd", name: "issue_co_intrmdry_types_fk"
@@ -33688,6 +33819,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_foreign_key "giis_geog_class", "giis_subline", column: "line_cd", primary_key: "line_cd", name: "subline_geog_class_fk"
   add_foreign_key "giis_geog_class", "giis_subline", column: "subline_cd", primary_key: "subline_cd", name: "subline_geog_class_fk"
   add_foreign_key "giis_industry", "giis_industry_group", column: "ind_grp_cd", primary_key: "ind_grp_cd", name: "ind_grp_cd_fk"
+  add_foreign_key "giis_insp_approver", "giis_users", column: "userid", primary_key: "user_id", name: "ginsp_appr_fk"
   add_foreign_key "giis_intermediary", "giis_intermediary", column: "co_intm_no", primary_key: "intm_no", name: "intermdry_co_intermdry_fk"
   add_foreign_key "giis_intermediary", "giis_intermediary", column: "intm_no", primary_key: "intm_no", name: "intermediary_intermediary_fk"
   add_foreign_key "giis_intermediary", "giis_intm_type", column: "intm_type", primary_key: "intm_type", name: "intmtype_intermediary_type_fk"
@@ -33719,7 +33851,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_foreign_key "giis_intreaty", "giis_line", column: "line_cd", primary_key: "line_cd", name: "line_intreaty_fk"
   add_foreign_key "giis_intreaty", "giis_reinsurer", column: "ri_cd", primary_key: "ri_cd", name: "reinsurer_intreaty_fk"
   add_foreign_key "giis_issource", "giis_grp_issource", column: "iss_grp", primary_key: "iss_grp", name: "grp_issource_issource_fk"
-  add_foreign_key "giis_line", "giis_banc_type", column: "banc_type_cd", primary_key: "banc_type_cd", name: "sys_c0017920"
+  add_foreign_key "giis_line", "giis_banc_type", column: "banc_type_cd", primary_key: "banc_type_cd", name: "sys_c0024630"
   add_foreign_key "giis_line_subline_coverages", "giis_line", column: "line_cd", primary_key: "line_cd", name: "line_ls_coverages_fk"
   add_foreign_key "giis_line_subline_coverages", "giis_subline", column: "pack_line_cd", primary_key: "line_cd", name: "subline_ls_coverages_fk"
   add_foreign_key "giis_line_subline_coverages", "giis_subline", column: "pack_subline_cd", primary_key: "subline_cd", name: "subline_ls_coverages_fk"
@@ -33843,6 +33975,10 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_foreign_key "giis_trty_peril", "giis_dist_share", column: "trty_seq_no", primary_key: "share_cd", name: "dist_share_trty_peril_fk"
   add_foreign_key "giis_trty_peril", "giis_peril", column: "line_cd", primary_key: "line_cd", name: "peril_trty_peril_fk"
   add_foreign_key "giis_trty_peril", "giis_peril", column: "peril_cd", primary_key: "peril_cd", name: "peril_trty_peril_fk"
+  add_foreign_key "giis_upload_columns", "giis_uploads", column: "up_mod_cd", primary_key: "up_mod_cd", name: "giis_upload_columns_fk"
+  add_foreign_key "giis_upload_columns", "giis_uploads", column: "upload_cd", primary_key: "upload_cd", name: "giis_upload_columns_fk"
+  add_foreign_key "giis_upload_modules", "giis_modules", column: "module_id", primary_key: "module_id", name: "giis_upload_modules_fk"
+  add_foreign_key "giis_uploads", "giis_upload_modules", column: "up_mod_cd", primary_key: "up_mod_cd", name: "giis_uploads_fk"
   add_foreign_key "giis_user_grp_dtl", "giis_user_grp_hdr", column: "user_grp", primary_key: "user_grp", name: "user_grp_hdr_user_grp_dtl_fk", on_delete: :cascade
   add_foreign_key "giis_user_grp_line", "giis_line", column: "line_cd", primary_key: "line_cd", name: "line_user_grp_line_fk"
   add_foreign_key "giis_user_grp_line", "giis_user_grp_dtl", column: "iss_cd", primary_key: "iss_cd", name: "user_grp_dtl_user_grp_line_fk", on_delete: :cascade
@@ -33869,7 +34005,7 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_foreign_key "gipi_bond_basic", "giis_obligee", column: "obligee_no", primary_key: "obligee_no", name: "obligee_bond_basic_fk"
   add_foreign_key "gipi_bond_basic", "giis_prin_signtry", column: "prin_id", primary_key: "prin_id", name: "prin_signtry_bond_basic_fk"
   add_foreign_key "gipi_bond_basic", "gipi_polbasic", column: "policy_id", primary_key: "policy_id", name: "polbasic_bond_basic_fk"
-  add_foreign_key "gipi_bond_seq_hist", "giis_line", column: "line_cd", primary_key: "line_cd", name: "sys_c0018018"
+  add_foreign_key "gipi_bond_seq_hist", "giis_line", column: "line_cd", primary_key: "line_cd", name: "sys_c0024731"
   add_foreign_key "gipi_cargo", "giis_cargo_class", column: "cargo_class_cd", primary_key: "cargo_class_cd", name: "cargo_class_cargo_fk"
   add_foreign_key "gipi_cargo", "giis_geog_class", column: "geog_cd", primary_key: "geog_cd", name: "geog_class_cargo_fk"
   add_foreign_key "gipi_cargo", "gipi_item", column: "item_no", primary_key: "item_no", name: "item_cargo_fk"
@@ -33973,15 +34109,10 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_foreign_key "gipi_mortgagee", "giis_mortgagee", column: "mortg_cd", primary_key: "mortg_cd", name: "mortgagee_mortgagee_fk"
   add_foreign_key "gipi_mortgagee", "gipi_polbasic", column: "policy_id", primary_key: "policy_id", name: "polbasic_mortgagee_fk"
   add_foreign_key "gipi_open_cargo", "giis_cargo_class", column: "cargo_class_cd", primary_key: "cargo_class_cd", name: "cargo_class_open_cargo_fk"
-  add_foreign_key "gipi_open_cargo", "gipi_open_liab", column: "geog_cd", primary_key: "geog_cd", name: "open_liab_open_cargo_fk"
-  add_foreign_key "gipi_open_cargo", "gipi_open_liab", column: "policy_id", primary_key: "policy_id", name: "open_liab_open_cargo_fk"
   add_foreign_key "gipi_open_liab", "giis_currency", column: "currency_cd", primary_key: "main_currency_cd", name: "currency_open_liab_fk"
-  add_foreign_key "gipi_open_liab", "giis_geog_class", column: "geog_cd", primary_key: "geog_cd", name: "geog_class_open_liab_fk"
   add_foreign_key "gipi_open_liab", "gipi_polbasic", column: "policy_id", primary_key: "policy_id", name: "polbasic_open_liab_fk"
   add_foreign_key "gipi_open_peril", "giis_peril", column: "line_cd", primary_key: "line_cd", name: "peril_open_peril_fk"
   add_foreign_key "gipi_open_peril", "giis_peril", column: "peril_cd", primary_key: "peril_cd", name: "peril_open_peril_fk"
-  add_foreign_key "gipi_open_peril", "gipi_open_liab", column: "geog_cd", primary_key: "geog_cd", name: "open_liab_open_peril_fk"
-  add_foreign_key "gipi_open_peril", "gipi_open_liab", column: "policy_id", primary_key: "policy_id", name: "open_liab_open_peril_fk"
   add_foreign_key "gipi_open_policy", "gipi_polbasic", column: "policy_id", primary_key: "policy_id", name: "polbasic_open_policy_fk"
   add_foreign_key "gipi_orig_comm_inv_peril", "gipi_orig_comm_invoice", column: "intrmdry_intm_no", primary_key: "intrmdry_intm_no", name: "oci_ocip_fk"
   add_foreign_key "gipi_orig_comm_inv_peril", "gipi_orig_comm_invoice", column: "item_grp", primary_key: "item_grp", name: "oci_ocip_fk"
@@ -34044,6 +34175,11 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_foreign_key "gipi_reqdocs", "giis_required_docs", column: "doc_cd", primary_key: "doc_cd", name: "req_docs_reqdocs_fk"
   add_foreign_key "gipi_reqdocs", "giis_required_docs", column: "line_cd", primary_key: "line_cd", name: "req_docs_reqdocs_fk"
   add_foreign_key "gipi_reqdocs", "gipi_polbasic", column: "policy_id", primary_key: "policy_id", name: "polbasic_reqdocs_fk"
+  add_foreign_key "gipi_upload", "giis_uploads", column: "up_mod_cd", primary_key: "up_mod_cd", name: "gipi_upload_fk"
+  add_foreign_key "gipi_upload", "giis_uploads", column: "upload_cd", primary_key: "upload_cd", name: "gipi_upload_fk"
+  add_foreign_key "gipi_upload_error_log", "gipi_upload", column: "up_mod_cd", primary_key: "up_mod_cd", name: "gipi_upload_error_log_fk"
+  add_foreign_key "gipi_upload_error_log", "gipi_upload", column: "upload_cd", primary_key: "upload_cd", name: "gipi_upload_error_log_fk"
+  add_foreign_key "gipi_upload_error_log", "gipi_upload", column: "upload_no", primary_key: "upload_no", name: "gipi_upload_error_log_fk"
   add_foreign_key "gipi_vehicle", "giis_mc_color", column: "basic_color_cd", primary_key: "basic_color_cd", name: "mc_color_vehicle_fk"
   add_foreign_key "gipi_vehicle", "giis_mc_color", column: "color_cd", primary_key: "color_cd", name: "mc_color_vehicle_fk"
   add_foreign_key "gipi_vehicle", "giis_mc_make", column: "car_company_cd", primary_key: "car_company_cd", name: "mc_make_vehicle_fk"
@@ -34163,15 +34299,10 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_foreign_key "gipi_wmortgagee", "giis_mortgagee", column: "mortg_cd", primary_key: "mortg_cd", name: "mortgagee_wmortgagee_fk"
   add_foreign_key "gipi_wmortgagee", "gipi_wpolbas", column: "par_id", primary_key: "par_id", name: "wpolbas_wmortgagee_fk"
   add_foreign_key "gipi_wopen_cargo", "giis_cargo_class", column: "cargo_class_cd", primary_key: "cargo_class_cd", name: "cargo_class_wopen_cargo_fk"
-  add_foreign_key "gipi_wopen_cargo", "gipi_wopen_liab", column: "geog_cd", primary_key: "geog_cd", name: "wopen_liab_wopen_cargo_fk", on_delete: :cascade
-  add_foreign_key "gipi_wopen_cargo", "gipi_wopen_liab", column: "par_id", primary_key: "par_id", name: "wopen_liab_wopen_cargo_fk", on_delete: :cascade
   add_foreign_key "gipi_wopen_liab", "giis_currency", column: "currency_cd", primary_key: "main_currency_cd", name: "currency_wopen_liab_fk"
-  add_foreign_key "gipi_wopen_liab", "giis_geog_class", column: "geog_cd", primary_key: "geog_cd", name: "geog_class_wopen_liab_fk"
   add_foreign_key "gipi_wopen_liab", "gipi_parlist", column: "par_id", primary_key: "par_id", name: "parlist_wopen_liab_fk", on_delete: :cascade
   add_foreign_key "gipi_wopen_peril", "giis_peril", column: "line_cd", primary_key: "line_cd", name: "peril_wopen_peril_fk"
   add_foreign_key "gipi_wopen_peril", "giis_peril", column: "peril_cd", primary_key: "peril_cd", name: "peril_wopen_peril_fk"
-  add_foreign_key "gipi_wopen_peril", "gipi_wopen_liab", column: "geog_cd", primary_key: "geog_cd", name: "wopen_liab_wopen_peril_fk"
-  add_foreign_key "gipi_wopen_peril", "gipi_wopen_liab", column: "par_id", primary_key: "par_id", name: "wopen_liab_wopen_peril_fk"
   add_foreign_key "gipi_wopen_policy", "giis_issource", column: "op_iss_cd", primary_key: "iss_cd", name: "issource_wopen_policy_fk"
   add_foreign_key "gipi_wopen_policy", "giis_subline", column: "line_cd", primary_key: "line_cd", name: "subline_wopen_policy_fk"
   add_foreign_key "gipi_wopen_policy", "giis_subline", column: "op_subline_cd", primary_key: "subline_cd", name: "subline_wopen_policy_fk"
@@ -34358,45 +34489,45 @@ ActiveRecord::Schema.define(version: 20170315055856) do
   add_foreign_key "quest_com_user_privileges", "quest_com_users", column: "user_id", primary_key: "user_id", name: "quest_com_user_privs_fk2"
   add_foreign_key "quest_com_users", "quest_com_products", column: "install_user", primary_key: "install_user", name: "quest_com_users_fk1", on_delete: :cascade
   add_foreign_key "quest_com_users", "quest_com_products", column: "product_id", primary_key: "product_id", name: "quest_com_users_fk1", on_delete: :cascade
-  add_foreign_key "quest_soo_at_appname", "quest_soo_at_parse_cursor", column: "parse_id", primary_key: "parse_id", name: "sys_c0018323", on_delete: :cascade
-  add_foreign_key "quest_soo_at_appname", "quest_soo_at_parse_cursor", column: "sql_id", primary_key: "sql_id", name: "sys_c0018323", on_delete: :cascade
-  add_foreign_key "quest_soo_at_appname", "quest_soo_at_parse_cursor", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0018323", on_delete: :cascade
-  add_foreign_key "quest_soo_at_execution_plan", "quest_soo_at_operations", column: "operation_id", primary_key: "operation_id", name: "sys_c0018325"
-  add_foreign_key "quest_soo_at_execution_plan", "quest_soo_at_operations", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0018325"
-  add_foreign_key "quest_soo_at_execution_plan", "quest_soo_at_parse_cursor", column: "parse_id", primary_key: "parse_id", name: "sys_c0018324", on_delete: :cascade
-  add_foreign_key "quest_soo_at_execution_plan", "quest_soo_at_parse_cursor", column: "sql_id", primary_key: "sql_id", name: "sys_c0018324", on_delete: :cascade
-  add_foreign_key "quest_soo_at_execution_plan", "quest_soo_at_parse_cursor", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0018324", on_delete: :cascade
-  add_foreign_key "quest_soo_at_operations", "quest_soo_at_trace_file", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0018326", on_delete: :cascade
-  add_foreign_key "quest_soo_at_parse_cursor", "quest_soo_at_sql_statement", column: "sql_id", primary_key: "sql_id", name: "sys_c0018327", on_delete: :cascade
-  add_foreign_key "quest_soo_at_parse_cursor", "quest_soo_at_sql_statement", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0018327", on_delete: :cascade
-  add_foreign_key "quest_soo_at_parse_error", "quest_soo_at_parse_cursor", column: "parse_id", primary_key: "parse_id", name: "sys_c0018328", on_delete: :cascade
-  add_foreign_key "quest_soo_at_parse_error", "quest_soo_at_parse_cursor", column: "sql_id", primary_key: "sql_id", name: "sys_c0018328", on_delete: :cascade
-  add_foreign_key "quest_soo_at_parse_error", "quest_soo_at_parse_cursor", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0018328", on_delete: :cascade
-  add_foreign_key "quest_soo_at_parse_waits", "quest_soo_at_parse_cursor", column: "parse_id", primary_key: "parse_id", name: "sys_c0018329"
-  add_foreign_key "quest_soo_at_parse_waits", "quest_soo_at_parse_cursor", column: "sql_id", primary_key: "sql_id", name: "sys_c0018329"
-  add_foreign_key "quest_soo_at_parse_waits", "quest_soo_at_parse_cursor", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0018329"
-  add_foreign_key "quest_soo_at_session_id", "quest_soo_at_sql_executions", column: "execution_id", primary_key: "execution_id", name: "sys_c0018330", on_delete: :cascade
-  add_foreign_key "quest_soo_at_session_id", "quest_soo_at_sql_executions", column: "parse_id", primary_key: "parse_id", name: "sys_c0018330", on_delete: :cascade
-  add_foreign_key "quest_soo_at_session_id", "quest_soo_at_sql_executions", column: "sql_id", primary_key: "sql_id", name: "sys_c0018330", on_delete: :cascade
-  add_foreign_key "quest_soo_at_session_id", "quest_soo_at_sql_executions", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0018330", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_binds", "quest_soo_at_sql_executions", column: "execution_id", primary_key: "execution_id", name: "sys_c0018331", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_binds", "quest_soo_at_sql_executions", column: "parse_id", primary_key: "parse_id", name: "sys_c0018331", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_binds", "quest_soo_at_sql_executions", column: "sql_id", primary_key: "sql_id", name: "sys_c0018331", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_binds", "quest_soo_at_sql_executions", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0018331", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_exec_error", "quest_soo_at_sql_executions", column: "execution_id", primary_key: "execution_id", name: "sys_c0018333", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_exec_error", "quest_soo_at_sql_executions", column: "parse_id", primary_key: "parse_id", name: "sys_c0018333", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_exec_error", "quest_soo_at_sql_executions", column: "sql_id", primary_key: "sql_id", name: "sys_c0018333", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_exec_error", "quest_soo_at_sql_executions", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0018333", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_executions", "quest_soo_at_parse_cursor", column: "parse_id", primary_key: "parse_id", name: "sys_c0018332", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_executions", "quest_soo_at_parse_cursor", column: "sql_id", primary_key: "sql_id", name: "sys_c0018332", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_executions", "quest_soo_at_parse_cursor", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0018332", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_statement", "quest_soo_at_trace_file", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0018334", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_stmt_pieces", "quest_soo_at_sql_statement", column: "sql_id", primary_key: "sql_id", name: "sys_c0018335", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_stmt_pieces", "quest_soo_at_sql_statement", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0018335", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_waits", "quest_soo_at_parse_cursor", column: "parse_id", primary_key: "parse_id", name: "sys_c0018336", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_waits", "quest_soo_at_parse_cursor", column: "sql_id", primary_key: "sql_id", name: "sys_c0018336", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_waits", "quest_soo_at_parse_cursor", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0018336", on_delete: :cascade
-  add_foreign_key "quest_soo_at_sql_waits", "quest_soo_at_wait_names", column: "event_id", primary_key: "event_id", name: "sys_c0018337"
+  add_foreign_key "quest_soo_at_appname", "quest_soo_at_parse_cursor", column: "parse_id", primary_key: "parse_id", name: "sys_c0025032", on_delete: :cascade
+  add_foreign_key "quest_soo_at_appname", "quest_soo_at_parse_cursor", column: "sql_id", primary_key: "sql_id", name: "sys_c0025032", on_delete: :cascade
+  add_foreign_key "quest_soo_at_appname", "quest_soo_at_parse_cursor", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0025032", on_delete: :cascade
+  add_foreign_key "quest_soo_at_execution_plan", "quest_soo_at_operations", column: "operation_id", primary_key: "operation_id", name: "sys_c0025034"
+  add_foreign_key "quest_soo_at_execution_plan", "quest_soo_at_operations", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0025034"
+  add_foreign_key "quest_soo_at_execution_plan", "quest_soo_at_parse_cursor", column: "parse_id", primary_key: "parse_id", name: "sys_c0025033", on_delete: :cascade
+  add_foreign_key "quest_soo_at_execution_plan", "quest_soo_at_parse_cursor", column: "sql_id", primary_key: "sql_id", name: "sys_c0025033", on_delete: :cascade
+  add_foreign_key "quest_soo_at_execution_plan", "quest_soo_at_parse_cursor", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0025033", on_delete: :cascade
+  add_foreign_key "quest_soo_at_operations", "quest_soo_at_trace_file", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0025035", on_delete: :cascade
+  add_foreign_key "quest_soo_at_parse_cursor", "quest_soo_at_sql_statement", column: "sql_id", primary_key: "sql_id", name: "sys_c0025036", on_delete: :cascade
+  add_foreign_key "quest_soo_at_parse_cursor", "quest_soo_at_sql_statement", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0025036", on_delete: :cascade
+  add_foreign_key "quest_soo_at_parse_error", "quest_soo_at_parse_cursor", column: "parse_id", primary_key: "parse_id", name: "sys_c0025037", on_delete: :cascade
+  add_foreign_key "quest_soo_at_parse_error", "quest_soo_at_parse_cursor", column: "sql_id", primary_key: "sql_id", name: "sys_c0025037", on_delete: :cascade
+  add_foreign_key "quest_soo_at_parse_error", "quest_soo_at_parse_cursor", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0025037", on_delete: :cascade
+  add_foreign_key "quest_soo_at_parse_waits", "quest_soo_at_parse_cursor", column: "parse_id", primary_key: "parse_id", name: "sys_c0025038"
+  add_foreign_key "quest_soo_at_parse_waits", "quest_soo_at_parse_cursor", column: "sql_id", primary_key: "sql_id", name: "sys_c0025038"
+  add_foreign_key "quest_soo_at_parse_waits", "quest_soo_at_parse_cursor", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0025038"
+  add_foreign_key "quest_soo_at_session_id", "quest_soo_at_sql_executions", column: "execution_id", primary_key: "execution_id", name: "sys_c0025039", on_delete: :cascade
+  add_foreign_key "quest_soo_at_session_id", "quest_soo_at_sql_executions", column: "parse_id", primary_key: "parse_id", name: "sys_c0025039", on_delete: :cascade
+  add_foreign_key "quest_soo_at_session_id", "quest_soo_at_sql_executions", column: "sql_id", primary_key: "sql_id", name: "sys_c0025039", on_delete: :cascade
+  add_foreign_key "quest_soo_at_session_id", "quest_soo_at_sql_executions", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0025039", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_binds", "quest_soo_at_sql_executions", column: "execution_id", primary_key: "execution_id", name: "sys_c0025040", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_binds", "quest_soo_at_sql_executions", column: "parse_id", primary_key: "parse_id", name: "sys_c0025040", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_binds", "quest_soo_at_sql_executions", column: "sql_id", primary_key: "sql_id", name: "sys_c0025040", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_binds", "quest_soo_at_sql_executions", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0025040", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_exec_error", "quest_soo_at_sql_executions", column: "execution_id", primary_key: "execution_id", name: "sys_c0025042", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_exec_error", "quest_soo_at_sql_executions", column: "parse_id", primary_key: "parse_id", name: "sys_c0025042", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_exec_error", "quest_soo_at_sql_executions", column: "sql_id", primary_key: "sql_id", name: "sys_c0025042", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_exec_error", "quest_soo_at_sql_executions", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0025042", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_executions", "quest_soo_at_parse_cursor", column: "parse_id", primary_key: "parse_id", name: "sys_c0025041", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_executions", "quest_soo_at_parse_cursor", column: "sql_id", primary_key: "sql_id", name: "sys_c0025041", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_executions", "quest_soo_at_parse_cursor", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0025041", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_statement", "quest_soo_at_trace_file", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0025043", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_stmt_pieces", "quest_soo_at_sql_statement", column: "sql_id", primary_key: "sql_id", name: "sys_c0025044", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_stmt_pieces", "quest_soo_at_sql_statement", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0025044", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_waits", "quest_soo_at_parse_cursor", column: "parse_id", primary_key: "parse_id", name: "sys_c0025045", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_waits", "quest_soo_at_parse_cursor", column: "sql_id", primary_key: "sql_id", name: "sys_c0025045", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_waits", "quest_soo_at_parse_cursor", column: "trace_file_id", primary_key: "trace_file_id", name: "sys_c0025045", on_delete: :cascade
+  add_foreign_key "quest_soo_at_sql_waits", "quest_soo_at_wait_names", column: "event_id", primary_key: "event_id", name: "sys_c0025046"
   add_foreign_key "rmd_fire_basic_info", "gipi_witem", column: "item_no", primary_key: "item_no", name: "witem_rmd_fi_bas_inf_fk"
   add_foreign_key "rmd_fire_basic_info", "gipi_witem", column: "par_id", primary_key: "par_id", name: "witem_rmd_fi_bas_inf_fk"
   add_synonym "quest_sl_all_index_columns", "mike.quest_sl_all_index_columns", force: true

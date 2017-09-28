@@ -5,23 +5,27 @@ class PoliciesController < ApplicationController
   # GET /policies
   # GET /policies.json
   def index
-    start_date =  (if params[:start_date].nil? then Date.current.beginning_of_month else  params[:start_date] end)
-    end_date =  (if params[:end_date].nil? then Date.current.end_of_month else  params[:end_date] end)
-    @policies = Policy.pol_search_date(start_date,end_date).paginate(:page => params[:page], :per_page => 30)
-    @policies_csv = Policy.pol_search_date(start_date,end_date)
+    detect_date_params
+    @policies = Policy.pol_search_date(@start_date, @end_date).paginate(:page => params[:page], :per_page => 30)
 
        respond_to do |format|
-       format.html
-       format.csv { send_data @policies_csv.to_csv1(start_date,end_date), filename: "production-#{start_date} / #{end_date}.csv" }
-       format.xls
-       format.pdf do
-          pdf = PolicyReport1.new(@policies, start_date, end_date)
-          send_data pdf.render,filename: "Policies.pdf",
-                              type: "application/pdf"
-                              # ,
-                              # disposition: "inline"
-      end
+         format.html
+         format.csv { send_data Policy.prod_to_csv(@start_date,@end_date), filename: "production-#{@start_date} / #{@end_date}.csv" }
+         format.xls
+         format.pdf do
+            pdf = PolicyReport1.new(Policy, @start_date, @end_date)
+            send_data pdf.render,filename: "Policies.pdf",
+                                type: "application/pdf"
+                                # ,
+                                # disposition: "inline"
+        end
     end
+  end
+
+  def search2
+    detect_date_params
+    @policies = Policy.pol_search_date(@start_date,@end_date).paginate(:page => params[:page], :per_page => 30)
+    render 'index'
   end
 
   # GET /policies/1
@@ -80,6 +84,17 @@ class PoliciesController < ApplicationController
   end
 
   private
+
+    def detect_date_params
+      if params[:start_date].present?
+        @start_date = params[:start_date]
+        @end_date =  params[:end_date]
+      else
+        @start_date =  Date.current.beginning_of_month
+        @end_date =  Date.current.end_of_month
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_policy
       @policy = Policy.find(params[:id])

@@ -11,8 +11,8 @@ class ProductionsController < ApplicationController
   # end
 
   def index
-    @start_date = params[:start_date]
-    @end_date = params[:end_date]
+    @start_date =  (if params[:start_date].nil? then Date.current.beginning_of_month else  params[:start_date] end)
+    @end_date =  (if params[:end_date].nil? then Date.current.end_of_month else  params[:end_date] end)
     # @productions = Production.includes(:policies).where('gipi_polbasic' => {acct_ent_date: @start_date..@end_date}).page(params[:page])
     # @productions = Production.limit(30).includes(:issource, :invoices).order(:iss_source).page(params[:page])
     # @productions = Production.order_by_issue_cd.filter_by_date(@start_date,@end_date).page(params[:page])

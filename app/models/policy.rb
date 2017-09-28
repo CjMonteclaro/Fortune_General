@@ -53,22 +53,22 @@ class Policy < ApplicationRecord
 	scope :filter_date, -> (start_date, end_date){ where(acct_ent: start_date..end_date).or(where(spld_ent_date: start_date..end_date ))   }
 	scope :order_by_line_cd, -> { order(line_cd: :asc)   }
 
-		def self.to_csv(start_date,end_date)
-			attributes = %w{Policy/Endorsement Insured Birthday Age Inception ExpiryDate Destination DestinationClass Duration CoverageLimit Remarks}
-			CSV.generate(headers: true) do |csv|
-				csv << attributes
-				all.each do |policy|
-				csv << [policy.full_policy_no, policy.assured.assd_name,(policy.accident_item.acc_bday unless policy.accident_item.nil?),(policy.accident_item.acc_age unless policy.accident_item.nil?), policy.inc_date, policy.exp_date, (policy.accident_item&.acc_item_destination ), (policy.polgenin.travel_class unless policy.polgenin.nil?), (pluralize(policy.duration_date, 'day')), policy.polgenin&.coverage, policy.polgenin&.polgenin_gen_info1]
+	def self.to_csv(start_date,end_date)
+		attributes = %w{Policy/Endorsement Insured Birthday Age Inception ExpiryDate Destination DestinationClass Duration CoverageLimit EndorsementText}
+		CSV.generate(headers: true) do |csv|
+			csv << attributes
+			Policy.where(iss_date: start_date&.to_date..if end_date.present? then end_date.to_date + 1.day end).where(line_code: "PA" ).where(subline_code: "TPS" ).where.not(polic_flag: ['4', '5']).includes(:assured, :item, :polgenin, :endttext, :accident_item).each do |policy|
+			csv << [policy.full_policy_no, policy.assured.assd_name,(policy.accident_item.acc_bday unless policy.accident_item.nil?),(policy.accident_item.acc_age unless policy.accident_item.nil?), policy.inc_date, policy.exp_date, (policy.accident_item&.acc_item_destination ), (policy.polgenin&.polgenin_gen_info1), (pluralize(policy.duration_date, 'day')), policy&.coverage, policy.endttext&.endt_txt]
 
-				end
 			end
+		end
 	end
 
 	def self.to_csv1(start_date,end_date)
       attributes = %w{PolicyNo Endorsement IssueDate EffectiveDate ExpiryDate Vehicle PerilName SumInsured Premium PremiumRate}
       CSV.generate(headers: true) do |csv|
         csv << attributes
-      Policy.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd').each do |policy|
+      Policy.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(Policy.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd').each do |policy|
 				policy.perils.where(line_code: "MC").find_each do |peril|
 					peril.item_perils.where(peril_cd: peril).find_each do |item|
 
@@ -138,6 +138,11 @@ class Policy < ApplicationRecord
 	  self.where(acct_ent_date: start_date..end_date).or(self.where(spld_acct_ent_date: start_date..end_date)).includes(:assured, :intermediary).order('iss_cd')
 	end
 
+
+	def self.motor_search(start_date, end_date)
+		self.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body)
+		#.paginate(:page => page_no, :per_page => 5)
+	end
 
 	def full_policy_no
 		"#{self.line_code} - #{self.subline_code} - #{self.issue_source} - #{self.issue_year} - #{self.proper_seq_no} - #{self.proper_renew_number} #{"/" if self.en_y?} #{self.en_iss_cd if self.en_y?} #{"-" if self.en_y?} #{self.en_y if self.en_y?} #{"-" if self.en_y?} #{proper_en_seq_no if self.en_y?}"
@@ -223,11 +228,6 @@ class Policy < ApplicationRecord
 
 	def duration_date
 		(self.exp_date - self.ef_date).to_i + 1
-	end
-
-	def self.motor_search(start_date, end_date)
-		self.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body)
-		#.paginate(:page => page_no, :per_page => 5)
 	end
 
 	def linecd_pa
@@ -323,4 +323,27 @@ class Policy < ApplicationRecord
 		end
 	end
 
+	def coverage
+		if self.polgenin&.travel_class.nil? || polgenin&.travel_class.blank?
+					case self.accident_item&.destination_class
+						when "SCHENGEN","schengen"
+							then "50,000"
+						when "WORLDWIDE","worldwide","WORLD WIDE"
+							then "50,000"
+						when "ASIAN","asian"
+							then "20,000"
+						else "Not Specified"
+					end
+		else
+					case self.polgenin&.travel_class
+						when "SCHENGEN","schengen"
+							then "50,000"
+						when "WORLDWIDE","worldwide","WORLD WIDE"
+							then "50,000"
+						when "ASIAN","asian"
+							then "20,000"
+						else "Not Specified"
+					end
+		end
+	end
 end

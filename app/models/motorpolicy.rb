@@ -28,6 +28,7 @@ class Motorpolicy < ApplicationRecord
 	alias_attribute :en_y, :endt_yy
 	alias_attribute :en_seq_no, :endt_seq_no
 	alias_attribute :polic_flag, :pol_flag
+	alias_attribute :spoiled_flag, :spld_flag
 
 	has_one :intermediary, through: :invoice, foreign_key: :intm_no
 	has_one :issource, foreign_key: :iss_cd, primary_key: :iss_cd
@@ -59,9 +60,9 @@ class Motorpolicy < ApplicationRecord
       attributes = %w{PolicyNo Endorsement IssueDate EffectiveDate ExpiryDate Vehicle PerilName SumInsured Premium PremiumRate}
       CSV.generate(headers: true) do |csv|
         csv << attributes
-      Policy.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd').each do |policy|
+      Policy.where(acct_ent_date: start_date..end_date, line_code: "MC").or(Policy.where(spld_acct_ent_date: start_date..end_date, line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd,iss_cd,pol_seq_no,renew_no').each do |policy|
 				policy.perils.where(line_code: "MC").find_each do |peril|
-					peril.item_perils.where(peril_cd: peril).find_each do |item|
+					policy.item_perils.where(peril_cd: peril).find_each do |item|
 
         csv << [policy.policy_no, policy.endorsemnt, policy.iss_date, policy.ef_date, policy.exp_date, policy.vehicle&.vehicle_name, peril.shortname, item&.proper_tsi, item&.proper_prem, item.proper_rate ]
 					end
@@ -72,7 +73,7 @@ class Motorpolicy < ApplicationRecord
 
 	def self.search4(search4)
 		if search4
-			@motor_policies = self.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC")).includes(:item, :item_peril, :peril, :vehicle, :mc_car_company, :type_of_body)
+			@motor_policies = Policy.where(acct_ent_date: start_date..end_date, line_code: "MC").or(Policy.where(spld_acct_ent_date: start_date..end_date, line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd,iss_cd,pol_seq_no,renew_no')
     else
 			limit(10)
 		end
@@ -80,6 +81,11 @@ class Motorpolicy < ApplicationRecord
 
 	def self.search_date(start_date,end_date)
 	  self.where(acct_ent_date: start_date..end_date).or(self.where(spld_acct_ent_date: start_date..end_date)).joins(:lines, :issource, :invoice, :intermediary)
+	end
+
+	def self.motor_search(start_date, end_date)
+		Policy.where(acct_ent_date: start_date..end_date, line_code: "MC").or(Policy.where(spld_acct_ent_date: start_date..end_date, line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd,iss_cd,pol_seq_no,renew_no')
+		#.paginate(:page => page_no, :per_page => 5)
 	end
 
 	def full_policy_no
@@ -95,7 +101,7 @@ class Motorpolicy < ApplicationRecord
 	end
 
 	def endorsemnt
-		"#{self.en_iss_cd} - #{self.proper_en_y} - #{proper_en_seq_no}"
+		"#{self.en_iss_cd if self.en_y?} - #{self.proper_en_y if self.en_y?} #{"-" if self.en_y?} #{proper_en_seq_no if self.en_y?}"
 	end
 
 	def proper_seq_no
@@ -166,11 +172,6 @@ class Motorpolicy < ApplicationRecord
 
 	def duration_date
 		(self.exp_date - self.ef_date).to_i + 1
-	end
-
-	def self.motor_search(start_date, end_date)
-		self.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body)
-		#.paginate(:page => page_no, :per_page => 5)
 	end
 
 

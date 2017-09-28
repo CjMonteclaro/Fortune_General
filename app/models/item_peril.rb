@@ -24,15 +24,15 @@ class ItemPeril < ApplicationRecord
   end
 
   def proper_tsi
-    proper_tsi = (tsi.to_i)
+    proper_tsi = (tsi.to_i * -1)
   end
 
   def proper_prem
-    proper_prem = (prem.to_i)
+    proper_prem = (prem.to_i * -1)
   end
 
   def proper_rate
-    proper_rate = (rate.to_i)
+    proper_rate = rate
   end
 
 end

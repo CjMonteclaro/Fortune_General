@@ -22,7 +22,7 @@ class Polgenin < ApplicationRecord
 			when "WORLDWIDE","worldwide","WORLD WIDE"
 				then "50,000"
 			when "ASIAN","asian"
-				then "50,000"
+				then "20,000"
 			else "Not Specified"
 		end
 	end

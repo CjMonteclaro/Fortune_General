@@ -26,7 +26,7 @@
 
       def transaction_rows
            [["Policy No:", "Endorsement", "Issue Date", "Effective Date" , "Expiry Date", "Vehicle", "Peril Name", "Sum Insured", "Premium", "Premium Rate"]] +
-           @motor_policies = Policy.where(acct_ent_date: @start_date..@end_date).where(line_code: "MC").or(Policy.where(spld_acct_ent_date: @start_date..@end_date).where(line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).map do |l|
+           @motor_policies = Motorpolicy.motor_search(@start_date, @end_date).map do |l|
 
             @motor_pol = l.perils&.where(line_code: "MC").each do |peril|
             @motor_po = peril.item_perils&.where(peril_cd: peril).each do |item|

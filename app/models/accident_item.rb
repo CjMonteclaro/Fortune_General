@@ -10,7 +10,10 @@ class AccidentItem < ApplicationRecord
 	alias_attribute :acc_item_destination, :destination
 
 	has_one :item, foreign_key: :item_no
-	has_one :policy, foreign_key: :policy_id
+	belongs_to :policy, foreign_key: :policy_id
 
+	def destination_class
+		/schengen|worldwide|asian/i.match(acc_item_destination).to_s
+	end
 
 end

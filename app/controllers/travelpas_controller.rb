@@ -4,8 +4,8 @@ class TravelpasController < ApplicationController
   # GET /travelpas
   # GET /travelpas.json
   def index
-  	start_date = params[:start_date]
-    end_date = params[:end_date]
+    start_date =  (if params[:start_date].nil? then Date.current.beginning_of_month else  params[:start_date] end)
+    end_date =  (if params[:end_date].nil? then Date.current.end_of_month else  params[:end_date] end)
   	@travels = Policy.travel_search_date(start_date,end_date).paginate(:page => params[:page], :per_page => 15)
   	@travels_csv = Policy.travel_search_date(start_date,end_date)
      respond_to do |format|

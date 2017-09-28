@@ -43,11 +43,10 @@
           <tr>
               <%= content_tag :td, peril.shortname %>
               <% policy.item_perils.where(peril_cd: peril).find_each do |item| %>
-                <%= content_tag :td, currency(item&.proper_tsi), class: "text-right" %>
-                <%= content_tag :td, currency(item&.proper_prem), class: "text-right" %>
+                <%= content_tag :td, if item.policy.spld_flag == 1 then (currency(item&.proper_tsi)) else currency(item&.proper_tsi * -1) end, class: "text-right" %>
+                <%= content_tag :td, if item.policy.spld_flag == 1 then (currency(item&.proper_prem)) else currency(item&.proper_prem * -1) end, class: "text-right" %>
                 <%= content_tag :td, number_to_percentage(item.proper_rate, precision: 4), class: "text-right" %>
               <% end %>
-
         </tr>
       <% end %>
       <% end %>

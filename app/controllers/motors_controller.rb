@@ -29,6 +29,9 @@ class MotorsController < ApplicationController
     @pol_no = params[:policy_no]
     @motor_policies = Motorpolicy.motor_search(@start_date, @end_date).page(params[:page])
     # @motor_policies = Motorpolicy.where(line_code: "MC").order('policy_id DESC').limit(5).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).page(params[:page])
+    respond_to do |format|
+      format.html
+    end
   end
 
   def motor_search

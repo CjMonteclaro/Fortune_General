@@ -17,16 +17,16 @@
 
     <tbody>
       <% @intermediary_productions.each do |policy| %>
-      <% Intermediary.distinct.limit(50).each do | intermediary | %>
+      <% Intermediary.distinct.limit(10).each do | intermediary | %>
       <% @policies = intermediary.policies.search_date(@start_date, @end_date) %>
         <tr>
-          <%= content_tag :td, intermediary.name %>
-          <%= content_tag :td, intermediary.no %>
-          <%= content_tag :td, intermediary.type %>
-          <%= content_tag :td, intermediary.issue_source %>
+          <%= content_tag :td, policy.intermediary.name %>
+          <%= content_tag :td, policy.intermediary.no %>
+          <%= content_tag :td, policy.intermediary.type %>
+          <%= content_tag :td, policy.intermediary.issue_source %>
           <% ["FI" , "MC" , "PA", "CA", "EN", "MN", "AH", "MH", "SU", "AV"].each do |line| %>
             <td>
-              <% @policies.group_by(&:line_cd).each do | line_code, policies |  %>
+              <% @policies.distinct.group_by(&:line_cd).each do | line_code, policies |  %>
                 <% if line.include? line_code  %>
                     <%= line_code %><br>
                     <%= currency(policies.collect(&:pre_amt).sum) %><br>
@@ -35,25 +35,9 @@
               <% end %>
             </td>
           <% end %>
-
+          <%# next if intermediary.policies.search_date(@start_date,@end_date).collect(&:pre_amt).sum == 0 %>
         <%= content_tag :td, currency(@policies.collect(&:pre_amt).sum) %>
-          <%#= content_tag :td, prod[1] %>
 
-          <%#= content_tag :td, policy.intermediary&.name %>
-          <%#= content_tag :td, policy.intermediary&.no %>
-          <%#= content_tag :td, policy.intermediary&.type %>
-          <%#= content_tag :td, policy.issource.issue_name %>
-          <%#= content_tag :td, policy.sum(linecd_pa), align: "right" %>
-          <%#= content_tag :td, policy.sum(linecd_ah), align: "right" %>
-          <%#= content_tag :td, policy.sum(linecd_ca), align: "right" %>
-          <%#= content_tag :td, policy.sum(linecd_en), align: "right" %>
-          <%#= content_tag :td, policy.sum(linecd_fi), align: "right" %>
-          <%#= content_tag :td, policy.sum(linecd_mc), align: "right" %>
-          <%#= content_tag :td, policy.sum(linecd_mh), align: "right" %>
-          <%#= content_tag :td, policy.sum(linecd_mn), align: "right" %>
-          <%#= content_tag :td, policy.sum(linecd_su), align: "right" %>
-          <%#= content_tag :td, policy.sum(linecd_av), align: "right" %>
-          <%#= content_tag :td, policy.sum(pre_amt).to_s(:delimited), align: "right" %>
         </tr>
       <% end %>
       <% end %>

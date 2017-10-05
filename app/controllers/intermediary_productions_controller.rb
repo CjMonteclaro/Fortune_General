@@ -5,7 +5,7 @@ class IntermediaryProductionsController < ApplicationController
     @end_date =  (if params[:end_date].nil? then Date.current.end_of_month else  params[:end_date] end)
     # @productions = Production.distinct.order_by_issue_cd.filter_by_date(@start_date,@end_date).page(params[:page])
     # Policy.distinct.limit(50).filter_date(if @start_date.nil? then Date.current.beginning_of_month else @start_date end,if @end_date.nil? then Date.current.end_of_month else @end_date end).page(params[:page])
-    @intermediary_productions = Policy.distinct.limit(50).filter_date(Date.current.beginning_of_month,Date.current.end_of_month).page(params[:page])
+    @intermediary_productions = Policy.search_date(@start_date, @end_date).page(params[:page])
 
     # @intermediary_productions_group = @intermediary_productions.group('giis_intermediary.intm_name','giis_intermediary.intm_no','giis_intermediary.intm_type','giis_issource.iss_name').sum(:pre_amt)
     # @intermediary_productions_values1 = @intermediary_productions_group.values.paginate(:page => params[:value_page], :per_page => 30)
@@ -20,8 +20,6 @@ class IntermediaryProductionsController < ApplicationController
             pdf = IntermediaryProductionsReport.new(@intermediary_productions, start_date, end_date)
             send_data pdf.render,filename: "IntermediaryProduction.pdf",
                                 type: "application/pdf"
-                              # ,
-                              # disposition: "inline"
       end
     end
   end

@@ -11,22 +11,14 @@ class ProductionsController < ApplicationController
   # end
 
   def index
-    @start_date =  (if params[:start_date].nil? then Date.current.beginning_of_month else  params[:start_date] end)
-    @end_date =  (if params[:end_date].nil? then Date.current.end_of_month else  params[:end_date] end)
-    # @productions = Production.includes(:policies).where('gipi_polbasic' => {acct_ent_date: @start_date..@end_date}).page(params[:page])
-    # @productions = Production.limit(30).includes(:issource, :invoices).order(:iss_source).page(params[:page])
-    # @productions = Production.order_by_issue_cd.filter_by_date(@start_date,@end_date).page(params[:page])
-    productions1 = Production.order_by_issue_cd.filter_by_date(@start_date,@end_date)
-    @productions = productions1.group_by{|e| [e.intm_name, e.intm_no, e.intm_type]}
-    # @productions =  Kaminari.paginate_array(productions2.keys).page(params[:page])
-    render "index2"
+    detect_date_params
+    @productions = Production.distinct.order_by_issue_cd.filter_by_date(@start_date,@end_date).page(params[:page])
   end
 
   # GET /productions/1
   # GET /productions/1.json
   def show
-    @start_date = params[:start_date]
-    @end_date = params[:end_date]
+    detect_date_params
     @product = Production.find(params[:id])
   end
 
@@ -80,6 +72,17 @@ class ProductionsController < ApplicationController
   end
 
   private
+
+    def detect_date_params
+      if params[:start_date].present?
+        @start_date = params[:start_date]
+        @end_date =  params[:end_date]
+      else
+        @start_date =  Date.current.beginning_of_month
+        @end_date =  Date.current.end_of_month
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_production
       @production = Production.find(params[:id])

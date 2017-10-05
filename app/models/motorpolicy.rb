@@ -71,9 +71,9 @@ class Motorpolicy < ApplicationRecord
     end
   end
 
-	def self.motor_search(motor_search)
-		if motor_search
-			@motor_policies = Policy.where(acct_ent_date: start_date..end_date, line_code: "MC").or(Policy.where(spld_acct_ent_date: start_date..end_date, line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd,iss_cd,pol_seq_no,renew_no')
+	def self.search_motor(search_motor)
+		if search_motor
+			@motor_policies = self.where(acct_ent_date: start_date..end_date, line_code: "MC").or(self.where(spld_acct_ent_date: start_date..end_date, line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd,iss_cd,pol_seq_no,renew_no')
     else
 			limit(10)
 		end
@@ -84,7 +84,7 @@ class Motorpolicy < ApplicationRecord
 	end
 
 	def self.motors_search(start_date, end_date)
-		Policy.where(acct_ent_date: start_date..end_date, line_code: "MC").or(Policy.where(spld_acct_ent_date: start_date..end_date, line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd,iss_cd,pol_seq_no,renew_no')
+		Motorpolicy.where(acct_ent_date: start_date..end_date, line_code: "MC").or(Motorpolicy.where(spld_acct_ent_date: start_date..end_date, line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).order('subline_cd,iss_cd,pol_seq_no,renew_no')
 	end
 
 	def full_policy_no

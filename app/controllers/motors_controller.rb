@@ -27,23 +27,24 @@ class MotorsController < ApplicationController
   def index2
     detect_date_params
     @pol_no = params[:policy_no]
-    @motor_policies = Motorpolicy.motor_search(@start_date, @end_date).page(params[:page])
+    @motor_policies = Motorpolicy.motors_search(@start_date, @end_date).page(params[:page])
     # @motor_policies = Motorpolicy.where(line_code: "MC").order('policy_id DESC').limit(5).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body).page(params[:page])
     respond_to do |format|
       format.html
     end
   end
 
-  def motor_search
+  def search_motor
     detect_date_params
     @pol_no = params[:policy_no]
-    @motor_policies = Motorpolicy.motor_search(@start_date, @end_date).page(params[:page])
+    @motor_policies = Motorpolicy.motors_search(@start_date, @end_date).page(params[:page])
+    render 'index2'
   end
 
   # GET /motors/1
   # GET /motors/1.json
   def show
-    @motors = Claim.where(claim_no: @pol_no)
+    # @motors = Claim.where(claim_no: @pol_no)
   end
 
   # GET /motors/new

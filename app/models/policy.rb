@@ -59,45 +59,6 @@ class Policy < ApplicationRecord
 		self.where(iss_date: start_date&.to_date..if end_date.present? then end_date.to_date + 1.day end).where(line_code: "PA" ).where(subline_code: "TPS" ).where.not(polic_flag: ['4', '5']).includes(:assured, :item, :polgenin, :endttext, :accident_item)
 	end
 
-	def self.to_csv(start_date, end_date)
-		attributes = %w{Policy/Endorsement Insured Birthday Age Inception ExpiryDate Destination DestinationClass Duration CoverageLimit EndorsementText}
-		CSV.generate(headers: true) do |csv|
-			csv << attributes
-
-			policies = Policy.where(iss_date: start_date&.to_date..if end_date.present? then end_date.to_date + 1.day end).where(line_code: "PA" ).where(subline_code: "TPS" ).where.not(polic_flag: ['4', '5']).includes(:assured, :item, :polgenin, :endttext, :accident_item)
-
-			policies.each do |policy|
-				csv << [policy.full_policy_no, policy.assured.assd_name,(policy.accident_item.acc_bday unless policy.accident_item.nil?),(policy.accident_item.acc_age unless policy.accident_item.nil?), policy.inc_date, policy.exp_date, (policy.accident_item&.acc_item_destination ), (policy.polgenin&.polgenin_gen_info1), (pluralize(policy.duration_date, 'day')), policy&.coverage, policy.endttext&.endt_txt]
-			end
-		end
-	end
-
-	def self.prod_to_csv(start_date,end_date)
-      attributes = %w{Policy_no Assured_Name Intermediary Sum_Insured Premium_Amount}
-      CSV.generate(headers: true) do |csv|
-        csv << attributes
-      # all.each do |policy|
-        Policy.where(acct_ent_date: start_date..end_date).or(self.where(spld_acct_ent_date: start_date..end_date)).includes(:assured, :intermediary).order('iss_cd').each do |policy|
-        csv << [policy.full_policy_no, policy.assured.assd_name, policy.intermediary&.name, policy.sum_insured, policy.premium_amt]
-
-        end
-      end
-    end
-
-	def self.intm_prod_csv(start_date,end_date)
-			attributes = %w{INTM INTM_NO INTM_TYPE ISS_NAME PA AH CA EN FI MC MH MN SU AV PREM}
-			CSV.generate(headers: true) do |csv|
-				csv << attributes
-			# Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).joins(:lines,:issource,:invoice,:intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name').group('giis_intermediary.intm_name','giis_intermediary.intm_no','giis_intermediary.intm_type','giis_issource.iss_name').sum(:pre_amt)
-			pols = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).joins(:lines, :issource, :invoice,:intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name').group('giis_intermediary.intm_name','giis_intermediary.intm_no','giis_intermediary.intm_type','giis_issource.iss_name').sum(:pre_amt)
-			pols.each do | intm_name, intm_no, intm_type, iss_name, pre_amt |
-
-				# csv <<  [ policy.intermediary.intm_name, policy.intermediary.intm_no, policy.intermediary.intm_type, policy.issource.iss_name, policy.linecd_pa, policy.linecd_ah, policy.linecd_ca, policy.linecd_en, policy.linecd_fi, policy.linecd_mc, policy.linecd_mh, policy.linecd_mn, policy.linecd_su, policy.linecd_av, policy.pre_amt]
-				csv <<  [ intm_name, intm_no, intm_type, iss_name, pre_amt ]
-
-			end
-		end
-	end
 
 	def self.search(search)
 		if search
@@ -106,7 +67,6 @@ class Policy < ApplicationRecord
 			limit(10)
 		end
 	end
-
 
 	def self.search2(search2)
 		if search2
@@ -141,9 +101,49 @@ class Policy < ApplicationRecord
 	end
 
 
-	def self.motor_search(start_date, end_date)
-		self.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body)
-		#.paginate(:page => page_no, :per_page => 5)
+	# def self.motor_search(start_date, end_date)
+	# 	self.where(acct_ent_date: start_date..end_date).where(line_code: "MC").or(self.where(spld_acct_ent_date: start_date..end_date).where(line_code: "MC")).includes(:item, :item_perils, :perils, :vehicle, :mc_car_company, :type_of_body)
+	# 	#.paginate(:page => page_no, :per_page => 5)
+	# end
+
+	def self.to_csv(start_date, end_date)
+		attributes = %w{Policy/Endorsement Insured Birthday Age Inception ExpiryDate Destination DestinationClass Duration CoverageLimit EndorsementText}
+		CSV.generate(headers: true) do |csv|
+			csv << attributes
+
+			policies = Policy.where(iss_date: start_date&.to_date..if end_date.present? then end_date.to_date + 1.day end).where(line_code: "PA" ).where(subline_code: "TPS" ).where.not(polic_flag: ['4', '5']).includes(:assured, :item, :polgenin, :endttext, :accident_item)
+
+			policies.each do |policy|
+				csv << [policy.full_policy_no, policy.assured.assd_name,(policy.accident_item.acc_bday unless policy.accident_item.nil?),(policy.accident_item.acc_age unless policy.accident_item.nil?), policy.inc_date, policy.exp_date, (policy.accident_item&.acc_item_destination ), (policy.polgenin&.polgenin_gen_info1), (pluralize(policy.duration_date, 'day')), policy&.coverage, policy.endttext&.endt_txt]
+			end
+		end
+	end
+
+	def self.prod_to_csv(start_date,end_date)
+		attributes = %w{Policy_no Assured_Name Intermediary Sum_Insured Premium_Amount}
+		CSV.generate(headers: true) do |csv|
+			csv << attributes
+			# all.each do |policy|
+			Policy.where(acct_ent_date: start_date..end_date).or(self.where(spld_acct_ent_date: start_date..end_date)).includes(:assured, :intermediary).order('iss_cd').each do |policy|
+				csv << [policy.full_policy_no, policy.assured.assd_name, policy.intermediary&.name, policy.sum_insured, policy.premium_amt]
+
+			end
+		end
+	end
+
+	def self.intm_prod_csv(start_date,end_date)
+		attributes = %w{INTM INTM_NO INTM_TYPE ISS_NAME PA AH CA EN FI MC MH MN SU AV PREM}
+		CSV.generate(headers: true) do |csv|
+			csv << attributes
+			# Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).joins(:lines,:issource,:invoice,:intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name').group('giis_intermediary.intm_name','giis_intermediary.intm_no','giis_intermediary.intm_type','giis_issource.iss_name').sum(:pre_amt)
+			pols = Policy.where(acct_ent_date: start_date..end_date).or(Policy.where(spld_acct_ent_date: start_date..end_date)).joins(:lines, :issource, :invoice,:intermediary).order('giis_intermediary.intm_name','giis_issource.iss_name').group('giis_intermediary.intm_name','giis_intermediary.intm_no','giis_intermediary.intm_type','giis_issource.iss_name').sum(:pre_amt)
+			pols.each do | intm_name, intm_no, intm_type, iss_name, pre_amt |
+
+				# csv <<  [ policy.intermediary.intm_name, policy.intermediary.intm_no, policy.intermediary.intm_type, policy.issource.iss_name, policy.linecd_pa, policy.linecd_ah, policy.linecd_ca, policy.linecd_en, policy.linecd_fi, policy.linecd_mc, policy.linecd_mh, policy.linecd_mn, policy.linecd_su, policy.linecd_av, policy.pre_amt]
+				csv <<  [ intm_name, intm_no, intm_type, iss_name, pre_amt ]
+
+			end
+		end
 	end
 
 	def full_policy_no
@@ -164,61 +164,61 @@ class Policy < ApplicationRecord
 
 	def proper_seq_no
 		 case sequence_no.to_s.length
-		when 1
-		 proper_seq_no = "000000" + sequence_no.to_s
-		when 2
-		 proper_seq_no = "00000" + sequence_no.to_s
-		when 3
-		 proper_seq_no = "0000" + sequence_no.to_s
-		when 4
-		 proper_seq_no = "000" + sequence_no.to_s
-		when 5
-		 proper_seq_no = "00" + sequence_no.to_s
-		when 6
-		 proper_seq_no = "0" + sequence_no.to_s
+			when 1
+				proper_seq_no = "000000" + sequence_no.to_s
+			when 2
+				proper_seq_no = "00000" + sequence_no.to_s
+			when 3
+				proper_seq_no = "0000" + sequence_no.to_s
+			when 4
+				proper_seq_no = "000" + sequence_no.to_s
+			when 5
+				proper_seq_no = "00" + sequence_no.to_s
+			when 6
+				proper_seq_no = "0" + sequence_no.to_s
 		end
 	end
 
 	def proper_renew_number
 		case renew_number.to_s.length
-		when 1
-		 proper_renew_number = "0" + renew_number.to_s
-	 	when 2
-	 	proper_renew_number = " " + renew_number.to_s
-		when nil?
-		 proper_renew_number = "00"
+			when 1
+				proper_renew_number = "0" + renew_number.to_s
+		 	when 2
+		 		proper_renew_number = " " + renew_number.to_s
+			when nil?
+				proper_renew_number = "00"
 		end
 	end
 
 	def proper_en_y
 		prop_en_y = en_y.to_s.to_s.delete(' ')
 		 case prop_en_y.to_s.length
-		when 1
-		 proper_en_y = "0" + en_y.to_s.to_s.delete(' ')
-	 when 2
-	 		proper_en_y = " " + en_y.to_s.to_s.delete(' ')
-		when nil?
-		 proper_en_y = "00"
+			when 1
+				proper_en_y = "0" + en_y.to_s.to_s.delete(' ')
+		 when 2
+		 		proper_en_y = " " + en_y.to_s.to_s.delete(' ')
+			when nil?
+				proper_en_y = "00"
 		end
 	end
 
 	def proper_en_seq_no
 		prop_en_seq_no = en_seq_no.to_s.delete(' ')
 		case prop_en_seq_no.to_s.length
-		when 1
-		 proper_en_seq_no = "000000" + en_seq_no.to_s.delete(' ')
-		when 2
-		 proper_en_seq_no = "00000" + en_seq_no.to_s.delete(' ')
-		when 3
-		 proper_en_seq_no = "0000" + en_seq_no.to_s.delete(' ')
-		when 4
-		 proper_en_seq_no = "000" + en_seq_no.to_s.delete(' ')
-		when 5
-		 proper_en_seq_no = "00" + en_seq_no.to_s.delete(' ')
-		when 6
-		 proper_en_seq_no = "0" + en_seq_no.to_s.delete(' ')
-		when nil?
-		 proper_en_seq_no = "0000000"
+			when 1
+				proper_en_seq_no = "000000" + en_seq_no.to_s.delete(' ')
+			when 2
+				proper_en_seq_no = "00000" + en_seq_no.to_s.delete(' ')
+			when 3
+				proper_en_seq_no = "0000" + en_seq_no.to_s.delete(' ')
+			when 4
+				proper_en_seq_no = "000" + en_seq_no.to_s.delete(' ')
+			when 5
+				proper_en_seq_no = "00" + en_seq_no.to_s.delete(' ')
+			when 6
+				proper_en_seq_no = "0" + en_seq_no.to_s.delete(' ')
+			when nil?
+				proper_en_seq_no = "0000000"
 		end
 	end
 
@@ -231,7 +231,7 @@ class Policy < ApplicationRecord
 	def duration_date
 		(self.exp_date - self.ef_date).to_i + 1
 	end
-	
+
 	def coverage
 		if self.polgenin&.travel_class.nil? || polgenin&.travel_class.blank?
 					case self.accident_item&.destination_class
